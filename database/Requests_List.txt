@@ -1,0 +1,12 @@
+SenderID	RecipientID	Type	Status	ProjectID
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
