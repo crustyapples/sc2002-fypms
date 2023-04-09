@@ -1,22 +1,18 @@
 package src.Entity;
 
 public class Project {
-    private int projectID;
+    private Integer projectID;
     private Supervisor supervisor;
     private Student student;
     private String title;
     private String status;
 
-    public Project(Supervisor supervisor, Student student, String title, String status) {
+    public Project(Integer projectID, Supervisor supervisor, Student student, String title, String status) {
         this.projectID = projectID;
         this.supervisor = supervisor;
         this.student = student;
         this.title = title;
         this.status = status;
-    }
-
-    public void updateTitle(String newTitle) {
-        this.title = newTitle;
     }
 
     public void setStatus(String newStatus) {

@@ -20,5 +20,9 @@ public class Supervisor extends User {
     public List<Project> getProjects() {
         return this.projects;
     }
+
+    public void addProject(Project project) {
+        projects.add(project);
+    }
 }
 

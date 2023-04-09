@@ -10,34 +10,32 @@ import java.util.List;
 
 public class SupervisorController {
     private ProjectDataHandler projectDataHandler;
+    private ProjectController projectController;
 
-    public SupervisorController() {
+    public SupervisorController() throws IOException {
         projectDataHandler = new ProjectDataHandler();
+        projectController = new ProjectController();
     }
 
-    public Project createNewProject(Supervisor supervisor, String title) {
-        Project project = new Project(supervisor, null, title, "available");
-        supervisor.getProjects().add(project);
-        try {
-            projectDataHandler.saveProjectsToDatabase(supervisor.getProjects());
-        } catch (IOException e) {
-            System.out.println("Error saving projects: " + e.getMessage());
-        }
+    public Project createNewProject(Supervisor supervisor, String title, List<Project> projects) throws IOException {
+
+        Project project = projectController.createProject(title, projects, supervisor);
+        supervisor.addProject(project);
+
         return project;
     }
 
-    public void updateExistingProject(Project project, String newTitle) {
-        project.setTitle(newTitle);
-        try {
-            projectDataHandler.saveProjectsToDatabase(project.getSupervisor().getProjects());
-        } catch (IOException e) {
-            System.out.println("Error saving projects: " + e.getMessage());
-        }
+    public Project updateExistingProject(Project project, String newTitle, List<Project> projects) throws IOException {
+        projectController.updateProject(project,newTitle,project.getStatus(),projects);
+
+        return project;
     }
 
+
     public void viewSupervisorProjects(Supervisor supervisor) {
+
         for (Project project : supervisor.getProjects()) {
-            System.out.println(project);
+            System.out.println(project.viewDetails());
         }
     }
 

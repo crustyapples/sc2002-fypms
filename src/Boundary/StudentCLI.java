@@ -40,19 +40,24 @@ public class StudentCLI {
                     // Call studentController.getAvailableProjects() and display the result
                     System.out.println("Available Projects: ");
                     List<Project> availableProjects = studentController.getAvailableProjects(projects);
-                    int projectId = 1;
+
                     for (Project availableProject : availableProjects) {
-                        System.out.println("ID: " + projectId + " Title: " + availableProject.getTitle() + " Supervisor: " + availableProject.getSupervisor().getName() + " Status: " + availableProject.getStatus());
-                        projectId++;
+                        System.out.println(availableProject.viewDetails());
                     }
+
                     break;
                 case 2:
                     // Call studentController.selectProjectForStudent() with the selected project
                     System.out.println("Enter the ProjectID:");
                     int projectChoice = scanner.nextInt();
                     availableProjects = studentController.getAvailableProjects(projects);
-                    Project selectedProject = availableProjects.get(projectChoice - 1);
-                    studentController.selectProjectForStudent(student,selectedProject);
+
+                    for (Project availableProject : availableProjects) {
+                        if (availableProject.getProjectID() == projectChoice) {
+                            studentController.selectProjectForStudent(student,availableProject);
+                        }
+                    }
+
 
                     break;
                 case 3:

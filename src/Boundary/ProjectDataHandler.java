@@ -22,8 +22,9 @@ public class ProjectDataHandler {
 
                 Supervisor supervisor = findSupervisorByName(supervisors, supervisorName);
                 if (supervisor != null) {
-                    Project project = new Project(supervisor, null, title, "available");
+                    Project project = new Project(projectID, supervisor, null, title, "available");
                     projects.add(project);
+                    supervisor.addProject(project);
                     projectID++;
                 }
             }
@@ -34,13 +35,23 @@ public class ProjectDataHandler {
     public void saveProjectsToDatabase(List<Project> projects) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PROJECT_FILE))) {
             for (Project project : projects) {
-                String supervisorEmail = project.getSupervisor().getEmail();
+                String supervisorName = project.getSupervisor().getName();
                 String title = project.getTitle();
-                writer.write(supervisorEmail + "\t" + title);
+                writer.write(supervisorName + "\t" + title);
                 writer.newLine();
             }
         }
     }
+
+    public void saveProjectToDatabase(Project project) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(PROJECT_FILE, true))) {
+            String supervisorName = project.getSupervisor().getName();
+            String title = project.getTitle();
+            writer.write(supervisorName + "\t" + title);
+            writer.newLine();
+        }
+    }
+
 
     private Supervisor findSupervisorByName(List<Supervisor> supervisors, String name) {
         for (Supervisor supervisor : supervisors) {

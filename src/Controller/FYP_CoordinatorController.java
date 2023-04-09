@@ -5,9 +5,13 @@ import src.Entity.Project;
 import src.Entity.Request;
 import src.Entity.Student;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FYP_CoordinatorController extends SupervisorController {
+    public FYP_CoordinatorController() throws IOException {
+    }
+
     public void allocateProjectToStudent(FYP_Coordinator coordinator, Student student, Project project) {
         student.setSelectedProject(project);
         project.setStudent(student);

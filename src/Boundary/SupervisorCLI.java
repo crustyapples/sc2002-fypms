@@ -1,8 +1,11 @@
 package src.Boundary;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 import src.Controller.SupervisorController;
+import src.Entity.Project;
 import src.Entity.Supervisor;
 
 public class SupervisorCLI {
@@ -24,7 +27,7 @@ public class SupervisorCLI {
         System.out.println("0. Exit");
     }
 
-    public void handleSupervisorActions(Supervisor supervisor) {
+    public void handleSupervisorActions(Supervisor supervisor, List<Project> projects) throws IOException {
         boolean exit = false;
         while (!exit) {
             displaySupervisorMenu();
@@ -35,12 +38,33 @@ public class SupervisorCLI {
             switch (choice) {
                 case 1:
                     // Call supervisorController.createNewProject() with the project title
+                    System.out.println("Enter the Project Title: ");
+                    String title = scanner.nextLine();
+                    supervisorController.createNewProject(supervisor, title, projects);
                     break;
                 case 2:
                     // Call supervisorController.updateExistingProject() with the new title
+
+                    supervisorController.viewSupervisorProjects(supervisor);
+
+                    System.out.println("Enter the project ID of the project you wish to update: ");
+                    Integer projectChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.println("Enter the new project Title: ");
+                    String newTitle = scanner.nextLine();
+
+                    for (Project project : projects) {
+                        if (project.getProjectID() == projectChoice) {
+                            supervisorController.updateExistingProject(project, newTitle, projects);
+                        }
+                    }
+
+
                     break;
                 case 3:
                     // Call supervisorController.viewSupervisorProjects() and display the result
+                    supervisorController.viewSupervisorProjects(supervisor);
                     break;
                 case 4:
                     // Call supervisorController.manageStudentRequests()

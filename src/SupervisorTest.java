@@ -1,10 +1,8 @@
 package src;
 
-import src.Boundary.FYP_CoordinatorDataHandler;
-import src.Boundary.ProjectDataHandler;
-import src.Boundary.StudentCLI;
-import src.Boundary.SupervisorDataHandler;
+import src.Boundary.*;
 import src.Controller.StudentController;
+import src.Controller.SupervisorController;
 import src.Entity.FYP_Coordinator;
 import src.Entity.Project;
 import src.Entity.Student;
@@ -13,7 +11,7 @@ import src.Entity.Supervisor;
 import java.io.IOException;
 import java.util.List;
 
-public class Test {
+public class SupervisorTest {
     public static void main (String[] args) throws IOException {
         SupervisorDataHandler supervisorDataHandler = new SupervisorDataHandler();
         List<Supervisor> supervisors = supervisorDataHandler.loadFacultyFromDatabase();
@@ -24,10 +22,10 @@ public class Test {
         FYP_CoordinatorDataHandler fypCoordinatorDataHandler = new FYP_CoordinatorDataHandler();
         List<FYP_Coordinator> fypCoordinators = fypCoordinatorDataHandler.loadCoordinatorsFromDatabase();
 
-        Student testStudent = new Student("YCHERN","password","CHERN","YCHERN@e.ntu.edu.sg");
-        StudentController sc = new StudentController();
-        StudentCLI studentMenu = new StudentCLI(sc);
+        Supervisor testSupervisor = supervisors.get(0);
+        SupervisorController supervisorController = new SupervisorController();
+        SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController);
 
-        studentMenu.handleStudentActions(testStudent,projects, fypCoordinators.get(0));
+        supervisorCLI.handleSupervisorActions(testSupervisor,projects);
     }
 }

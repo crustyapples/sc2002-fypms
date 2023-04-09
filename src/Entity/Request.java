@@ -48,7 +48,9 @@ public class Request {
     }
 
     public void setNewTitle(String newTitle) {
-        this.project.setTitle(newTitle);
+        if (this.status == "approved") {
+            this.project.setTitle(newTitle);
+        }
     }
 
     public void setNewSupervisor(Supervisor newSupervisor) {

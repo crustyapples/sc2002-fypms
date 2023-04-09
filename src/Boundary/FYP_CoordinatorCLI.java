@@ -1,9 +1,12 @@
 package src.Boundary;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 import src.Controller.FYP_CoordinatorController;
 import src.Entity.FYP_Coordinator;
+import src.Entity.Project;
 import src.Entity.Supervisor;
 
 public class FYP_CoordinatorCLI extends SupervisorCLI {
@@ -24,7 +27,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI {
     }
 
     @Override
-    public void handleSupervisorActions(Supervisor supervisor) {
+    public void handleSupervisorActions(Supervisor supervisor, List<Project> projects) throws IOException {
         FYP_Coordinator coordinator = (FYP_Coordinator) supervisor;
         boolean exit = false;
         while (!exit) {
@@ -47,7 +50,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI {
                     // Call fypCoordinatorController.generateProjectReport() and display the result
                     break;
                 default:
-                    super.handleSupervisorActions(coordinator);
+                    super.handleSupervisorActions(coordinator, projects);
                     break;
             }
         }
