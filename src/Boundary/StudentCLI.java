@@ -1,11 +1,13 @@
 package src.Boundary;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 import src.Controller.StudentController;
 import src.Entity.FYP_Coordinator;
 import src.Entity.Project;
+import src.Entity.Request;
 import src.Entity.Student;
 
 public class StudentCLI {
@@ -27,7 +29,7 @@ public class StudentCLI {
         System.out.println("0. Exit");
     }
 
-    public void handleStudentActions(Student student, List<Project> projects, FYP_Coordinator coordinator) {
+    public void handleStudentActions(Student student, List<Project> projects, List<Request> requests, FYP_Coordinator coordinator) throws IOException {
         boolean exit = false;
         while (!exit) {
             displayStudentMenu();
@@ -54,30 +56,30 @@ public class StudentCLI {
 
                     for (Project availableProject : availableProjects) {
                         if (availableProject.getProjectID() == projectChoice) {
-                            studentController.selectProjectForStudent(student,availableProject);
+                            System.out.println("Sending Request...");
+                            studentController.selectProjectForStudent(student, availableProject, coordinator,requests);
                         }
                     }
-
 
                     break;
                 case 3:
                     // Call studentController.isHashProject() and display the result
-                    if (!student.isHasProject()) {
+                    if (!student.isRegistered()) {
                         System.out.println("You have not registered a project!");
                     } else {
-                        System.out.println("Your Project: "+ student.getSelectedProject().getTitle());
+                        System.out.println(student.getSelectedProject().viewDetails());
                     }
                     break;
                 case 4:
                     // Call studentController.requestProjectTitleChange() with the new title
                     System.out.println("Enter new project title:");
                     String newTitle = scanner.nextLine();
-                    studentController.requestProjectTitleChange(student, newTitle);
+                    studentController.requestProjectTitleChange(student, newTitle, requests);
 
                     break;
                 case 5:
                     // Call studentController.requestProjectDeregistration()
-                    studentController.requestProjectDeregistration(student,coordinator);
+                    studentController.requestProjectDeregistration(student,coordinator,requests);
                     break;
                 case 6:
                     // Call studentController.viewStudentRequestHistory() and display the result

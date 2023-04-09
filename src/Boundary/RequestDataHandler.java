@@ -1,15 +1,13 @@
 package src.Boundary;
 
-import src.Entity.Project;
-import src.Entity.Request;
-import src.Entity.User;
+import src.Entity.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RequestDataHandler {
-    private static final String REQUEST_FILE = "database/Request_List.txt";
+    private static final String REQUEST_FILE = "database/Requests_List.txt";
 
     public List<Request> loadRequestsFromDatabase(List<User> users, List<Project> projects) throws IOException {
         List<Request> requests = new ArrayList<>();
@@ -22,21 +20,26 @@ public class RequestDataHandler {
                 String recipientUserID = data[1];
                 String type = data[2];
                 String status = data[3];
-                int projectID = Integer.parseInt(data[4]);
+                String body = data[4];
+                int projectID = Integer.parseInt(data[5]);
 
                 User sender = findUserByID(users, senderUserID);
                 User recipient = findUserByID(users, recipientUserID);
+
                 Project project = findProjectByID(projects, projectID);
 
                 if (sender != null && recipient != null && project != null) {
-                    Request request = new Request(sender, recipient, type, project, status);
+                    Request request = new Request(requestID, sender, recipient, type, project, status, body);
                     requests.add(request);
+                    sender.addRequest(request);
+                    recipient.addRequest(request);
                     requestID++;
                 }
             }
         }
         return requests;
     }
+
 
     public void saveRequestsToDatabase(List<Request> requests) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(REQUEST_FILE))) {
@@ -45,9 +48,22 @@ public class RequestDataHandler {
                         request.getRecipient().getUserID() + "\t" +
                         request.getType() + "\t" +
                         request.getStatus() + "\t" +
+                        request.getBody() + "\t" +
                         request.getProject().getProjectID());
                 writer.newLine();
             }
+        }
+    }
+
+    public void saveRequestToDatabase(Request request) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(REQUEST_FILE, true))) {
+            writer.write(request.getSender().getUserID() + "\t" +
+                    request.getRecipient().getUserID() + "\t" +
+                    request.getType() + "\t" +
+                    request.getStatus() + "\t" +
+                    request.getBody() + "\t" +
+                    request.getProject().getProjectID());
+            writer.newLine();
         }
     }
 
@@ -68,4 +84,5 @@ public class RequestDataHandler {
         }
         return null;
     }
+
 }

@@ -3,6 +3,7 @@ package src.Entity;
 public class Project {
     private Integer projectID;
     private Supervisor supervisor;
+    private Supervisor replacementSupervisor;
     private Student student;
     private String title;
     private String status;
@@ -10,6 +11,7 @@ public class Project {
     public Project(Integer projectID, Supervisor supervisor, Student student, String title, String status) {
         this.projectID = projectID;
         this.supervisor = supervisor;
+        this.replacementSupervisor = null;
         this.student = student;
         this.title = title;
         this.status = status;
@@ -26,9 +28,11 @@ public class Project {
     public String viewDetails() {
         return "ProjectID: " + projectID + "\nTitle: " + title + "\nStatus: " + status + "\nSupervisor: " + supervisor.name + "\nStudent: " + (student != null ? student.name : "Not assigned");
     }
-
     public Supervisor getSupervisor() {
         return this.supervisor;
+    }
+    public Supervisor getReplacementSupervisor() {
+        return this.replacementSupervisor;
     }
 
     public String getTitle() {
@@ -49,5 +53,8 @@ public class Project {
 
     public void setSupervisor(Supervisor newSupervisor) {
         this.supervisor = newSupervisor;
+    }
+    public void setReplacementSupervisor(Supervisor newReplacementSupervisor) {
+        this.replacementSupervisor = newReplacementSupervisor;
     }
 }

@@ -1,18 +1,22 @@
 package src.Entity;
 
 public class Request {
+    private Integer requestID;
     private User sender;
     private User recipient;
     private String requestType;
     private String status;
     private Project project;
+    private String body;
 
-    public Request(User sender, User recipient, String requestType, Project project, String status) {
+    public Request(Integer requestID, User sender, User recipient, String requestType, Project project, String status, String body) {
+        this.requestID = requestID;
         this.sender = sender;
         this.recipient = recipient;
         this.requestType = requestType;
         this.status = status;
         this.project = project;
+        this.body = body;
     }
 
     public void approve() {
@@ -24,7 +28,7 @@ public class Request {
     }
 
     public String viewDetails() {
-        return "Request Type: " + requestType + "\nStatus: " + status + "\nSender: " + sender.name + "\nRecipient: " + recipient.name;
+        return "RequestID: " + requestID + "\nRequest Type: " + requestType + "\nStatus: " + status + "\nSender: " + sender.name + "\nRecipient: " + recipient.name;
     }
 
     public User getSender() {
@@ -47,14 +51,12 @@ public class Request {
         return this.project;
     }
 
-    public void setNewTitle(String newTitle) {
-        if (this.status == "approved") {
-            this.project.setTitle(newTitle);
-        }
+    public String getBody() {
+        return this.body;
     }
 
-    public void setNewSupervisor(Supervisor newSupervisor) {
-        this.project.setSupervisor(newSupervisor);
+    public Integer getRequestID() {
+        return this.requestID;
     }
 }
 

@@ -1,61 +1,67 @@
 package src.Controller;
 import src.Boundary.ProjectDataHandler;
-import src.Entity.FYP_Coordinator;
-import src.Entity.Project;
-import src.Entity.Request;
-import src.Entity.Supervisor;
+import src.Boundary.SupervisorCLI;
+import src.Entity.*;
 
 import java.io.IOException;
 import java.util.List;
 
-public class SupervisorController {
-    private ProjectDataHandler projectDataHandler;
-    private ProjectController projectController;
+public class SupervisorController extends UserController{
+    protected ProjectDataHandler projectDataHandler;
+    protected ProjectController projectController;
+    protected RequestController requestController;
 
     public SupervisorController() throws IOException {
         projectDataHandler = new ProjectDataHandler();
         projectController = new ProjectController();
+        requestController = new RequestController();
     }
 
-    public Project createNewProject(Supervisor supervisor, String title, List<Project> projects) throws IOException {
-
+    public Project createProject(Supervisor supervisor, String title, List<Project> projects) throws IOException {
         Project project = projectController.createProject(title, projects, supervisor);
         supervisor.addProject(project);
-
         return project;
     }
 
-    public Project updateExistingProject(Project project, String newTitle, List<Project> projects) throws IOException {
-        projectController.updateProject(project,newTitle,project.getStatus(),projects);
-
+    public Project updateTitle(Project project, String newTitle, List<Project> projects) throws IOException {
+        projectController.updateProject(project,newTitle,project.getStatus(),project.getSupervisor(),projects);
         return project;
     }
-
 
     public void viewSupervisorProjects(Supervisor supervisor) {
-
         for (Project project : supervisor.getProjects()) {
             System.out.println(project.viewDetails());
         }
     }
 
-    public void manageStudentRequests(Supervisor supervisor) {
-        for (Request request : supervisor.getRequests()) {
-            System.out.println(request);
-            // Implement logic to approve or reject the request
+    public void viewIncomingRequests(User user) {
+        for (Request request : user.getRequests()) {
+            if (request.getRecipient() instanceof Supervisor) {
+                System.out.println(request.viewDetails());
+            }
         }
     }
-
-    public void viewSupervisorRequestHistory(Supervisor supervisor) {
-        for (Request request : supervisor.getRequests()) {
-            System.out.println(request);
+    public void viewRequestHistory(User user) {
+        for (Request request : user.getRequests()) {
+            if (request.getSender() instanceof Supervisor) {
+                System.out.println(request.viewDetails());
+            }
         }
     }
+    public void approveRequest(Request request, List<Request> requests) throws IOException {
+        requestController.approveRequest(request, requests);
 
-    public void requestStudentTransferToAnotherSupervisor(Supervisor supervisor, Project project, Supervisor newSupervisor, FYP_Coordinator coordinator) {
-        Request request = new Request(supervisor, coordinator, "transfer_student", project,"pending" );
-        request.setNewSupervisor(newSupervisor);
-        supervisor.getRequests().add(request);
-        coordinator.getRequests().add(request);
     }
+
+    public void rejectRequest(Request request, List<Request> requests) throws IOException {
+        requestController.rejectRequest(request, requests);
+    }
+
+    public void requestStudentTransferToAnotherSupervisor(Supervisor supervisor, Project project, Supervisor newSupervisor, FYP_Coordinator coordinator,List<Request> requests) throws IOException {
+        project.setReplacementSupervisor(newSupervisor);
+        Request newRequest = requestController.createRequest(supervisor, coordinator, "transfer_student", project,newSupervisor.getUserID(),requests);
+        supervisor.addRequest(newRequest);
+        coordinator.addRequest(newRequest);
+    }
+
 }

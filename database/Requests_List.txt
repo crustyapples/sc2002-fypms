@@ -1,12 +1,2 @@
-SenderID	RecipientID	Type	Status	ProjectID
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+YCHERN	ASFLI	project_selection	approved	null	1
+ASMADHUKUMAR	ASFLI	transfer_student	approved	ASSOURIN	1

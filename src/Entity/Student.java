@@ -2,23 +2,23 @@ package src.Entity;
 
 public class Student extends User {
     private Project selectedProject;
-    private boolean hasProject;
+    private boolean registered;
 
     public Student(String userID, String password, String name, String email) {
         super(userID, password, name, email);
-        this.hasProject = false;
+        this.registered = false;
     }
 
     public void setSelectedProject(Project project) {
         this.selectedProject = project;
-        this.hasProject = true;
+        this.registered = true;
     }
 
     public Project getSelectedProject() {
         return this.selectedProject;
     }
-    public boolean isHasProject() {
-        return this.hasProject;
+    public boolean isRegistered() {
+        return this.registered;
     }
 }
 

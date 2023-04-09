@@ -2,10 +2,14 @@ package src.Boundary;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import src.Controller.SupervisorController;
+import src.Entity.FYP_Coordinator;
 import src.Entity.Project;
+import src.Entity.Request;
+import src.Entity.User;
 import src.Entity.Supervisor;
 
 public class SupervisorCLI {
@@ -17,17 +21,33 @@ public class SupervisorCLI {
         scanner = new Scanner(System.in);
     }
 
+    public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, Integer requestChoice, SupervisorController supervisorController) throws IOException {
+        for (Request request : user.getRequests()) {
+            if (request.getRequestID() == requestChoice) {
+                System.out.println(request.viewDetails());
+                System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+                Integer manageChoice = scanner.nextInt();
+                if (manageChoice == 1) {
+                    supervisorController.approveRequest(request,requests);
+                    supervisorController.updateTitle(request.getProject(),request.getBody(),projects);
+                } else {
+                    supervisorController.rejectRequest(request,requests);
+                }
+            }
+        }
+    }
+
     public void displaySupervisorMenu() {
+        System.out.println("0. Exit");
         System.out.println("1. Create a new project");
         System.out.println("2. Update an existing project");
         System.out.println("3. View your projects");
-        System.out.println("4. Manage student requests");
+        System.out.println("4. Manage incoming requests");
         System.out.println("5. View request history");
         System.out.println("6. Request student transfer");
-        System.out.println("0. Exit");
     }
 
-    public void handleSupervisorActions(Supervisor supervisor, List<Project> projects) throws IOException {
+    public void handleSupervisorActions(Supervisor supervisor, FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests) throws IOException {
         boolean exit = false;
         while (!exit) {
             displaySupervisorMenu();
@@ -40,7 +60,7 @@ public class SupervisorCLI {
                     // Call supervisorController.createNewProject() with the project title
                     System.out.println("Enter the Project Title: ");
                     String title = scanner.nextLine();
-                    supervisorController.createNewProject(supervisor, title, projects);
+                    supervisorController.createProject(supervisor, title, projects);
                     break;
                 case 2:
                     // Call supervisorController.updateExistingProject() with the new title
@@ -56,10 +76,9 @@ public class SupervisorCLI {
 
                     for (Project project : projects) {
                         if (project.getProjectID() == projectChoice) {
-                            supervisorController.updateExistingProject(project, newTitle, projects);
+                            supervisorController.updateTitle(project, newTitle, projects);
                         }
                     }
-
 
                     break;
                 case 3:
@@ -68,12 +87,40 @@ public class SupervisorCLI {
                     break;
                 case 4:
                     // Call supervisorController.manageStudentRequests()
+                    supervisorController.viewIncomingRequests(supervisor);
+                    System.out.println("Enter the Request ID of the request that you want to handle: ");
+                    Integer requestChoice = scanner.nextInt();
+                    scanner.nextLine();
+                    manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
+
                     break;
                 case 5:
                     // Call supervisorController.viewSupervisorRequestHistory() and display the result
+                    supervisorController.viewRequestHistory(supervisor);
                     break;
                 case 6:
                     // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
+                    supervisorController.viewSupervisorProjects(supervisor);
+
+                    System.out.println("Enter the project ID of the project you wish to transfer: ");
+                    projectChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    for (Project project : projects) {
+                        if (project.getProjectID() == projectChoice) {
+                            System.out.println(project.viewDetails());
+                            System.out.println("Enter the supervisorID of your replacement: ");
+                            String replacementSupervisorID = scanner.nextLine();
+
+                            for (Supervisor replacementSupervisor : supervisors) {
+                                if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
+                                    System.out.println("Requesting...");
+                                    supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests);
+                                }
+                            }
+                        }
+                    }
+
                     break;
                 case 0:
                     exit = true;
@@ -84,4 +131,6 @@ public class SupervisorCLI {
             }
         }
     }
+
+
 }

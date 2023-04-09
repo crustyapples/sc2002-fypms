@@ -22,9 +22,10 @@ public class ProjectController {
         return project;
     }
 
-    public void updateProject(Project project, String title, String status, List<Project> projects) throws IOException {
+    public void updateProject(Project project, String title, String status, Supervisor supervisor, List<Project> projects) throws IOException {
         project.setTitle(title);
         project.setStatus(status);
+        project.setSupervisor(supervisor);
         dataHandler.saveProjectsToDatabase(projects);
     }
 
