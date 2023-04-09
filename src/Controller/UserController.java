@@ -1,6 +1,5 @@
 package src.Controller;
 
-import src.Boundary.UserDataHandler;
 import src.Entity.User;
 
 import java.io.IOException;

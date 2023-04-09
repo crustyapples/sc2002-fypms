@@ -1,8 +1,7 @@
 package src;
 
 import src.Boundary.*;
-import src.Controller.StudentController;
-import src.Controller.SupervisorController;
+import src.Controller.*;
 import src.Entity.*;
 
 import java.io.IOException;

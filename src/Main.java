@@ -1,12 +1,9 @@
 package src;
 
-import src.Boundary.FYP_CoordinatorDataHandler;
+import src.Controller.FYP_CoordinatorDataHandler;
 import src.Boundary.LoginCLI;
-import src.Boundary.StudentDataHandler;
-import src.Boundary.SupervisorDataHandler;
-import src.Controller.FYP_CoordinatorController;
-import src.Controller.StudentController;
-import src.Controller.SupervisorController;
+import src.Controller.StudentDataHandler;
+import src.Controller.SupervisorDataHandler;
 import src.Controller.UserController;
 import src.Entity.FYP_Coordinator;
 import src.Entity.Student;

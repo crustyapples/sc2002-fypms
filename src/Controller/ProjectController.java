@@ -2,7 +2,6 @@ package src.Controller;
 
 import src.Entity.Project;
 import src.Entity.Supervisor;
-import src.Boundary.ProjectDataHandler;
 
 import java.io.IOException;
 import java.util.List;
