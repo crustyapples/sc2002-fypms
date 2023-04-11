@@ -19,7 +19,7 @@ public class RequestDataHandler {
                 String senderUserID = data[0];
                 String recipientUserID = data[1];
                 String type = data[2];
-                String status = data[3];
+                RequestStatus requestStatus = RequestStatus.valueOf(data[3]);
                 String body = data[4];
                 int projectID = Integer.parseInt(data[5]);
 
@@ -29,7 +29,7 @@ public class RequestDataHandler {
                 Project project = findProjectByID(projects, projectID);
 
                 if (sender != null && recipient != null && project != null) {
-                    Request request = new Request(requestID, sender, recipient, type, project, status, body);
+                    Request request = new Request(requestID, sender, recipient, type, project, requestStatus, body);
                     requests.add(request);
                     sender.addRequest(request);
                     recipient.addRequest(request);
