@@ -59,7 +59,7 @@ public class RequestsTest {
 
         FYP_Coordinator testFypCoordinator = fypCoordinators.get(0);
         FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController();
-        FYP_CoordinatorCLI fypCoordinatorCLI = new FYP_CoordinatorCLI(fypCoordinatorController);
+        FYP_CoordinatorCLI fypCoordinatorCLI = new FYP_CoordinatorCLI(fypCoordinatorController, testFypCoordinator);
 
 
         Scanner scanner;

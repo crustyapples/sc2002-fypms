@@ -11,9 +11,10 @@ import src.Entity.*;
 
 public class FYP_CoordinatorCLI extends SupervisorCLI {
     private FYP_CoordinatorController fypCoordinatorController;
+    private FYP_Coordinator fypCoordinator;
 
-    public FYP_CoordinatorCLI(FYP_CoordinatorController fypCoordinatorController) {
-        super(fypCoordinatorController);
+    public FYP_CoordinatorCLI(FYP_CoordinatorController fypCoordinatorController, FYP_Coordinator fypCoordinator) {
+        super(fypCoordinatorController, fypCoordinator);
         this.fypCoordinatorController = fypCoordinatorController;
     }
 
