@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class SupervisorController extends UserController{
-    protected ProjectDataHandler projectDataHandler;
     protected ProjectController projectController;
     protected RequestController requestController;
 
     public SupervisorController() throws IOException {
-        projectDataHandler = new ProjectDataHandler();
+
         projectController = new ProjectController();
         requestController = new RequestController();
     }

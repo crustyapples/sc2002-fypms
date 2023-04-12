@@ -16,7 +16,7 @@ public class StudentController {
     public List<Project> getAvailableProjects(List<Project> projects) {
         List<Project> availableProjects = new ArrayList<>();
         for (Project project : projects) {
-            if (project.getProjectStatus().equals("available")) {
+            if (project.getProjectStatus() == ProjectStatus.AVAILABLE) {
                 availableProjects.add(project);
             }
         }
