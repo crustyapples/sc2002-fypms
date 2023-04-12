@@ -16,12 +16,6 @@ public class StudentCLI {
     private StudentController studentController;
     private Student student;
 
-//████████╗███████╗███████╗████████╗
-//╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝
-//   ██║   █████╗  ███████╗   ██║
-//   ██║   ██╔══╝  ╚════██║   ██║
-//   ██║   ███████╗███████║   ██║
-//   ╚═╝   ╚══════╝╚══════╝   ╚═╝
     public StudentCLI(StudentController studentController, Student student) {
         this.studentController = studentController;
         this.student = student;
@@ -59,7 +53,7 @@ public class StudentCLI {
                     UserController userController = new UserController();
                     //How to get the userPasswords?
                     //userController.changeUserPassword(userPasswords, userID, newPassword);
-                    System.out.println("You will now be Logged out. Please login again!");
+                    System.out.println("You will now be logged out. Please login again!");
                     exit = true;
                     break;
 

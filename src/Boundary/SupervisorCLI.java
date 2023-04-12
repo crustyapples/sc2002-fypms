@@ -71,7 +71,7 @@ public class SupervisorCLI {
                     UserController userController = new UserController();
                     //How to get the userPasswords?
                     //userController.changeUserPassword(userPasswords, userID, newPassword);
-                    System.out.println("You will now be Logged out. Please login again!");
+                    System.out.println("You will now be logged out. Please login again!");
                     exit = true;
                     break;
                 case 2:
