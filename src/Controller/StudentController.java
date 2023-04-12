@@ -25,7 +25,7 @@ public class StudentController {
 
     public void selectProjectForStudent(Student student, Project project, FYP_Coordinator coordinator, List<Request> requests) throws IOException {
         project.setProjectStatus(ProjectStatus.RESERVED);
-        Request newRequest = requestController.createRequest(student, coordinator, "project_selection", project, null, requests);
+        Request newRequest = requestController.createRequest(student, coordinator, RequestType.REGISTER, project, null, requests);
         student.addRequest(newRequest);
         coordinator.addRequest(newRequest);
     }
@@ -35,13 +35,13 @@ public class StudentController {
     }
 
     public void requestProjectTitleChange(Student student, String newTitle, List<Request> requests) throws IOException {
-        Request newRequest = requestController.createRequest(student, student.getSelectedProject().getSupervisor(), "title_change", student.getSelectedProject(), newTitle, requests);
+        Request newRequest = requestController.createRequest(student, student.getSelectedProject().getSupervisor(), RequestType.CHANGE_TITLE, student.getSelectedProject(), newTitle, requests);
         student.addRequest(newRequest);
         student.getSelectedProject().getSupervisor().addRequest(newRequest);
     }
 
     public void requestProjectDeregistration(Student student, FYP_Coordinator coordinator, List<Request> requests) throws IOException {
-        Request newRequest = requestController.createRequest(student, student.getSelectedProject().getSupervisor(), "de-registration", student.getSelectedProject(), null, requests);
+        Request newRequest = requestController.createRequest(student, student.getSelectedProject().getSupervisor(), RequestType.DEREGISTER, student.getSelectedProject(), null, requests);
         student.addRequest(newRequest);
         coordinator.addRequest(newRequest);
     }

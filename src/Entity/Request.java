@@ -4,12 +4,12 @@ public class Request {
     private Integer requestID;
     private User sender;
     private User recipient;
-    private String requestType;
+    private RequestType requestType;
     private RequestStatus requestStatus;
     private Project project;
     private String body;
 
-    public Request(Integer requestID, User sender, User recipient, String requestType, Project project, RequestStatus requestStatus, String body) {
+    public Request(Integer requestID, User sender, User recipient, RequestType requestType, Project project, RequestStatus requestStatus, String body) {
         this.requestID = requestID;
         this.sender = sender;
         this.recipient = recipient;
@@ -39,7 +39,7 @@ public class Request {
         return this.recipient;
     }
 
-    public String getType() {
+    public RequestType getType() {
         return this.requestType;
     }
 
