@@ -1,9 +1,6 @@
 package src.Controller;
 
-import src.Entity.Project;
-import src.Entity.Request;
-import src.Entity.RequestStatus;
-import src.Entity.User;
+import src.Entity.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +12,7 @@ public class RequestController {
         requestDataHandler = new RequestDataHandler();
     }
 
-    public Request createRequest(User sender, User recipient, String requestType, Project project, String body, List<Request> requests) throws IOException {
+    public Request createRequest(User sender, User recipient, RequestType requestType, Project project, String body, List<Request> requests) throws IOException {
         Integer requestID = requests.size() + 1;
         Request request = new Request(requestID, sender, recipient, requestType, project, RequestStatus.PENDING, body);
         requests.add(request);
