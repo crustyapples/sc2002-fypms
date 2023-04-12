@@ -6,19 +6,19 @@ public class Project {
     private Supervisor replacementSupervisor;
     private Student student;
     private String title;
-    private String status;
+    private ProjectStatus projectStatus;
 
-    public Project(Integer projectID, Supervisor supervisor, Student student, String title, String status) {
+    public Project(Integer projectID, Supervisor supervisor, Student student, String title, ProjectStatus projectStatus) {
         this.projectID = projectID;
         this.supervisor = supervisor;
         this.replacementSupervisor = null;
         this.student = student;
         this.title = title;
-        this.status = status;
+        this.projectStatus = projectStatus;
     }
 
-    public void setStatus(String newStatus) {
-        this.status = newStatus;
+    public void setProjectStatus(ProjectStatus newProjectStatus) {
+        this.projectStatus = newProjectStatus;
     }
 
     public void setStudent(Student newStudent) {
@@ -26,7 +26,7 @@ public class Project {
     }
 
     public String viewDetails() {
-        return "ProjectID: " + projectID + "\nTitle: " + title + "\nStatus: " + status + "\nSupervisor: " + supervisor.name + "\nStudent: " + (student != null ? student.name : "Not assigned");
+        return "ProjectID: " + projectID + "\nTitle: " + title + "\nStatus: " + projectStatus + "\nSupervisor: " + supervisor.name + "\nStudent: " + (student != null ? student.name : "Not assigned");
     }
     public Supervisor getSupervisor() {
         return this.supervisor;
@@ -39,8 +39,8 @@ public class Project {
         return this.title;
     }
 
-    public String getStatus() {
-        return this.status;
+    public ProjectStatus getProjectStatus() {
+        return this.projectStatus;
     }
 
     public int getProjectID(){

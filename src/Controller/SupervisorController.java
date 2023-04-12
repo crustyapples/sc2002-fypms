@@ -22,7 +22,7 @@ public class SupervisorController extends UserController{
     }
 
     public Project updateTitle(Project project, String newTitle, List<Project> projects) throws IOException {
-        projectController.updateProject(project,newTitle,project.getStatus(),project.getSupervisor(),projects);
+        projectController.updateProject(project,newTitle,project.getProjectStatus(),project.getSupervisor(),projects);
         return project;
     }
 

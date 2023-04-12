@@ -5,30 +5,30 @@ public class Request {
     private User sender;
     private User recipient;
     private String requestType;
-    private String status;
+    private RequestStatus requestStatus;
     private Project project;
     private String body;
 
-    public Request(Integer requestID, User sender, User recipient, String requestType, Project project, String status, String body) {
+    public Request(Integer requestID, User sender, User recipient, String requestType, Project project, RequestStatus requestStatus, String body) {
         this.requestID = requestID;
         this.sender = sender;
         this.recipient = recipient;
         this.requestType = requestType;
-        this.status = status;
+        this.requestStatus = requestStatus;
         this.project = project;
         this.body = body;
     }
 
     public void approve() {
-        this.status = "approved";
+        this.requestStatus = RequestStatus.APPROVED;
     }
 
     public void reject() {
-        this.status = "rejected";
+        this.requestStatus = RequestStatus.REJECTED;
     }
 
     public String viewDetails() {
-        return "RequestID: " + requestID + "\nRequest Type: " + requestType + "\nStatus: " + status + "\nSender: " + sender.name + "\nRecipient: " + recipient.name;
+        return "RequestID: " + requestID + "\nRequest Type: " + requestType + "\nStatus: " + requestStatus + "\nSender: " + sender.name + "\nRecipient: " + recipient.name;
     }
 
     public User getSender() {
@@ -43,8 +43,8 @@ public class Request {
         return this.requestType;
     }
 
-    public String getStatus() {
-        return this.status;
+    public RequestStatus getStatus() {
+        return this.requestStatus;
     }
 
     public Project getProject() {

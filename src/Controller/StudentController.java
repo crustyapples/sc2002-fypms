@@ -16,7 +16,7 @@ public class StudentController {
     public List<Project> getAvailableProjects(List<Project> projects) {
         List<Project> availableProjects = new ArrayList<>();
         for (Project project : projects) {
-            if (project.getStatus().equals("available")) {
+            if (project.getProjectStatus().equals("available")) {
                 availableProjects.add(project);
             }
         }
@@ -24,7 +24,7 @@ public class StudentController {
     }
 
     public void selectProjectForStudent(Student student, Project project, FYP_Coordinator coordinator, List<Request> requests) throws IOException {
-        project.setStatus("reserved");
+        project.setProjectStatus(ProjectStatus.RESERVED);
         Request newRequest = requestController.createRequest(student, coordinator, "project_selection", project, null, requests);
         student.addRequest(newRequest);
         coordinator.addRequest(newRequest);

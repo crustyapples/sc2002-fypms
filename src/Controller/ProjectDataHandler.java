@@ -1,6 +1,7 @@
 package src.Controller;
 
 import src.Entity.Project;
+import src.Entity.ProjectStatus;
 import src.Entity.Supervisor;
 
 import java.io.*;
@@ -22,7 +23,7 @@ public class ProjectDataHandler {
 
                 Supervisor supervisor = findSupervisorByName(supervisors, supervisorName);
                 if (supervisor != null) {
-                    Project project = new Project(projectID, supervisor, null, title, "available");
+                    Project project = new Project(projectID, supervisor, null, title, ProjectStatus.AVAILABLE);
                     projects.add(project);
                     supervisor.addProject(project);
                     projectID++;
