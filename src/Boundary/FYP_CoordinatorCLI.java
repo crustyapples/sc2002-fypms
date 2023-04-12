@@ -29,7 +29,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI {
                     if (Objects.equals(request.getType(), "project_selection")) {
                         System.out.println("Allocating...");
                         fypCoordinatorController.allocateProjectToStudent((FYP_Coordinator) user, (Student) request.getSender(),request.getProject(), projects);
-                    } else if (request.getType() == RequestType.TRANSFER_STUDENT) {
+                    } else if (request.getType() == RequestType.TRANSFER_STUDENT.toString()) {
                         System.out.println("Transferring...");
                         fypCoordinatorController.transferStudentToSupervisor(request.getProject(),request.getProject().getReplacementSupervisor(),projects);
                     }

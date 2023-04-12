@@ -4,12 +4,12 @@ public class Request {
     private Integer requestID;
     private User sender;
     private User recipient;
-    private RequestType requestType;
-    private RequestStatus requestStatus;
+    private String requestType;
+    private String requestStatus;
     private Project project;
     private String body;
 
-    public Request(Integer requestID, User sender, User recipient, RequestType requestType, Project project, RequestStatus requestStatus, String body) {
+    public Request(Integer requestID, User sender, User recipient, String requestType, Project project, String requestStatus, String body) {
         this.requestID = requestID;
         this.sender = sender;
         this.recipient = recipient;
@@ -20,11 +20,11 @@ public class Request {
     }
 
     public void approve() {
-        this.requestStatus = RequestStatus.APPROVED;
+        this.requestStatus = RequestStatus.APPROVED.toString();
     }
 
     public void reject() {
-        this.requestStatus = RequestStatus.REJECTED;
+        this.requestStatus = RequestStatus.REJECTED.toString();
     }
 
     public String viewDetails() {
@@ -39,11 +39,11 @@ public class Request {
         return this.recipient;
     }
 
-    public RequestType getType() {
+    public String getType() {
         return this.requestType;
     }
 
-    public RequestStatus getStatus() {
+    public String getStatus() {
         return this.requestStatus;
     }
 

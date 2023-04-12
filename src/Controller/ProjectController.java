@@ -16,13 +16,13 @@ public class ProjectController {
 
     public Project createProject(String title,List<Project> projects, Supervisor supervisor) throws IOException {
         int projectId = projects.size() + 1;
-        Project project = new Project(projectId, supervisor, null, title, ProjectStatus.AVAILABLE);
+        Project project = new Project(projectId, supervisor, null, title, ProjectStatus.AVAILABLE.toString());
         projects.add(project);
         dataHandler.saveProjectToDatabase(project);
         return project;
     }
 
-    public void updateProject(Project project, String title, ProjectStatus projectStatus, Supervisor supervisor, List<Project> projects) throws IOException {
+    public void updateProject(Project project, String title, String projectStatus, Supervisor supervisor, List<Project> projects) throws IOException {
         project.setTitle(title);
         project.setProjectStatus(projectStatus);
         project.setSupervisor(supervisor);

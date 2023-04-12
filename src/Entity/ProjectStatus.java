@@ -1,6 +1,6 @@
 package src.Entity;
 
-public enum ProjectStatus {
+public enum ProjectStatus implements EnumInterface {
     AVAILABLE("Available"),
     RESERVED("Reserved"),
     UNAVAILABLE("Unavailable"),
@@ -10,5 +10,10 @@ public enum ProjectStatus {
 
     private ProjectStatus(String label) {
         this.label = label;
+    }
+
+    @Override
+    public String toString() {
+        return this.label;
     }
 }

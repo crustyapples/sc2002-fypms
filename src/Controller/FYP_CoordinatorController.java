@@ -27,14 +27,14 @@ public class FYP_CoordinatorController extends SupervisorController {
     public void allocateProjectToStudent(FYP_Coordinator coordinator, Student student, Project project,List<Project> projects) throws IOException {
         student.setSelectedProject(project);
         project.setStudent(student);
-        project.setProjectStatus(ProjectStatus.ALLOCATED);
+        project.setProjectStatus(ProjectStatus.ALLOCATED.toString());
         projectController.updateProject(project,project.getTitle(),project.getProjectStatus(),project.getSupervisor(),projects);
     }
 
     public void deallocateProjectFromStudent(FYP_Coordinator coordinator, Student student, Project project) {
         student.setSelectedProject(null);
         project.setStudent(null);
-        project.setProjectStatus(ProjectStatus.AVAILABLE);
+        project.setProjectStatus(ProjectStatus.AVAILABLE.toString());
     }
 
     public List<Project> viewProjectsByFilter(List<Project> projects, String filter) {
