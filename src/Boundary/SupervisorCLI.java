@@ -62,7 +62,7 @@ public class SupervisorCLI {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Change Password: ");
+                    //System.out.println("Change Password: ");
                     System.out.println("Enter new password: ");
                     String newPassword = scanner.nextLine();
                     supervisor.changePassword(newPassword);
