@@ -51,11 +51,11 @@ public class RequestsTest {
 
         Student testStudent = students.get(0);
         StudentController sc = new StudentController();
-        StudentCLI studentMenu = new StudentCLI(sc);
+        StudentCLI studentMenu = new StudentCLI(sc, testStudent);
 
         Supervisor testSupervisor = supervisors.get(0);
         SupervisorController supervisorController = new SupervisorController();
-        SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController);
+        SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController, testSupervisor);
 
         FYP_Coordinator testFypCoordinator = fypCoordinators.get(0);
         FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController();

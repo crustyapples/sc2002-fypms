@@ -40,7 +40,7 @@ public class SupervisorTest {
 
         Supervisor testSupervisor = supervisors.get(0);
         SupervisorController supervisorController = new SupervisorController();
-        SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController);
+        SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController, testSupervisor);
 
         supervisorCLI.handleSupervisorActions(testSupervisor,fypCoordinators.get(0),supervisors,projects,requests);
     }
