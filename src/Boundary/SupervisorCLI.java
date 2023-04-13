@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import src.Controller.SupervisorController;
+import src.Controller.UserController;
 import src.Entity.FYP_Coordinator;
 import src.Entity.Project;
 import src.Entity.Request;
@@ -15,9 +16,11 @@ import src.Entity.Supervisor;
 public class SupervisorCLI {
     public Scanner scanner;
     private SupervisorController supervisorController;
+    private Supervisor supervisor;
 
-    public SupervisorCLI(SupervisorController supervisorController) {
+    public SupervisorCLI(SupervisorController supervisorController, Supervisor supervisor) {
         this.supervisorController = supervisorController;
+        this.supervisor = supervisor;
         scanner = new Scanner(System.in);
     }
 
@@ -38,13 +41,15 @@ public class SupervisorCLI {
     }
 
     public void displaySupervisorMenu() {
+        System.out.println("Welcome, " + supervisor.getName() + "!");
+        System.out.println("1. Change password");
+        System.out.println("2. Create a new project");
+        System.out.println("3. Update an existing project");
+        System.out.println("4. View your projects");
+        System.out.println("5. Manage incoming requests");
+        System.out.println("6. View request history");
+        System.out.println("7. Request student transfer");
         System.out.println("0. Exit");
-        System.out.println("1. Create a new project");
-        System.out.println("2. Update an existing project");
-        System.out.println("3. View your projects");
-        System.out.println("4. View incoming requests");
-        System.out.println("5. View request history");
-        System.out.println("6. Request student transfer");
     }
 
     public void handleSupervisorActions(Supervisor supervisor, FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests) throws IOException {
@@ -57,12 +62,25 @@ public class SupervisorCLI {
 
             switch (choice) {
                 case 1:
+                    //System.out.println("Change Password: ");
+                    System.out.println("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    supervisor.changePassword(newPassword);
+
+                    String userID = supervisor.getUserID();
+                    UserController userController = new UserController();
+                    //How to get the userPasswords?
+                    //userController.changeUserPassword(userPasswords, userID, newPassword);
+                    System.out.println("You will now be logged out. Please login again!");
+                    exit = true;
+                    break;
+                case 2:
                     // Call supervisorController.createNewProject() with the project title
                     System.out.println("Enter the Project Title: ");
                     String title = scanner.nextLine();
                     supervisorController.createProject(supervisor, title, projects);
                     break;
-                case 2:
+                case 3:
                     // Call supervisorController.updateExistingProject() with the new title
 
                     supervisorController.viewSupervisorProjects(supervisor);
@@ -81,11 +99,11 @@ public class SupervisorCLI {
                     }
 
                     break;
-                case 3:
+                case 4:
                     // Call supervisorController.viewSupervisorProjects() and display the result
                     supervisorController.viewSupervisorProjects(supervisor);
                     break;
-                case 4:
+                case 5:
                     // Call supervisorController.manageStudentRequests()
                     supervisorController.viewIncomingRequests(supervisor);
 
@@ -101,12 +119,11 @@ public class SupervisorCLI {
                     }
 
                     break;
-                case 5:
+                case 6:
                     // Call supervisorController.viewSupervisorRequestHistory() and display the result
                     supervisorController.viewRequestHistory(supervisor);
                     break;
-
-                case 6:
+                case 7:
                     // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
                     supervisorController.viewSupervisorProjects(supervisor);
 

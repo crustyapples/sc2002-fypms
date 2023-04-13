@@ -39,7 +39,7 @@ public class StudentTest {
 
         Student testStudent = new Student("YCHERN","password","CHERN","YCHERN@e.ntu.edu.sg");
         StudentController sc = new StudentController();
-        StudentCLI studentMenu = new StudentCLI(sc);
+        StudentCLI studentMenu = new StudentCLI(sc, testStudent);
 
         studentMenu.handleStudentActions(testStudent,projects, requests, fypCoordinators.get(0));
     }

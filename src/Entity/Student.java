@@ -9,6 +9,7 @@ public class Student extends User {
         this.registered = false;
     }
 
+
     public void setSelectedProject(Project project) {
         this.selectedProject = project;
         this.registered = true;
