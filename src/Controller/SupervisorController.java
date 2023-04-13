@@ -45,6 +45,21 @@ public class SupervisorController extends UserController{
             }
         }
     }
+
+    public boolean checkSupervisorAvailability(Supervisor supervisor, List<Project> projects) throws IOException {
+
+        if (supervisor.getNumProjectsSupervised() == 2) {
+            for (Project project : supervisor.getProjects()) {
+                if (project.getProjectStatus() != ProjectStatus.ALLOCATED) {
+                    projectController.updateProject(project, project.getTitle(), ProjectStatus.UNAVAILABLE, project.getSupervisor(), projects);
+                }
+            }
+            return false;
+        }
+
+        return true;
+    }
+
     public void approveRequest(Request request, List<Request> requests) throws IOException {
         requestController.approveRequest(request, requests);
 

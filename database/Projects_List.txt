@@ -1,15 +1,16 @@
-Alexei Sourin	Apple Bottom Jeans
-A S Madhukumar	Bananas
-Alexei Sourin	Sonification of geometry 1
-Arvind Easwaran	Edge/Cloud Resource Management for Time-Sensitive Applications (2)
-Bo An	Deep Reinforcement Learning for Complex Environment
-Bo An	Build Software Agents for Power Trading Agent Competition
-Bo An	Designing Negotiation Agents to Parcitipate in International Competition
-Cai Wentong	Creation of Meta-model for Agent-based Simulation Using Machine Learning Approach
-Chen Change Loy	Encoding Images to Text Prompts with CLIP
-Chia Liang Tien	Smart Monitor for Studio Photographer
-Cong Gao	Developing a demonstration system for spatial data exploration and visualization 
-Cong Gao	Deep Learning Supported Location-aware Keyword Query
-Douglas Leslie Maskell	An AI based Li-ion fast battery charger for power tools
-Douglas Leslie Maskell	A Li-ion fast battery charger
-Dusit Niyato	Metaverse for virtual education 1
+A S Madhukumar	Machine Learning-based Interference Mitigation in a Multi-tier Networks	AVAILABLE	NA	NA
+A S Madhukumar	Deep Learning-Driven Edge Caching for 5G-and-Beyond Industrial IoT Networks	AVAILABLE	NA	NA
+Alexei Sourin	Sonification of geometry 1	AVAILABLE	NA	NA
+Arvind Easwaran	Edge/Cloud Resource Management for Time-Sensitive Applications (2)	AVAILABLE	NA	NA
+Bo An	Deep Reinforcement Learning for Complex Environment	AVAILABLE	NA	NA
+Bo An	Build Software Agents for Power Trading Agent Competition	AVAILABLE	NA	NA
+Bo An	Designing Negotiation Agents to Parcitipate in International Competition	AVAILABLE	NA	NA
+Cai Wentong	Creation of Meta-model for Agent-based Simulation Using Machine Learning Approach	AVAILABLE	NA	NA
+Chen Change Loy	Encoding Images to Text Prompts with CLIP	AVAILABLE	NA	NA
+Chia Liang Tien	Smart Monitor for Studio Photographer	AVAILABLE	NA	NA
+Cong Gao	Developing a demonstration system for spatial data exploration and visualization 	AVAILABLE	NA	NA
+Cong Gao	Deep Learning Supported Location-aware Keyword Query	AVAILABLE	NA	NA
+Douglas Leslie Maskell	An AI based Li-ion fast battery charger for power tools	AVAILABLE	NA	NA
+Douglas Leslie Maskell	A Li-ion fast battery charger	AVAILABLE	NA	NA
+Dusit Niyato	Metaverse for virtual education 1	AVAILABLE	NA	NA
+"Ke Yiping, Kelly"	Graph-based Deep Models for Image Semantic Segmentation	AVAILABLE	NA	NA

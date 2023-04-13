@@ -42,7 +42,7 @@ public class SupervisorCLI {
         System.out.println("1. Create a new project");
         System.out.println("2. Update an existing project");
         System.out.println("3. View your projects");
-        System.out.println("4. Manage incoming requests");
+        System.out.println("4. View incoming requests");
         System.out.println("5. View request history");
         System.out.println("6. Request student transfer");
     }
@@ -88,16 +88,24 @@ public class SupervisorCLI {
                 case 4:
                     // Call supervisorController.manageStudentRequests()
                     supervisorController.viewIncomingRequests(supervisor);
-                    System.out.println("Enter the Request ID of the request that you want to handle: ");
-                    Integer requestChoice = scanner.nextInt();
+
+                    System.out.println("Do you want to manage the requests? 1. Yes 2. No");
+                    Integer manageChoice = scanner.nextInt();
                     scanner.nextLine();
-                    manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
+
+                    if (manageChoice == 1) {
+                        System.out.println("Enter the Request ID of the request that you want to handle: ");
+                        Integer requestChoice = scanner.nextInt();
+                        scanner.nextLine();
+                        manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
+                    }
 
                     break;
                 case 5:
                     // Call supervisorController.viewSupervisorRequestHistory() and display the result
                     supervisorController.viewRequestHistory(supervisor);
                     break;
+
                 case 6:
                     // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
                     supervisorController.viewSupervisorProjects(supervisor);

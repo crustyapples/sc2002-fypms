@@ -20,6 +20,9 @@ public class ProjectDataHandler {
                 String[] data = line.split("\t");
                 String supervisorName = data[0];
                 String title = data[1];
+                String status = data[2];
+                String student = data[3];
+                String replacementSupervisorName = data[4];
 
                 Supervisor supervisor = findSupervisorByName(supervisors, supervisorName);
                 if (supervisor != null) {
