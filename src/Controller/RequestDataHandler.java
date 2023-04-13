@@ -18,8 +18,8 @@ public class RequestDataHandler {
                 String[] data = line.split("\t");
                 String senderUserID = data[0];
                 String recipientUserID = data[1];
-                RequestType requestType = RequestType.valueOf(data[2]);
-                RequestStatus requestStatus = RequestStatus.valueOf(data[3]);
+                String requestType = data[2];
+                String requestStatus = data[3];
                 String body = data[4];
                 int projectID = Integer.parseInt(data[5]);
 

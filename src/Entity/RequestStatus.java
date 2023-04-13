@@ -1,6 +1,6 @@
 package src.Entity;
 
-public enum RequestStatus {
+public enum RequestStatus implements EnumInterface {
     PENDING("Pending"),
     APPROVED("Approved"),
     REJECTED("Rejected");
@@ -8,5 +8,10 @@ public enum RequestStatus {
 
     private RequestStatus(String label) {
         this.label = label;
+    }
+
+    @Override
+    public String toString() {
+        return this.label;
     }
 }

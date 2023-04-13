@@ -6,9 +6,9 @@ public class Project {
     private Supervisor replacementSupervisor;
     private Student student;
     private String title;
-    private ProjectStatus projectStatus;
+    private String projectStatus;
 
-    public Project(Integer projectID, Supervisor supervisor, Student student, String title, ProjectStatus projectStatus) {
+    public Project(Integer projectID, Supervisor supervisor, Student student, String title, String projectStatus) {
         this.projectID = projectID;
         this.supervisor = supervisor;
         this.replacementSupervisor = null;
@@ -17,7 +17,7 @@ public class Project {
         this.projectStatus = projectStatus;
     }
 
-    public void setProjectStatus(ProjectStatus newProjectStatus) {
+    public void setProjectStatus(String newProjectStatus) {
         this.projectStatus = newProjectStatus;
     }
 
@@ -39,7 +39,7 @@ public class Project {
         return this.title;
     }
 
-    public ProjectStatus getProjectStatus() {
+    public String getProjectStatus() {
         return this.projectStatus;
     }
 

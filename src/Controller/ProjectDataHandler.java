@@ -26,7 +26,7 @@ public class ProjectDataHandler {
 
                 Supervisor supervisor = findSupervisorByName(supervisors, supervisorName);
                 if (supervisor != null) {
-                    Project project = new Project(projectID, supervisor, null, title, ProjectStatus.AVAILABLE);
+                    Project project = new Project(projectID, supervisor, null, title, ProjectStatus.AVAILABLE.toString());
                     projects.add(project);
                     supervisor.addProject(project);
                     projectID++;

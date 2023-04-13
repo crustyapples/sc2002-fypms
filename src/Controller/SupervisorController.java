@@ -71,7 +71,7 @@ public class SupervisorController extends UserController{
 
     public void requestStudentTransferToAnotherSupervisor(Supervisor supervisor, Project project, Supervisor newSupervisor, FYP_Coordinator coordinator,List<Request> requests) throws IOException {
         project.setReplacementSupervisor(newSupervisor);
-        Request newRequest = requestController.createRequest(supervisor, coordinator, RequestType.TRANSFER_STUDENT, project,newSupervisor.getUserID(),requests);
+        Request newRequest = requestController.createRequest(supervisor, coordinator, RequestType.TRANSFER_STUDENT.toString(), project,newSupervisor.getUserID(),requests);
         supervisor.addRequest(newRequest);
         coordinator.addRequest(newRequest);
     }

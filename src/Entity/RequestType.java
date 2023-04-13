@@ -1,6 +1,6 @@
 package src.Entity;
 
-public enum RequestType {
+public enum RequestType implements EnumInterface {
     REGISTER("Register"),
     CHANGE_TITLE("Change Title"),
     DEREGISTER("Deregister"),
@@ -10,5 +10,10 @@ public enum RequestType {
 
     private RequestType(String label) {
         this.label = label;
+    }
+
+    @Override
+    public String toString() {
+        return this.label;
     }
 }
