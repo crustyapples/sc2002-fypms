@@ -50,8 +50,8 @@ public class SupervisorController extends UserController{
 
         if (supervisor.getNumProjectsSupervised() == 2) {
             for (Project project : supervisor.getProjects()) {
-                if (project.getProjectStatus() != ProjectStatus.ALLOCATED) {
-                    projectController.updateProject(project, project.getTitle(), ProjectStatus.UNAVAILABLE, project.getSupervisor(), projects);
+                if (project.getProjectStatus() != ProjectStatus.ALLOCATED.toString()) {
+                    projectController.updateProject(project, project.getTitle(), ProjectStatus.UNAVAILABLE.toString(), project.getSupervisor(), projects);
                 }
             }
             return false;

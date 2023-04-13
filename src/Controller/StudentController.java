@@ -16,10 +16,12 @@ public class StudentController {
     public List<Project> getAvailableProjects(List<Project> projects) {
         List<Project> availableProjects = new ArrayList<>();
         for (Project project : projects) {
-            if (project.getProjectStatus() == ProjectStatus.AVAILABLE) {
-            if (project.getProjectStatus().equals(ProjectStatus.AVAILABLE.toString())) {
-                availableProjects.add(project);
+            if (project.getProjectStatus() == ProjectStatus.AVAILABLE.toString()) {
+                if (project.getProjectStatus().equals(ProjectStatus.AVAILABLE.toString())) {
+                    availableProjects.add(project);
+                }
             }
+
         }
         return availableProjects;
     }

@@ -26,7 +26,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI {
                 if (manageChoice == 1) {
                     fypCoordinatorController.approveRequest(request,requests);
 
-                    if (request.getType() == RequestType.REGISTER) {
+                    if (request.getType() == RequestType.REGISTER.toString()) {
                         System.out.println("Registering...");
                         if (fypCoordinatorController.allocateProjectToStudent((Student) request.getSender(),request.getProject(), projects)){
                             System.out.println("Successfully Registered!");
@@ -35,13 +35,13 @@ public class FYP_CoordinatorCLI extends SupervisorCLI {
                         }
                     }
 
-                    else if (request.getType() == RequestType.DEREGISTER) {
+                    else if (request.getType() == RequestType.DEREGISTER.toString()) {
                         System.out.println("Deregistering...");
                         fypCoordinatorController.deallocateProjectFromStudent((Student) request.getSender(),request.getProject(), projects);
                         System.out.println("Successfully Deregistered!");
                     }
 
-                    else if (request.getType() == RequestType.TRANSFER_STUDENT) {
+                    else if (request.getType() == RequestType.TRANSFER_STUDENT.toString()) {
                         System.out.println("Transferring...");
                         fypCoordinatorController.transferStudentToSupervisor(request.getProject(),request.getProject().getReplacementSupervisor(),projects);
                     }
