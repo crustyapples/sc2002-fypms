@@ -83,47 +83,9 @@ public class FYP_CoordinatorController extends SupervisorController {
     }
 
     public List<Project> viewProjectsByFilter(List<Project> projects, int filter) {
-        List<Project> filteredProjects = new ArrayList<>();
-
-        for (Project project : projects) {
-            if (isProjectMatchingFilter(project, filter)) {
-                filteredProjects.add(project);
-            }
-        }
-
-        return filteredProjects;
-    }
-
-    private boolean isProjectMatchingFilter(Project project, int filter) {
-        String filterValue = null;
-        int filterField = filter;
-
-        switch (filterField) {
-            case 1:
-                filterValue = String.valueOf(project.getProjectID());
-                break;
-            case 2:
-                filterValue = project.getSupervisor().toString();
-                break;
-            case 3:
-                filterValue = project.getReplacementSupervisor().toString();
-                break;
-            case 4:
-                filterValue = project.getStudent().toString();
-                break;
-            case 5:
-                filterValue = project.getTitle();
-                break;
-            case 6:
-                filterValue = project.getProjectStatus().toString();
-                break;
-            default:
-                // Invalid filter, return false
-                return false;
-        }
-
-        // Perform case-sensitive filtering
-        return filterValue != null && filterValue.equals(filter);
+        // implement project filtering
+        List<Project> filteredProjects = projects;
+        return projects;
     }
 
     public void generateProjectReport(FYP_Coordinator coordinator, List<Project> projects) {
