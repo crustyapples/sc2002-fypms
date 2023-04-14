@@ -1,27 +1,44 @@
 package src.Boundary;
 
-import java.util.Scanner;
+import java.io.IOException;
+import java.util.*;
 
-import src.Controller.UserController;
+import src.Controller.*;
+import src.Entity.FYP_Coordinator;
+import src.Entity.Student;
+import src.Entity.Supervisor;
 import src.Entity.User;
-import java.util.List;
-import java.util.Map;
 
 public class LoginCLI {
     private UserController userController;
     private Scanner scanner;
-
+    private static final String USER_PASSWORDS_FILE = "database/User_Passwords.txt";
     public LoginCLI(UserController userController) {
         this.userController = userController;
         scanner = new Scanner(System.in);
     }
 
-    public User authenticateUser(List<User> users, Map<String, String> userPasswords) {
-        System.out.print("Enter your user ID: ");
+    public User authenticateUser() {
+
+        System.out.println("User ID: ");
         String userID = scanner.nextLine();
-        System.out.print("Enter your password: ");
+        System.out.println("Password: ");
         String password = scanner.nextLine();
-        User user = userController.loginUser(users, userPasswords, userID, password);
+
+        List<User> users = new ArrayList<>();
+        UserDataHandler userdata = new UserDataHandler();
+        Map<String, String> usersPassword = new HashMap<>();
+
+        users = userdata.getListOfUsers();
+
+
+        try{
+            usersPassword = userdata.loadUserPasswordFromDatabase(users);
+        }catch(IOException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        User user = userController.loginUser(users,usersPassword,userID,password);
         if (user != null) {
             System.out.println("Login successful!");
             return user;
