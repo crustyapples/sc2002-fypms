@@ -12,9 +12,9 @@ public class RequestController {
         requestDataHandler = new RequestDataHandler();
     }
 
-    public Request createRequest(User sender, User recipient, String requestType, Project project, String body, List<Request> requests) throws IOException {
+    public Request createRequest(User sender, User recipient, RequestType requestType, Project project, String body, List<Request> requests) throws IOException {
         Integer requestID = requests.size() + 1;
-        Request request = new Request(requestID, sender, recipient, requestType, project, RequestStatus.PENDING.toString(), body);
+        Request request = new Request(requestID, sender, recipient, requestType, project, RequestStatus.PENDING, body);
         requests.add(request);
         requestDataHandler.saveRequestToDatabase(request);
 

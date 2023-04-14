@@ -22,38 +22,61 @@ public class FYP_CoordinatorCLI {
         scanner = new Scanner(System.in);
     }
 
-    public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, Integer requestChoice, SupervisorController supervisorController) throws IOException {
+    public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, List<Student> students, Integer requestChoice) throws IOException {
         for (Request request : user.getRequests()) {
             if (request.getRequestID() == requestChoice) {
                 System.out.println(request.viewDetails());
                 System.out.println("Do you want to \n1. Approve OR\n2. Reject");
                 Integer manageChoice = scanner.nextInt();
-                if (manageChoice == 1) {
-                    fypCoordinatorController.approveRequest(request,requests);
 
-                    if (request.getType() == RequestType.REGISTER.toString()) {
-                        System.out.println("Registering...");
-                        if (fypCoordinatorController.allocateProjectToStudent((Student) request.getSender(),request.getProject(), projects)){
-                            System.out.println("Successfully Registered!");
+                switch (request.getType()) {
+                    case REGISTER:
+                        if (manageChoice == 1) {
+
+                            if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getSupervisor(),projects)) {
+                                fypCoordinatorController.approveRequest(request, requests);
+                                System.out.println("Registering...");
+                                fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
+                                System.out.println("Successfully Registered!");
+                            } else {
+                                System.out.println("Supervisor cap is reached!");
+                            }
                         } else {
-                            System.out.println("Supervisor cap is reached!");
+                            fypCoordinatorController.rejectRequest(request, requests);
+                            fypCoordinatorController.unreserveProject(request.getProject(), projects);
                         }
-                    }
+                        break;
+                    case DEREGISTER:
+                        if (manageChoice == 1) {
+                            fypCoordinatorController.approveRequest(request, requests);
+                            System.out.println("Deregistering...");
+                            fypCoordinatorController.deregisterStudentProject((Student) request.getSender(), request.getProject(), projects, students);
+                            System.out.println("Successfully Deregistered!");
+                        } else {
+                            fypCoordinatorController.rejectRequest(request, requests);
+                        }
+                        break;
+                    case TRANSFER_STUDENT:
+                        if (manageChoice == 1) {
+                            fypCoordinatorController.approveRequest(request, requests);
+                            System.out.println("Transferring...");
+                            fypCoordinatorController.transferStudentToSupervisor(request.getProject(), request.getProject().getReplacementSupervisor(), projects);
+                        } else {
+                            fypCoordinatorController.rejectRequest(request, requests);
+                        }
+                        break;
 
-                    else if (request.getType() == RequestType.DEREGISTER.toString()) {
-                        System.out.println("Deregistering...");
-                        fypCoordinatorController.deallocateProjectFromStudent((Student) request.getSender(),request.getProject(), projects);
-                        System.out.println("Successfully Deregistered!");
-                    }
-
-                    else if (request.getType() == RequestType.TRANSFER_STUDENT.toString()) {
-                        System.out.println("Transferring...");
-                        fypCoordinatorController.transferStudentToSupervisor(request.getProject(),request.getProject().getReplacementSupervisor(),projects);
-                    }
-
-                } else {
-                    fypCoordinatorController.rejectRequest(request,requests);
+                    case CHANGE_TITLE:
+                        if (manageChoice == 1) {
+                            fypCoordinatorController.approveRequest(request, requests);
+                            fypCoordinatorController.updateTitle(request.getProject(),request.getBody(),projects);
+                        } else {
+                            fypCoordinatorController.rejectRequest(request, requests);
+                        }
+                    default:
+                        fypCoordinatorController.rejectRequest(request, requests);
                 }
+
             }
         }
     }
@@ -76,7 +99,7 @@ public class FYP_CoordinatorCLI {
     }
 
 
-    public void handleSupervisorActions(Supervisor supervisor,  FYP_Coordinator fypCoordinator,List<Supervisor> supervisors,List<Project> projects, List<Request> requests) throws IOException {
+    public void handleSupervisorActions(Supervisor supervisor,  FYP_Coordinator fypCoordinator,List<Supervisor> supervisors,List<Project> projects, List<Request> requests, List<Student> students) throws IOException {
         boolean exit = false;
         while (!exit) {
             displayFYP_CoordinatorMenu();
@@ -134,7 +157,7 @@ public class FYP_CoordinatorCLI {
                     Integer requestChoice = scanner.nextInt();
                     scanner.nextLine();
 
-                    manageRequestCLI(fypCoordinator, requests, projects, requestChoice, fypCoordinatorController);
+                    manageRequestCLI(fypCoordinator, requests, projects, students, requestChoice);
 
                     break;
                 case 6:
@@ -154,6 +177,24 @@ public class FYP_CoordinatorCLI {
                     break;
                 case 10:
                     // Call fypCoordinatorController.viewProjectsByFilter() with the filter and display the result
+                    System.out.println("Enter filter choice: ");
+                    System.out.println("1. ProjectID");
+                    System.out.println("2. Supervisor");
+                    System.out.println("3. Replacement Supervisor");
+                    System.out.println("4. Student");
+                    System.out.println("5. Title");
+                    System.out.println("6. Project Status");
+
+                    int filter = scanner.nextInt();
+                    scanner.nextLine();
+
+                    List<Project> filteredProjects = fypCoordinatorController.viewProjectsByFilter(projects, filter);
+
+                    for (Project project : filteredProjects) {
+                        System.out.println(project.viewDetails());
+                    }
+
+
                     break;
                 case 11:
                     // Call fypCoordinatorController.generateProjectReport() and display the result

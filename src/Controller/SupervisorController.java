@@ -7,21 +7,33 @@ import java.util.List;
 public class SupervisorController extends UserController{
     protected ProjectController projectController;
     protected RequestController requestController;
+    protected StudentController studentController;
 
     public SupervisorController() throws IOException {
-
+        studentController = new StudentController();
         projectController = new ProjectController();
         requestController = new RequestController();
     }
 
     public Project createProject(Supervisor supervisor, String title, List<Project> projects) throws IOException {
+
         Project project = projectController.createProject(title, projects, supervisor);
         supervisor.addProject(project);
+
+        if (project.getSupervisor().getNumProjectsSupervised() == 2) {
+
+            for (Project supervisorProject : project.getSupervisor().getProjects()) {
+                if (supervisorProject.getProjectStatus() != ProjectStatus.ALLOCATED) {
+                    projectController.updateProject(supervisorProject, supervisorProject.getTitle(), ProjectStatus.UNAVAILABLE, null, supervisorProject.getSupervisor(), projects);
+                }
+            }
+        }
+
         return project;
     }
 
     public Project updateTitle(Project project, String newTitle, List<Project> projects) throws IOException {
-        projectController.updateProject(project,newTitle,project.getProjectStatus(),project.getSupervisor(),projects);
+        projectController.updateProject(project,newTitle,project.getProjectStatus(), project.getStudent(),project.getSupervisor(),projects);
         return project;
     }
 
@@ -49,11 +61,7 @@ public class SupervisorController extends UserController{
     public boolean checkSupervisorAvailability(Supervisor supervisor, List<Project> projects) throws IOException {
 
         if (supervisor.getNumProjectsSupervised() == 2) {
-            for (Project project : supervisor.getProjects()) {
-                if (project.getProjectStatus() != ProjectStatus.ALLOCATED.toString()) {
-                    projectController.updateProject(project, project.getTitle(), ProjectStatus.UNAVAILABLE.toString(), project.getSupervisor(), projects);
-                }
-            }
+            System.out.println("Supervisor Not Available, number of projects supervised: " + supervisor.getNumProjectsSupervised());
             return false;
         }
 
@@ -71,7 +79,7 @@ public class SupervisorController extends UserController{
 
     public void requestStudentTransferToAnotherSupervisor(Supervisor supervisor, Project project, Supervisor newSupervisor, FYP_Coordinator coordinator,List<Request> requests) throws IOException {
         project.setReplacementSupervisor(newSupervisor);
-        Request newRequest = requestController.createRequest(supervisor, coordinator, RequestType.TRANSFER_STUDENT.toString(), project,newSupervisor.getUserID(),requests);
+        Request newRequest = requestController.createRequest(supervisor, coordinator, RequestType.TRANSFER_STUDENT, project,newSupervisor.getUserID(),requests);
         supervisor.addRequest(newRequest);
         coordinator.addRequest(newRequest);
     }

@@ -1,2 +1,8 @@
-YCHERN	ASFLI	Register	Approved	null	1
-ASMADHUKUMAR	ASFLI	Transfer Student	APPROVED	ASSOURIN	1
+YCHERN	ASFLI	Register	Approved	null	5
+KOH1	ASFLI	Register	Approved	null	6
+BOAN	ASFLI	Transfer Student	Approved	DNIYATO	5
+BR015	ASFLI	Register	Approved	null	15
+BR015	ASFLI	Deregister	Rejected	null	15
+BR015	ASFLI	Deregister	Approved	null	15
+CT113	ASFLI	Register	Approved	null	15
+DL007	ASFLI	Register	Approved	null	19

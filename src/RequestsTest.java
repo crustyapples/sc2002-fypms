@@ -17,6 +17,12 @@ public class RequestsTest {
         FYP_CoordinatorDataHandler fypCoordinatorDataHandler = new FYP_CoordinatorDataHandler();
         List<FYP_Coordinator> fypCoordinators = fypCoordinatorDataHandler.loadCoordinatorsFromDatabase();
 
+        StudentDataHandler studentDataHandler = new StudentDataHandler();
+        List<Student> students = studentDataHandler.loadStudentsFromDatabase();
+
+        ProjectDataHandler projectDataHandler = new ProjectDataHandler();
+        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors,students);
+
         List<Supervisor> supervisorsToRemove = new ArrayList<>();
 
         for (Supervisor supervisor : supervisors) {
@@ -29,8 +35,8 @@ public class RequestsTest {
 
         supervisors.removeAll(supervisorsToRemove);
 
-        StudentDataHandler studentDataHandler = new StudentDataHandler();
-        List<Student> students = studentDataHandler.loadStudentsFromDatabase();
+
+
 
         List<User> users = new ArrayList<>();
 
@@ -43,17 +49,16 @@ public class RequestsTest {
         // Add all the students to the users list
         users.addAll(students);
 
-        ProjectDataHandler projectDataHandler = new ProjectDataHandler();
-        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors);
+
 
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users, projects);
 
-        Student testStudent = students.get(0);
+        Student testStudent = students.get(5);
         StudentController sc = new StudentController();
         StudentCLI studentMenu = new StudentCLI(sc, testStudent);
 
-        Supervisor testSupervisor = supervisors.get(0);
+        Supervisor testSupervisor = supervisors.get(15);
         SupervisorController supervisorController = new SupervisorController();
         SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController, testSupervisor);
 
@@ -80,7 +85,7 @@ public class RequestsTest {
                     supervisorCLI.handleSupervisorActions(testSupervisor, testFypCoordinator, supervisors, projects, requests);
                     break;
                 case 3:
-                    fypCoordinatorCLI.handleSupervisorActions(testFypCoordinator, testFypCoordinator, supervisors, projects, requests);
+                    fypCoordinatorCLI.handleSupervisorActions(testFypCoordinator, testFypCoordinator, supervisors, projects, requests, students);
                     break;
                 case 0:
                     exit = true;

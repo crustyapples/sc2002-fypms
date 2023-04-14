@@ -2,6 +2,7 @@ package src.Controller;
 
 import src.Entity.Project;
 import src.Entity.ProjectStatus;
+import src.Entity.Student;
 import src.Entity.Supervisor;
 
 import java.io.IOException;
@@ -16,15 +17,16 @@ public class ProjectController {
 
     public Project createProject(String title,List<Project> projects, Supervisor supervisor) throws IOException {
         int projectId = projects.size() + 1;
-        Project project = new Project(projectId, supervisor, null, title, ProjectStatus.AVAILABLE.toString());
+        Project project = new Project(projectId, supervisor, null, null, title, ProjectStatus.AVAILABLE);
         projects.add(project);
         dataHandler.saveProjectToDatabase(project);
         return project;
     }
 
-    public void updateProject(Project project, String title, String projectStatus, Supervisor supervisor, List<Project> projects) throws IOException {
+    public void updateProject(Project project, String title, ProjectStatus projectStatus, Student student, Supervisor supervisor, List<Project> projects) throws IOException {
         project.setTitle(title);
         project.setProjectStatus(projectStatus);
+        project.setStudent(student);
         project.setSupervisor(supervisor);
         dataHandler.saveProjectsToDatabase(projects);
     }

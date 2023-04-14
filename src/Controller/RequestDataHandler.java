@@ -18,15 +18,17 @@ public class RequestDataHandler {
                 String[] data = line.split("\t");
                 String senderUserID = data[0];
                 String recipientUserID = data[1];
-                String requestType = data[2];
-                String requestStatus = data[3];
+                String type = data[2];
+                String status = data[3];
                 String body = data[4];
                 int projectID = Integer.parseInt(data[5]);
 
                 User sender = findUserByID(users, senderUserID);
                 User recipient = findUserByID(users, recipientUserID);
-
                 Project project = findProjectByID(projects, projectID);
+
+                RequestStatus requestStatus = getRequestStatusEnum(status);
+                RequestType requestType = getRequestTypeEnum(type);
 
                 if (sender != null && recipient != null && project != null) {
                     Request request = new Request(requestID, sender, recipient, requestType, project, requestStatus, body);
@@ -83,6 +85,35 @@ public class RequestDataHandler {
             }
         }
         return null;
+    }
+
+    private static RequestStatus getRequestStatusEnum(String text) {
+        switch (text) {
+            case "Pending":
+                return RequestStatus.PENDING;
+            case "Approved":
+                return RequestStatus.APPROVED;
+            case "Rejected":
+                return RequestStatus.REJECTED;
+            default:
+                return null;
+        }
+    }
+
+    private static RequestType getRequestTypeEnum(String text) {
+
+        switch (text) {
+            case "Register":
+                return RequestType.REGISTER;
+            case "Change Title":
+                return RequestType.CHANGE_TITLE;
+            case "Deregister":
+                return RequestType.DEREGISTER;
+            case "Transfer Student":
+                return RequestType.TRANSFER_STUDENT;
+            default:
+                return null;
+        }
     }
 
 }

@@ -58,12 +58,19 @@ public class StudentCLI {
                     break;
 
                 case 2:
-                    // Call studentController.getAvailableProjects() and display the result
-                    System.out.println("Available Projects: ");
-                    List<Project> availableProjects = studentController.getAvailableProjects(projects);
 
-                    for (Project availableProject : availableProjects) {
-                        System.out.println(availableProject.viewDetails());
+                    if (student.getRegistered()) {
+                        System.out.println("You are currently allocated to a FYP and do not have access to available project list");
+
+                    } else if (student.getDeRegistered()) {
+                        System.out.println("You are not allowed to make a selection again as you deregistered your FYP.");
+
+                    } else {
+                        List<Project> availableProjects = studentController.getAvailableProjects(projects);
+                        System.out.println("Available Projects: ");
+                        for (Project availableProject : availableProjects) {
+                            System.out.println(availableProject.viewDetails());
+                        }
                     }
 
                     break;
@@ -71,19 +78,19 @@ public class StudentCLI {
                     // Call studentController.selectProjectForStudent() with the selected project
                     System.out.println("Enter the ProjectID:");
                     int projectChoice = scanner.nextInt();
-                    availableProjects = studentController.getAvailableProjects(projects);
+                    List<Project> availableProjects = studentController.getAvailableProjects(projects);
 
                     for (Project availableProject : availableProjects) {
                         if (availableProject.getProjectID() == projectChoice) {
                             System.out.println("Sending Request...");
-                            studentController.selectProjectForStudent(student, availableProject, coordinator,requests);
+                            studentController.selectProjectForStudent(student, availableProject, coordinator,requests, projects);
                         }
                     }
 
                     break;
                 case 4:
                     // Call studentController.isHashProject() and display the result
-                    if (!student.isRegistered()) {
+                    if (!student.getRegistered()) {
                         System.out.println("You have not registered a project!");
                     } else {
                         System.out.println(student.getSelectedProject().viewDetails());

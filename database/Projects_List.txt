@@ -1,16 +1,20 @@
-A S Madhukumar	Machine Learning-based Interference Mitigation in a Multi-tier Networks	AVAILABLE	NA	NA
-A S Madhukumar	Deep Learning-Driven Edge Caching for 5G-and-Beyond Industrial IoT Networks	AVAILABLE	NA	NA
-Alexei Sourin	Sonification of geometry 1	AVAILABLE	NA	NA
-Arvind Easwaran	Edge/Cloud Resource Management for Time-Sensitive Applications (2)	AVAILABLE	NA	NA
-Bo An	Deep Reinforcement Learning for Complex Environment	AVAILABLE	NA	NA
-Bo An	Build Software Agents for Power Trading Agent Competition	AVAILABLE	NA	NA
-Bo An	Designing Negotiation Agents to Parcitipate in International Competition	AVAILABLE	NA	NA
-Cai Wentong	Creation of Meta-model for Agent-based Simulation Using Machine Learning Approach	AVAILABLE	NA	NA
-Chen Change Loy	Encoding Images to Text Prompts with CLIP	AVAILABLE	NA	NA
-Chia Liang Tien	Smart Monitor for Studio Photographer	AVAILABLE	NA	NA
-Cong Gao	Developing a demonstration system for spatial data exploration and visualization 	AVAILABLE	NA	NA
-Cong Gao	Deep Learning Supported Location-aware Keyword Query	AVAILABLE	NA	NA
-Douglas Leslie Maskell	An AI based Li-ion fast battery charger for power tools	AVAILABLE	NA	NA
-Douglas Leslie Maskell	A Li-ion fast battery charger	AVAILABLE	NA	NA
-Dusit Niyato	Metaverse for virtual education 1	AVAILABLE	NA	NA
-"Ke Yiping, Kelly"	Graph-based Deep Models for Image Semantic Segmentation	AVAILABLE	NA	NA
+A S Madhukumar	Machine Learning-based Interference Mitigation in a Multi-tier Networks	Available	NA	NA
+A S Madhukumar	Deep Learning-Driven Edge Caching for 5G-and-Beyond Industrial IoT Networks	Available	NA	NA
+Alexei Sourin	Sonification of geometry 1	Available	NA	NA
+Arvind Easwaran	Edge/Cloud Resource Management for Time-Sensitive Applications (2)	Available	NA	NA
+Dusit Niyato	Deep Reinforcement Learning for Complex Environment	Allocated	YCHERN	Dusit Niyato
+Bo An	Build Software Agents for Power Trading Agent Competition	Allocated	KOH1	NA
+Bo An	Designing Negotiation Agents to Parcitipate in International Competition	Unavailable	NA	NA
+Cai Wentong	Creation of Meta-model for Agent-based Simulation Using Machine Learning Approach	Available	NA	NA
+Chen Change Loy	Encoding Images to Text Prompts with CLIP	Available	NA	NA
+Chia Liang Tien	Smart Monitor for Studio Photographer	Available	NA	NA
+Cong Gao	Developing a demonstration system for spatial data exploration and visualization 	Available	NA	NA
+Cong Gao	Deep Learning Supported Location-aware Keyword Query	Available	NA	NA
+Douglas Leslie Maskell	An AI based Li-ion fast battery charger for power tools	Available	NA	NA
+Douglas Leslie Maskell	A Li-ion fast battery charger	Available	NA	NA
+Dusit Niyato	Metaverse for virtual education 1	Allocated	CT113	NA
+"Ke Yiping, Kelly"	Graph-based Deep Models for Image Semantic Segmentation	Available	NA	NA
+Dusit Niyato	New Project!	Unavailable	NA	NA
+Dusit Niyato	New Project	Unavailable	NA	NA
+Li Fang	New Project New New New !	Allocated	DL007	NA
+Li Fang	New new new new	Available	NA	NA

@@ -9,15 +9,20 @@ import java.util.List;
 public class StudentController {
 
     private RequestController requestController;
+    private ProjectController projectController;
+    private StudentDataHandler studentDataHandler;
 
     public StudentController() throws IOException {
         requestController = new RequestController();
+        projectController = new ProjectController();
+        this.studentDataHandler = new StudentDataHandler();
     }
     public List<Project> getAvailableProjects(List<Project> projects) {
         List<Project> availableProjects = new ArrayList<>();
+
         for (Project project : projects) {
-            if (project.getProjectStatus() == ProjectStatus.AVAILABLE.toString()) {
-                if (project.getProjectStatus().equals(ProjectStatus.AVAILABLE.toString())) {
+            if (project.getProjectStatus() == ProjectStatus.AVAILABLE) {
+                if (project.getProjectStatus().equals(ProjectStatus.AVAILABLE)) {
                     availableProjects.add(project);
                 }
             }
@@ -26,11 +31,14 @@ public class StudentController {
         return availableProjects;
     }
 
-    public void selectProjectForStudent(Student student, Project project, FYP_Coordinator coordinator, List<Request> requests) throws IOException {
-        project.setProjectStatus(ProjectStatus.RESERVED.toString());
-        Request newRequest = requestController.createRequest(student, coordinator, RequestType.REGISTER.toString(), project, null, requests);
+    public void selectProjectForStudent(Student student, Project project, FYP_Coordinator coordinator, List<Request> requests, List<Project> projects) throws IOException {
+        project.setProjectStatus(ProjectStatus.RESERVED);
+        projectController.updateProject(project, project.getTitle(), ProjectStatus.RESERVED, student, project.getSupervisor(), projects);
+
+        Request newRequest = requestController.createRequest(student, coordinator, RequestType.REGISTER, project, null, requests);
         student.addRequest(newRequest);
         coordinator.addRequest(newRequest);
+
     }
 
     public Project viewStudentProject(Student student) {
@@ -38,13 +46,13 @@ public class StudentController {
     }
 
     public void requestProjectTitleChange(Student student, String newTitle, List<Request> requests) throws IOException {
-        Request newRequest = requestController.createRequest(student, student.getSelectedProject().getSupervisor(), RequestType.CHANGE_TITLE.toString(), student.getSelectedProject(), newTitle, requests);
+        Request newRequest = requestController.createRequest(student, student.getSelectedProject().getSupervisor(), RequestType.CHANGE_TITLE, student.getSelectedProject(), newTitle, requests);
         student.addRequest(newRequest);
         student.getSelectedProject().getSupervisor().addRequest(newRequest);
     }
 
     public void requestProjectDeregistration(Student student, FYP_Coordinator coordinator, List<Request> requests) throws IOException {
-        Request newRequest = requestController.createRequest(student, student.getSelectedProject().getSupervisor(), RequestType.DEREGISTER.toString(), student.getSelectedProject(), null, requests);
+        Request newRequest = requestController.createRequest(student, coordinator, RequestType.DEREGISTER, student.getSelectedProject(), null, requests);
         student.addRequest(newRequest);
         coordinator.addRequest(newRequest);
     }
@@ -53,5 +61,9 @@ public class StudentController {
         for (Request request : student.getRequests()) {
             System.out.println(request.viewDetails());
         }
+    }
+
+    public void updateStudent(Student student, List<Student> students) throws IOException {
+        studentDataHandler.saveStudentsToDatabase(students);
     }
 }

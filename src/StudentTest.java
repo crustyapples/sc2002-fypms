@@ -32,7 +32,7 @@ public class StudentTest {
 
 
         ProjectDataHandler projectDataHandler = new ProjectDataHandler();
-        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors);
+        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors,students);
 
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users,projects);
