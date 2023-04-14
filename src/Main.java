@@ -42,7 +42,7 @@ public class Main {
         UserController userController = new UserController();
         LoginCLI login = new LoginCLI(userController);
 
-        login.authenticateUser(users,userController.userDataHandler.loadUserPasswordsFromDatabase(users));
+        login.authenticateUser();
 
     }
 }
