@@ -93,8 +93,7 @@ public class FYP_CoordinatorCLI {
         //Additional functions
         System.out.println("8. Allocate project to student");
         System.out.println("9. Deallocate project from student");
-        System.out.println("10. View projects by filter");
-        System.out.println("11. Generate project report");
+        System.out.println("10. Generate project report");
         System.out.println("0. Exit");
     }
 
@@ -175,17 +174,45 @@ public class FYP_CoordinatorCLI {
                 case 10:
                     // Call fypCoordinatorController.viewProjectsByFilter() with the filter and display the result
                     System.out.println("Enter filter choice: ");
-                    System.out.println("1. ProjectID");
-                    System.out.println("2. Supervisor");
-                    System.out.println("3. Replacement Supervisor");
-                    System.out.println("4. Student");
-                    System.out.println("5. Title");
-                    System.out.println("6. Project Status");
+                    System.out.println("1. Supervisor");
+                    System.out.println("2. Student");
+                    System.out.println("3. Status");
 
                     int filter = scanner.nextInt();
+                    String filterChoice = "";
                     scanner.nextLine();
 
-                    List<Project> filteredProjects = fypCoordinatorController.viewProjectsByFilter(projects, filter);
+                    if (filter == 1) {
+                        System.out.println("Enter the SupervisorID: ");
+                        String supervisorID = scanner.nextLine();
+                        filterChoice = supervisorID;
+                    } else if (filter == 2) {
+                        System.out.println("Enter the StudentID: ");
+                        String studentID = scanner.nextLine();
+                        filterChoice = studentID;
+                    } else if (filter == 3) {
+                        System.out.println("Select the Project Status: ");
+                        System.out.println("1. Available");
+                        System.out.println("2. Allocated");
+                        System.out.println("3. Reserved");
+                        System.out.println("4. Unavailable");
+
+                        int statusChoice = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (statusChoice == 1) {
+                            filterChoice = "Available";
+                        } else if (statusChoice == 2) {
+                            filterChoice = "Allocated";
+                        } else if (statusChoice == 3) {
+                            filterChoice = "Reserved";
+                        } else if (statusChoice == 4) {
+                            filterChoice = "Unavailable";
+                        }
+
+                    }
+
+                    List<Project> filteredProjects = fypCoordinatorController.generateProjectReport(projects, filterChoice);
 
                     for (Project project : filteredProjects) {
                         System.out.println(project.viewDetails());
@@ -193,9 +220,7 @@ public class FYP_CoordinatorCLI {
 
 
                     break;
-                case 11:
-                    // Call fypCoordinatorController.generateProjectReport() and display the result
-                    break;
+
                 case 0:
                     exit = true;
                     break;

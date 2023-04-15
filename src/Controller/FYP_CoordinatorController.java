@@ -5,6 +5,7 @@ import src.Entity.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FYP_CoordinatorController extends SupervisorController {
     public FYP_CoordinatorController() throws IOException {
@@ -69,14 +70,38 @@ public class FYP_CoordinatorController extends SupervisorController {
         projectController.updateProject(projects);
     }
 
-    public List<Project> viewProjectsByFilter(List<Project> projects, int filter) {
-        // implement project filtering
-        List<Project> filteredProjects = projects;
-        return projects;
-    }
+    public List<Project> generateProjectReport(List<Project> projects, String filter) {
 
-    public void generateProjectReport(FYP_Coordinator coordinator, List<Project> projects) {
-        // Implement report generation logic based on the projects data
+        List<Project> filteredProjects = new ArrayList<>();
+        for (Project project : projects) {
+            if (filter == "Available") {
+                if (project.getProjectStatus() == ProjectStatus.AVAILABLE) {
+                    filteredProjects.add(project);
+                }
+            } else if (filter == "Allocated") {
+                if (project.getProjectStatus() == ProjectStatus.ALLOCATED) {
+                    filteredProjects.add(project);
+                }
+            } else if (filter == "Reserved") {
+                if (project.getProjectStatus() == ProjectStatus.RESERVED) {
+                    filteredProjects.add(project);
+                }
+            } else if (filter == "Unavailable") {
+                if (project.getProjectStatus() == ProjectStatus.UNAVAILABLE) {
+                    filteredProjects.add(project);
+                }
+            } else {
+                String studentID = project.getStudent() != null ? project.getStudent().getUserID() : "";
+                String supervisorID = project.getSupervisor().getUserID();
+
+                if (Objects.equals(supervisorID, filter) | Objects.equals(studentID, filter)) {
+                    filteredProjects.add(project);
+                }
+            }
+        }
+
+        return filteredProjects;
+
     }
 
     public void transferStudentToSupervisor(Project project, List<Project> projects) throws IOException {
