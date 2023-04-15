@@ -107,7 +107,7 @@ public class StudentCLI {
                                 System.out.println(ConsoleColors.RED_BRIGHT + "Invalid ProjectID! Please try again!\n" + ConsoleColors.RESET);
                                 projectChoice = -1;
                             } catch (InputMismatchException e) {
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!"+ ConsoleColors.RESET);
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n"+ ConsoleColors.RESET);
                                 scanner.next(); //Clear the invalid input
                                 projectChoice = -1;
                             }
@@ -119,7 +119,7 @@ public class StudentCLI {
                     case 4:
                         // Call studentController.isHashProject() and display the result
                         if (!student.getRegistered()) {
-                            System.out.println("You have not registered a project!");
+                            System.out.println(ConsoleColors.RED_BRIGHT + "You have not registered a project!\n" + ConsoleColors.RESET);
                         } else {
                             System.out.println(student.getSelectedProject().viewDetails());
                         }
@@ -143,7 +143,7 @@ public class StudentCLI {
                         exit = true;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please try again.");
+                        System.out.println(ConsoleColors.RED_UNDERLINED + "Invalid choice. Please try again.\n" + ConsoleColors.RESET);
                         break;
                 }
             } catch (InputMismatchException e) {
