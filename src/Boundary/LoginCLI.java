@@ -31,7 +31,6 @@ public class LoginCLI {
 
         users = userdata.getListOfUsers();
 
-
         try{
             usersPassword = userdata.loadUserPasswordFromDatabase(users);
         }catch(IOException e){

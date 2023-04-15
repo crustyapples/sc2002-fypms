@@ -1,14 +1,11 @@
 package src;
 
-import src.Controller.FYP_CoordinatorDataHandler;
+import src.Boundary.FYP_CoordinatorCLI;
+import src.Boundary.StudentCLI;
+import src.Boundary.SupervisorCLI;
+import src.Controller.*;
 import src.Boundary.LoginCLI;
-import src.Controller.StudentDataHandler;
-import src.Controller.SupervisorDataHandler;
-import src.Controller.UserController;
-import src.Entity.FYP_Coordinator;
-import src.Entity.Student;
-import src.Entity.Supervisor;
-import src.Entity.User;
+import src.Entity.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +20,7 @@ public class Main {
         List<User> users = new ArrayList<>();
 
         List<Supervisor> supervisors = svData.loadFacultyFromDatabase();
+
         for (Supervisor supervisor : supervisors) {
             users.add((User) supervisor);
         }
@@ -39,10 +37,34 @@ public class Main {
             users.add((User) student);
         }
 
+        ProjectDataHandler projectDataHandler = new ProjectDataHandler();
+        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors,students);
+
+        RequestDataHandler requestDataHandler = new RequestDataHandler();
+        List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users, projects);
+
         UserController userController = new UserController();
         LoginCLI login = new LoginCLI(userController);
 
-        login.authenticateUser();
+        User user = login.authenticateUser();
+
+        if (user instanceof Student) {
+            StudentController studentController = new StudentController();
+            StudentCLI studentMenu = new StudentCLI(studentController, (Student) user);
+            studentMenu.handleStudentActions((Student) user, projects, requests, coordinators.get(0));
+        }
+
+        else if (user instanceof FYP_Coordinator) {
+            FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController();
+            FYP_CoordinatorCLI fypCoordinatorMenu = new FYP_CoordinatorCLI(fypCoordinatorController, (FYP_Coordinator) user);
+            fypCoordinatorMenu.handleSupervisorActions((FYP_Coordinator) user,(FYP_Coordinator) user, supervisors, projects, requests, students);
+        }
+
+        else if (user instanceof Supervisor) {
+            SupervisorController supervisorController = new SupervisorController();
+            SupervisorCLI supervisorMenu = new SupervisorCLI(supervisorController, (Supervisor) user);
+            supervisorMenu.handleSupervisorActions((Supervisor) user, coordinators.get(0), supervisors, projects, requests);
+        }
 
     }
 }

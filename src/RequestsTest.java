@@ -54,18 +54,17 @@ public class RequestsTest {
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users, projects);
 
-        Student testStudent = students.get(5);
+        Student testStudent = students.get(6);
         StudentController sc = new StudentController();
         StudentCLI studentMenu = new StudentCLI(sc, testStudent);
 
-        Supervisor testSupervisor = supervisors.get(15);
+        Supervisor testSupervisor = supervisors.get(0);
         SupervisorController supervisorController = new SupervisorController();
         SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController, testSupervisor);
 
         FYP_Coordinator testFypCoordinator = fypCoordinators.get(0);
         FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController();
         FYP_CoordinatorCLI fypCoordinatorCLI = new FYP_CoordinatorCLI(fypCoordinatorController, testFypCoordinator);
-
 
         Scanner scanner;
         scanner = new Scanner(System.in);
