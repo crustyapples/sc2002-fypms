@@ -1,8 +1,8 @@
 A S Madhukumar	Bananas!	Allocated	YCHERN	NA
-A S Madhukumar	Deep Learning-Driven Edge Caching for 5G-and-Beyond Industrial IoT Networks	Available	NA	NA
+A S Madhukumar	Deep Learning-Driven Edge Caching for 5G-and-Beyond Industrial IoT Networks	Allocated	KOH1	NA
 Alexei Sourin	Sonification of geometry 1	Available	NA	NA
 Arvind Easwaran	Edge/Cloud Resource Management for Time-Sensitive Applications (2)	Available	NA	NA
-Bo An	Deep Reinforcement Learning for Complex Environment	Available	NA	NA
+Bo An	Deep Reinforcement Learning for Complex Environment	Available	NA	A S Madhukumar
 Bo An	Build Software Agents for Power Trading Agent Competition	Available	NA	NA
 Bo An	Designing Negotiation Agents to Parcitipate in International Competition	Available	NA	NA
 Cai Wentong	Creation of Meta-model for Agent-based Simulation Using Machine Learning Approach	Available	NA	NA

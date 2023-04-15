@@ -69,7 +69,6 @@ public class SupervisorController extends UserController{
     public boolean checkSupervisorAvailability(Supervisor supervisor, List<Project> projects) throws IOException {
 
         if (supervisor.getNumProjectsSupervised() == 2) {
-            System.out.println("Supervisor Not Available, number of projects supervised: " + supervisor.getNumProjectsSupervised());
             return false;
         }
 

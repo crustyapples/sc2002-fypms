@@ -33,11 +33,13 @@ public class FYP_CoordinatorCLI {
             if (Objects.equals(request.getSender().getUserID(), requestChoice)) {
                 manageRequestCheck = 1;
                 System.out.println(request.viewDetails());
-                System.out.println("Do you want to \n1. Approve OR\n2. Reject");
-                Integer manageChoice = scanner.nextInt();
+                Integer manageChoice;
 
                 switch (request.getType()) {
                     case REGISTER:
+                        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+                        manageChoice = scanner.nextInt();
+                        scanner.nextLine();
                         if (manageChoice == 1) {
 
                             if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getSupervisor(),projects)) {
@@ -47,14 +49,32 @@ public class FYP_CoordinatorCLI {
                                 System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
                             } else {
                                 System.out.println(ConsoleColors.RED_BRIGHT + "Supervisor cap is reached!"+ ConsoleColors.RESET);
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Do you still want to allocate the project? 1. Yes, 2. No"+ ConsoleColors.RESET);
+
+                                int allocateDecision = scanner.nextInt();
+                                scanner.nextLine();
+
+                                if (allocateDecision == 1) {
+                                    fypCoordinatorController.approveRequest(request, requests);
+                                    System.out.println("Registering...");
+                                    fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
+                                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
+                                } else {
+                                    System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. Project will now be available.\n"+ ConsoleColors.RESET);
+                                    fypCoordinatorController.rejectRequest(request, requests);
+                                    fypCoordinatorController.unreserveProject(request.getProject(), projects);
+                                }
                             }
                         } else {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. Project will now be reserved.\n"+ ConsoleColors.RESET);
+                            System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. Project will now be available.\n"+ ConsoleColors.RESET);
                             fypCoordinatorController.rejectRequest(request, requests);
                             fypCoordinatorController.unreserveProject(request.getProject(), projects);
                         }
                         break;
                     case DEREGISTER:
+                        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+                        manageChoice = scanner.nextInt();
+                        scanner.nextLine();
                         if (manageChoice == 1) {
                             fypCoordinatorController.approveRequest(request, requests);
                             System.out.println("Deregistering...");
@@ -65,18 +85,48 @@ public class FYP_CoordinatorCLI {
                         }
                         break;
                     case TRANSFER_STUDENT:
-                        if (manageChoice == 1) {
-                            fypCoordinatorController.approveRequest(request, requests);
-                            System.out.println("Transferring...\n");
-                            System.out.println(ConsoleColors.GREEN_BRIGHT + "Transfer successful!\n"+ ConsoleColors.RESET);
-                            fypCoordinatorController.transferStudentToSupervisor(request.getProject(), projects);
+
+
+                        if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getReplacementSupervisor(),projects)) {
+                            System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+                            manageChoice = scanner.nextInt();
+                            scanner.nextLine();
+                            if (manageChoice == 1) {
+                                fypCoordinatorController.approveRequest(request, requests);
+                                System.out.println("Transferring...\n");
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Transfer successful!\n"+ ConsoleColors.RESET);
+                                fypCoordinatorController.transferStudentToSupervisor(request.getProject(), projects);
+                            } else {
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Request to transfer has been rejected.\n"+ ConsoleColors.RESET);
+                                fypCoordinatorController.rejectRequest(request, requests);
+                            }
                         } else {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "Request to transfer has been rejected.\n"+ ConsoleColors.RESET);
-                            fypCoordinatorController.rejectRequest(request, requests);
+                            System.out.println(ConsoleColors.RED_BRIGHT + "Replacement Supervisor cap is reached!"+ ConsoleColors.RESET);
+                            System.out.println(ConsoleColors.RED_BRIGHT + "Do you still want to allocate the project? 1. Yes, 2. No"+ ConsoleColors.RESET);
+
+                            System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+                            manageChoice = scanner.nextInt();
+                            scanner.nextLine();
+
+                            if (manageChoice == 1) {
+                                fypCoordinatorController.approveRequest(request, requests);
+                                System.out.println("Registering...");
+                                fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
+                            } else {
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. \n"+ ConsoleColors.RESET);
+                                fypCoordinatorController.rejectRequest(request, requests);
+                                fypCoordinatorController.unreserveProject(request.getProject(), projects);
+                            }
                         }
+
+
                         break;
 
                     case CHANGE_TITLE:
+                        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+                        manageChoice = scanner.nextInt();
+                        scanner.nextLine();
                         if (manageChoice == 1) {
                             fypCoordinatorController.approveRequest(request, requests);
                             fypCoordinatorController.updateTitle(request.getProject(),request.getBody(),projects);

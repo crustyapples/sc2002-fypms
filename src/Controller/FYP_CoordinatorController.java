@@ -50,7 +50,6 @@ public class FYP_CoordinatorController extends SupervisorController {
             project.getSupervisor().setNumProjectSupervised(project.getSupervisor().getNumProjectsSupervised() + 1);
             closeSupervisorProjectAvailability(project.getSupervisor(),projects);
 
-            System.out.println("Projects supervised  = " + project.getSupervisor().getNumProjectsSupervised());
             return true;
         }
 
