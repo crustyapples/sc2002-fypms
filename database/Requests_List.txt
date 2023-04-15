@@ -1,5 +1,2 @@
 YCHERN	ASFLI	Register	Approved	null	1
-YCHERN	ASMADHUKUMAR	Change Title	Approved	NEW TITLE REQUEST	1
-YCHERN	ASFLI	Deregister	Approved	null	1
-ASMADHUKUMAR	ASFLI	Transfer Student	Approved	BOAN	1
-BR015	ASFLI	Register	Approved	null	1
+YCHERN	ASMADHUKUMAR	Change Title	Approved	Bananas!	1

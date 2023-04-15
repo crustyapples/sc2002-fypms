@@ -35,11 +35,11 @@ public class SupervisorCLI {
                 if (manageChoice == 1) {
                     supervisorController.approveRequest(request,requests);
                     supervisorController.updateTitle(request.getProject(),request.getBody(),projects);
-                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Project approved!\n" + ConsoleColors.RESET);
+                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Request approved!\n" + ConsoleColors.RESET);
                     return;
                 } else if (manageChoice == 2) {
                     supervisorController.rejectRequest(request,requests);
-                    System.out.println(ConsoleColors.RED_BRIGHT + "Project rejected!\n" + ConsoleColors.RESET);
+                    System.out.println(ConsoleColors.RED_BRIGHT + "Request rejected!\n" + ConsoleColors.RESET);
                     return;
                 }
                 return;
@@ -144,6 +144,7 @@ public class SupervisorCLI {
                         break;
                     case 4:
                         // Call supervisorController.viewSupervisorProjects() and display the result
+                        System.out.println("Your projects: \n");
                         supervisorController.viewSupervisorProjects(supervisor);
                         break;
                     case 5:
