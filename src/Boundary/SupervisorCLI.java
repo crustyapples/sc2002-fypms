@@ -1,10 +1,12 @@
 package src.Boundary;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+import src.ConsoleColors;
 import src.Controller.SupervisorController;
 import src.Controller.UserController;
 import src.Entity.FYP_Coordinator;
@@ -41,7 +43,7 @@ public class SupervisorCLI {
     }
 
     public void displaySupervisorMenu() {
-        System.out.println("Welcome, " + supervisor.getName() + "!");
+        System.out.println(ConsoleColors.GREEN_UNDERLINED + "Welcome, " + supervisor.getName() + "!" + ConsoleColors.RESET);
         System.out.println("1. Change password");
         System.out.println("2. Create a new project");
         System.out.println("3. Update an existing project");
@@ -57,102 +59,147 @@ public class SupervisorCLI {
         while (!exit) {
             displaySupervisorMenu();
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
 
-            switch (choice) {
-                case 1:
-                    //System.out.println("Change Password: ");
-                    System.out.println("Enter new password: ");
-                    String newPassword = scanner.nextLine();
-                    supervisor.changePassword(newPassword);
+                switch (choice) {
+                    case 1:
+                        //System.out.println("Change Password: ");
+                        System.out.println("Enter new password: ");
+                        String newPassword = scanner.nextLine();
+                        supervisor.changePassword(newPassword);
 
-                    String userID = supervisor.getUserID();
-                    UserController userController = new UserController();
-                    //How to get the userPasswords?
-                    //userController.changeUserPassword(userPasswords, userID, newPassword);
-                    System.out.println("You will now be logged out. Please login again!");
-                    exit = true;
-                    break;
-                case 2:
-                    // Call supervisorController.createNewProject() with the project title
-                    System.out.println("Enter the Project Title: ");
-                    String title = scanner.nextLine();
-                    supervisorController.createProject(supervisor, title, projects);
-                    break;
-                case 3:
-                    // Call supervisorController.updateExistingProject() with the new title
+                        String userID = supervisor.getUserID();
+                        UserController userController = new UserController();
+                        //How to get the userPasswords?
+                        //userController.changeUserPassword(userPasswords, userID, newPassword);
+                        System.out.println("You will now be logged out. Please login again!");
+                        exit = true;
+                        break;
+                    case 2:
+                        // Call supervisorController.createNewProject() with the project title
+                        System.out.println("Enter the Project Title: ");
+                        String title = scanner.nextLine();
+                        supervisorController.createProject(supervisor, title, projects);
+                        break;
+                    case 3:
+                        // Call supervisorController.updateExistingProject() with the new title
 
-                    supervisorController.viewSupervisorProjects(supervisor);
+                        supervisorController.viewSupervisorProjects(supervisor);
 
-                    System.out.println("Enter the project ID of the project you wish to update: ");
-                    Integer projectChoice = scanner.nextInt();
-                    scanner.nextLine();
-
-                    System.out.println("Enter the new project Title: ");
-                    String newTitle = scanner.nextLine();
-
-                    for (Project project : projects) {
-                        if (project.getProjectID() == projectChoice) {
-                            supervisorController.updateTitle(project, newTitle, projects);
-                        }
-                    }
-
-                    break;
-                case 4:
-                    // Call supervisorController.viewSupervisorProjects() and display the result
-                    supervisorController.viewSupervisorProjects(supervisor);
-                    break;
-                case 5:
-                    // Call supervisorController.manageStudentRequests()
-                    supervisorController.viewIncomingRequests(supervisor);
-
-                    System.out.println("Do you want to manage the requests? 1. Yes 2. No");
-                    Integer manageChoice = scanner.nextInt();
-                    scanner.nextLine();
-
-                    if (manageChoice == 1) {
-                        System.out.println("Enter the Request ID of the request that you want to handle: ");
-                        Integer requestChoice = scanner.nextInt();
+/*                        System.out.println("Enter the project ID of the project you wish to update: ");
+                        Integer projectChoice = scanner.nextInt();
                         scanner.nextLine();
-                        manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
-                    }
 
-                    break;
-                case 6:
-                    // Call supervisorController.viewSupervisorRequestHistory() and display the result
-                    supervisorController.viewRequestHistory(supervisor);
-                    break;
-                case 7:
-                    // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
-                    supervisorController.viewSupervisorProjects(supervisor);
+                        System.out.println("Enter the new project Title: ");
+                        String newTitle = scanner.nextLine();
 
-                    System.out.println("Enter the project ID of the project you wish to transfer: ");
-                    projectChoice = scanner.nextInt();
-                    scanner.nextLine();
+                        for (Project project : projects) {
+                            if (project.getProjectID() == projectChoice) {
+                                supervisorController.updateTitle(project, newTitle, projects);
+                            }
+                        }*/
+                        Integer projectChoice = -1;
+                        while(projectChoice == -1) {
+                            try {
+                                System.out.println("Enter the project ID of the project you wish to update: ");
+                                projectChoice = scanner.nextInt();
+                                scanner.nextLine();
 
-                    for (Project project : projects) {
-                        if (project.getProjectID() == projectChoice) {
-                            System.out.println(project.viewDetails());
-                            System.out.println("Enter the supervisorID of your replacement: ");
-                            String replacementSupervisorID = scanner.nextLine();
+                                System.out.println("Enter the new project Title: ");
+                                String newTitle = scanner.nextLine();
 
-                            for (Supervisor replacementSupervisor : supervisors) {
-                                if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
-                                    System.out.println("Requesting...");
-                                    supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests);
+                                for (Project project : projects) {
+                                    if (project.getProjectID() == projectChoice) {
+                                        supervisorController.updateTitle(project, newTitle, projects);
+                                        return;
+                                    }
+                                }
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid ProjectID! Please try again!\n" + ConsoleColors.RESET);
+                                projectChoice = -1;
+
+                            } catch (InputMismatchException e) {
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n" + ConsoleColors.RESET);
+                                scanner.next(); //Clear the invalid input
+                                projectChoice = -1;
+                            }
+                        }
+                        break;
+                    case 4:
+                        // Call supervisorController.viewSupervisorProjects() and display the result
+                        supervisorController.viewSupervisorProjects(supervisor);
+                        break;
+                    case 5:
+                        // Call supervisorController.manageStudentRequests()
+
+                            supervisorController.viewIncomingRequests(supervisor);
+                            Integer manageChoice = -1;
+                            while (manageChoice == -1) {
+                                try {
+                                System.out.println("Do you want to manage the requests? 1. Yes 2. No");
+                                manageChoice = scanner.nextInt();
+                                scanner.nextLine();
+
+                                if (manageChoice == 1) {
+                                    System.out.println("Enter the Request ID of the request that you want to handle: ");
+                                    Integer requestChoice = scanner.nextInt();
+                                    scanner.nextLine();
+                                    manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
+                                } else if  (manageChoice == 2) {
+                                    break;
+                                } else {
+                                    manageChoice = -1;
+                                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid choice! Please key in either 1 or 2.\n" + ConsoleColors.RESET);
+                                }
+                            } catch (InputMismatchException e) {
+                                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter either 1 or 2!\n"+ ConsoleColors.RESET);
+                                    scanner.next(); //Clear the invalid input
+                                    manageChoice = -1;
+                                }
+                        }
+
+                        break;
+
+
+                    case 6:
+                        // Call supervisorController.viewSupervisorRequestHistory() and display the result
+                        supervisorController.viewRequestHistory(supervisor);
+                        break;
+                    case 7:
+                        // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
+                        supervisorController.viewSupervisorProjects(supervisor);
+
+                        System.out.println("Enter the project ID of the project you wish to transfer: ");
+                        projectChoice = scanner.nextInt();
+                        scanner.nextLine();
+
+                        for (Project project : projects) {
+                            if (project.getProjectID() == projectChoice) {
+                                System.out.println(project.viewDetails());
+                                System.out.println("Enter the supervisorID of your replacement: ");
+                                String replacementSupervisorID = scanner.nextLine();
+
+                                for (Supervisor replacementSupervisor : supervisors) {
+                                    if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
+                                        System.out.println("Requesting...");
+                                        supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    break;
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println(ConsoleColors.RED_BRIGHT +"Invalid choice! Please try again!\n" + ConsoleColors.RESET);
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n" + ConsoleColors.RESET);
+                scanner.nextLine(); // Consume the invalid input
             }
         }
     }
