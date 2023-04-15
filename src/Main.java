@@ -39,10 +39,28 @@ public class Main {
             users.add((User) student);
         }
 
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "███████╗██╗   ██╗██████╗ ███╗   ███╗███████╗" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "██╔════╝╚██╗ ██╔╝██╔══██╗████╗ ████║██╔════╝" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "█████╗   ╚████╔╝ ██████╔╝██╔████╔██║███████╗" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "██╔══╝    ╚██╔╝  ██╔═══╝ ██║╚██╔╝██║╚════██║" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "██║        ██║   ██║     ██║ ╚═╝ ██║███████║" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "╚═╝        ╚═╝   ╚═╝     ╚═╝     ╚═╝╚══════╝" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "Welcome to the FYP Management System!" + ConsoleColors.RESET);
+
         UserController userController = new UserController();
         LoginCLI login = new LoginCLI(userController);
 
-        login.authenticateUser(users,userController.userDataHandler.loadUserPasswordsFromDatabase(users));
+        //login.authenticateUser(users,userController.userDataHandler.loadUserPasswordsFromDatabase(users));
 
+        User userCheck = login.authenticateUser(users,userController.userDataHandler.loadUserPasswordsFromDatabase(users));
+        if(userCheck == null) {
+            while(userCheck == null) {
+                userCheck = login.authenticateUser(users,userController.userDataHandler.loadUserPasswordsFromDatabase(users));
+            }
+            //Execute the relevant user's page
+        } else {
+            //Execute the relevant user's page
+
+        }
     }
 }
