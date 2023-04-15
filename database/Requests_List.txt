@@ -1,6 +1,3 @@
-KOH1	ASFLI	Register	Approved	null	5
-BR015	ASFLI	Register	Approved	null	6
-BOAN	ASFLI	Transfer Student	Approved	DNIYATO	6
-CT113	ASFLI	Register	Approved	null	15
-CT113	ASFLI	Deregister	Approved	null	15
-YCN019	ASFLI	Register	Approved	null	15
+ASMADHUKUMAR	ASFLI	Transfer Student	Pending	BOAN	1
+ASMADHUKUMAR	ASFLI	Transfer Student	Pending	BOAN	1
+ASMADHUKUMAR	ASFLI	Transfer Student	Pending	BOAN	2

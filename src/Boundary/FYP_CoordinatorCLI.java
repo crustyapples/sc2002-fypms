@@ -1,10 +1,12 @@
 package src.Boundary;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+import src.ConsoleColors;
 import src.Controller.FYP_CoordinatorController;
 import src.Controller.SupervisorController;
 import src.Controller.UserController;
@@ -82,18 +84,17 @@ public class FYP_CoordinatorCLI {
     }
 
     public void displayFYP_CoordinatorMenu() {
-        System.out.println("Welcome, " + fypCoordinator.getName() + "!");
+
         System.out.println("1. Change password");
         System.out.println("2. Create a new project");
         System.out.println("3. Update an existing project");
         System.out.println("4. View your projects");
         System.out.println("5. Manage incoming requests");
-        System.out.println("6. View request history");
+        System.out.println("6. View outgoing request history");
         System.out.println("7. Request student transfer");
         //Additional functions
-        System.out.println("8. Allocate project to student");
-        System.out.println("9. Deallocate project from student");
-        System.out.println("10. Generate project report");
+        System.out.println("8. Generate project report");
+        System.out.println("9. View all requests");
         System.out.println("0. Exit");
     }
 
@@ -162,16 +163,17 @@ public class FYP_CoordinatorCLI {
                     break;
                 case 7:
                     // Call fypCoordinatorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
-                    break;
-                //Additional functions
-                case 8:
-                    // Call fypCoordinatorController.allocateProjectToStudent() with the student and project
+                    fypCoordinatorController.viewSupervisorProjects(supervisor);
+
+                    if (fypCoordinator.getProjects().size() == 0) {
+                        System.out.println("You have no projects!");
+                        break;
+                    }
+                    projectChoice = -1;
+                    SupervisorCLI.transferStudentCLI(supervisor, fypCoordinator, supervisors, projects, requests, projectChoice, scanner, fypCoordinatorController);
 
                     break;
-                case 9:
-                    // Call fypCoordinatorController.deallocateProjectFromStudent() with the student and project
-                    break;
-                case 10:
+                case 8:
                     // Call fypCoordinatorController.viewProjectsByFilter() with the filter and display the result
                     System.out.println("Enter filter choice: ");
                     System.out.println("1. Supervisor");
@@ -214,13 +216,20 @@ public class FYP_CoordinatorCLI {
 
                     List<Project> filteredProjects = fypCoordinatorController.generateProjectReport(projects, filterChoice);
 
+                    System.out.println("Filtered Projects: \n");
                     for (Project project : filteredProjects) {
+
                         System.out.println(project.viewDetails());
                     }
 
-
                     break;
+                case 9:
 
+                    System.out.println("All Requests: \n");
+                    for (Request request:requests) {
+                        System.out.println(request.viewDetails());
+                    }
+                    break;
                 case 0:
                     exit = true;
                     break;

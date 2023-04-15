@@ -30,7 +30,7 @@ public class Project {
     }
 
     public String viewDetails() {
-        return "ProjectID: " + projectID + "\nTitle: " + title + "\nStatus: " + projectStatus + "\nSupervisor: " + supervisor.name + "\nStudent: " + (student != null ? student.name : "Not assigned");
+        return "ProjectID: " + projectID + "\nTitle: " + title + "\nStatus: " + projectStatus + "\nSupervisor: " + supervisor.name + "\nStudent: " + (student != null ? student.name : "Not assigned" + "\n");
     }
     public Supervisor getSupervisor() {
         return this.supervisor;

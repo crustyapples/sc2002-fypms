@@ -1,10 +1,12 @@
 package src.Boundary;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import src.ConsoleColors;
 import src.Controller.IStudentController;
 import src.Controller.StudentController;
 import src.Controller.UserController;
@@ -24,7 +26,7 @@ public class StudentCLI {
     }
 
     public void displayStudentMenu() {
-        System.out.println("Welcome, " + student.getName() + "!");
+
         System.out.println("1. Change password");
         System.out.println("2. View available projects");
         System.out.println("3. Select a project to send to the coordinator for approval");
@@ -40,8 +42,9 @@ public class StudentCLI {
         while (!exit) {
             displayStudentMenu();
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
 
             switch (choice) {
                 case 1:
@@ -54,66 +57,97 @@ public class StudentCLI {
                     exit = true;
                     break;
 
-                case 2:
+                    case 2:
 
-                    if (student.getRegistered()) {
-                        System.out.println("You are currently allocated to a FYP and do not have access to available project list");
+                        if (student.getRegistered()) {
+                            System.out.println(ConsoleColors.RED_BRIGHT + "You are currently allocated to a FYP and do not have access to available project list!" + ConsoleColors.RESET);
 
-                    } else if (student.getDeRegistered()) {
-                        System.out.println("You are not allowed to make a selection again as you deregistered your FYP.");
+                        } else if (student.getDeRegistered()) {
+                            System.out.println(ConsoleColors.RED_BRIGHT + "You are not allowed to make a selection again as you deregistered your FYP." + ConsoleColors.RESET);
 
-                    } else {
+                        } else {
+                            List<Project> availableProjects = studentController.getAvailableProjects(projects);
+                            System.out.println("Available Projects: \n");
+                            for (Project availableProject : availableProjects) {
+                                System.out.println(availableProject.viewDetails());
+                            }
+                        }
+
+                        break;
+                    case 3:
+                        // Call studentController.selectProjectForStudent() with the selected project
+ /*                       System.out.println("Enter the ProjectID:");
+                        int projectChoice = scanner.nextInt();
                         List<Project> availableProjects = studentController.getAvailableProjects(projects);
-                        System.out.println("Available Projects: ");
+
                         for (Project availableProject : availableProjects) {
-                            System.out.println(availableProject.viewDetails());
+                            if (availableProject.getProjectID() == projectChoice) {
+                                System.out.println("Sending Request...");
+                                studentController.selectProjectForStudent(student, availableProject, coordinator, requests, projects);
+                            }
+                        }*/
+                        int projectChoice = -1;
+                        while (projectChoice == -1) {
+                            try {
+                                System.out.println("Enter the ProjectID:");
+                                projectChoice = scanner.nextInt();
+                                List<Project> availableProjects = studentController.getAvailableProjects(projects);
+                                found: {
+                                    for (Project availableProject : availableProjects) {
+                                        if (availableProject.getProjectID() == projectChoice) {
+                                            System.out.println("Sending Request...");
+                                            studentController.selectProjectForStudent(student, availableProject, coordinator, requests, projects);
+                                            break found;
+                                        }
+                                    }
+
+                                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid ProjectID! Please try again!\n" + ConsoleColors.RESET);
+                                    projectChoice = -1;
+                                }
+
+                            } catch (InputMismatchException e) {
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n"+ ConsoleColors.RESET);
+                                scanner.next(); //Clear the invalid input
+                                projectChoice = -1;
+                            }
                         }
-                    }
 
-                    break;
-                case 3:
-                    // Call studentController.selectProjectForStudent() with the selected project
-                    System.out.println("Enter the ProjectID:");
-                    int projectChoice = scanner.nextInt();
-                    List<Project> availableProjects = studentController.getAvailableProjects(projects);
 
-                    for (Project availableProject : availableProjects) {
-                        if (availableProject.getProjectID() == projectChoice) {
-                            System.out.println("Sending Request...");
-                            studentController.selectProjectForStudent(student, availableProject, coordinator,requests, projects);
+
+                        break;
+                    case 4:
+                        // Call studentController.isHashProject() and display the result
+                        if (!student.getRegistered()) {
+                            System.out.println(ConsoleColors.RED_BRIGHT + "You have not registered a project!\n" + ConsoleColors.RESET);
+                        } else {
+                            System.out.println(student.getSelectedProject().viewDetails());
                         }
-                    }
+                        break;
+                    case 5:
+                        // Call studentController.requestProjectTitleChange() with the new title
+                        System.out.println("Enter new project title:");
+                        String newTitle = scanner.nextLine();
+                        studentController.requestProjectTitleChange(student, newTitle, requests);
 
-                    break;
-                case 4:
-                    // Call studentController.isHashProject() and display the result
-                    if (!student.getRegistered()) {
-                        System.out.println("You have not registered a project!");
-                    } else {
-                        System.out.println(student.getSelectedProject().viewDetails());
-                    }
-                    break;
-                case 5:
-                    // Call studentController.requestProjectTitleChange() with the new title
-                    System.out.println("Enter new project title:");
-                    String newTitle = scanner.nextLine();
-                    studentController.requestProjectTitleChange(student, newTitle, requests);
-
-                    break;
-                case 6:
-                    // Call studentController.requestProjectDeregistration()
-                    studentController.requestProjectDeregistration(student,coordinator,requests);
-                    break;
-                case 7:
-                    // Call studentController.viewStudentRequestHistory() and display the result
-                    studentController.viewStudentRequestHistory(student);
-                    break;
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                        break;
+                    case 6:
+                        // Call studentController.requestProjectDeregistration()
+                        studentController.requestProjectDeregistration(student, coordinator, requests);
+                        break;
+                    case 7:
+                        // Call studentController.viewStudentRequestHistory() and display the result
+                        studentController.viewStudentRequestHistory(student);
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println(ConsoleColors.RED_UNDERLINED + "Invalid choice. Please try again.\n" + ConsoleColors.RESET);
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println(ConsoleColors.RED_UNDERLINED + "Invalid input. Please enter a valid integer.\n" + ConsoleColors.RESET);
+                scanner.nextLine(); //Consume the invalid input
             }
         }
     }

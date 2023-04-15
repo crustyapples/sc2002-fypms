@@ -1,8 +1,12 @@
 package src.Boundary;
 
+import java.io.Console;
+import java.util.Scanner;
 import java.io.IOException;
 import java.util.*;
 
+import src.ConsoleColors;
+import src.Controller.UserController;
 import src.Controller.*;
 import src.Entity.User;
 
@@ -21,16 +25,17 @@ public class LoginCLI {
 
         System.out.println("User ID: ");
         String userID = scanner.nextLine();
-        System.out.println("Password: ");
+        System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
         User user = userController.loginUser(users,userID,password);
 
         if (user != null) {
-            System.out.println("Login successful!");
+            System.out.println(ConsoleColors.GREEN_BRIGHT + "Login successful!" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.BLUE_UNDERLINED + "Welcome, " + user.getName() + "!" + ConsoleColors.RESET);
             return user;
         } else {
-            System.out.println("Invalid user ID or password.");
+            System.out.println(ConsoleColors.RED_BRIGHT + "Invalid user ID or password. Please try again!\n" + ConsoleColors.RESET);
             return null;
         }
 

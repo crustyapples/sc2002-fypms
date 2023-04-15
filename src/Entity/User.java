@@ -48,8 +48,5 @@ public class User {
         this.requests.add(request);
     }
 
-    public void removeRequest(Request request) {
-        this.requests.remove(request);
-    }
 }
 

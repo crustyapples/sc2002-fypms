@@ -43,6 +43,14 @@ public class Main {
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users, projects);
 
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "███████╗██╗   ██╗██████╗ ███╗   ███╗███████╗" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "██╔════╝╚██╗ ██╔╝██╔══██╗████╗ ████║██╔════╝" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "█████╗   ╚████╔╝ ██████╔╝██╔████╔██║███████╗" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "██╔══╝    ╚██╔╝  ██╔═══╝ ██║╚██╔╝██║╚════██║" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "██║        ██║   ██║     ██║ ╚═╝ ██║███████║" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "╚═╝        ╚═╝   ╚═╝     ╚═╝     ╚═╝╚══════╝" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.BLUE_BRIGHT + "Welcome to the FYP Management System!" + ConsoleColors.RESET);
+
         UserController userController = new UserController();
         LoginCLI login = new LoginCLI(userController, users);
 
