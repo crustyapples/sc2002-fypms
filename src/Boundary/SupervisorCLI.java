@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import src.ConsoleColors;
 import src.Controller.SupervisorController;
+import src.CustomExceptions.InvalidInputException;
 import src.Entity.FYP_Coordinator;
 import src.Entity.Project;
 import src.Entity.Request;
@@ -38,6 +39,7 @@ public class SupervisorCLI {
                     supervisorController.updateTitle(request.getProject(),request.getBody(),projects);
                     System.out.println(ConsoleColors.GREEN_BRIGHT + "Project approved!\n" + ConsoleColors.RESET);
                 } else if (manageChoice == 2) {
+                    supervisorController.rejectRequest(request,requests);
                     System.out.println(ConsoleColors.RED_BRIGHT + "Project rejected!\n" + ConsoleColors.RESET);
                 }
                 return;
@@ -89,18 +91,6 @@ public class SupervisorCLI {
 
                         supervisorController.viewSupervisorProjects(supervisor);
 
-/*                        System.out.println("Enter the project ID of the project you wish to update: ");
-                        Integer projectChoice = scanner.nextInt();
-                        scanner.nextLine();
-
-                        System.out.println("Enter the new project Title: ");
-                        String newTitle = scanner.nextLine();
-
-                        for (Project project : projects) {
-                            if (project.getProjectID() == projectChoice) {
-                                supervisorController.updateTitle(project, newTitle, projects);
-                            }
-                        }*/
                         Integer projectChoice = -1;
                         while(projectChoice == -1) {
                             try {
@@ -108,20 +98,25 @@ public class SupervisorCLI {
                                 projectChoice = scanner.nextInt();
                                 scanner.nextLine();
 
-                                // check isValidProjectChoice
-
                                 found: {
-                                    for (Project project : supervisor.getProjects()) {
-                                        if (project.getProjectID() == projectChoice) {
-                                            System.out.println("Enter the new project Title: ");
-                                            String newTitle = scanner.nextLine();
-                                            supervisorController.updateTitle(project, newTitle, projects);
-                                            System.out.println(ConsoleColors.GREEN_BRIGHT + "Title changed" + ConsoleColors.RESET);
-                                            break found;
+                                    try {
+                                        for (Project project : supervisor.getProjects()) {
+                                            if (project.getProjectID() == projectChoice) {
+                                                System.out.println("Enter the new project Title: ");
+                                                String newTitle = scanner.nextLine();
+                                                supervisorController.updateTitle(project, newTitle, projects);
+                                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Title changed" + ConsoleColors.RESET);
+                                                break found;
+                                            }
                                         }
+
+                                        throw new InvalidInputException.InvalidProjectIDException();
+
+                                    } catch (InvalidInputException.InvalidProjectIDException e) {
+                                        projectChoice = -1;
+                                        System.out.println(e.getMessage());
                                     }
-                                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid ProjectID! Please try again!\n" + ConsoleColors.RESET);
-                                    projectChoice = -1;
+
                                 }
 
 
@@ -137,8 +132,17 @@ public class SupervisorCLI {
                         supervisorController.viewSupervisorProjects(supervisor);
                         break;
                     case 5:
-                        supervisorController.viewIncomingRequests(supervisor);
-                        manageRequestCheck = -1;
+
+                        if (supervisorController.getIncomingRequests(supervisor).size() == 0) {
+                            System.out.println(ConsoleColors.RED_BRIGHT + "You have no incoming requests!" + ConsoleColors.RESET);
+                            break;
+                        } else {
+                            System.out.println("Incoming requests: \n");
+                            for (Request request : supervisorController.getIncomingRequests(supervisor)) {
+                                System.out.println(request.viewDetails());
+                            }
+                        }
+
                         Integer manageChoice = -1;
                         while (manageChoice == -1) {
                             try {
@@ -184,7 +188,16 @@ public class SupervisorCLI {
 
                     case 6:
                         // Call supervisorController.viewSupervisorRequestHistory() and display the result
-                        supervisorController.viewRequestHistory(supervisor);
+                        if (supervisorController.getRequestHistory(supervisor).size() > 0) {
+                            System.out.println("Outgoing requests: \n");
+                            for (Request request : supervisorController.getRequestHistory(supervisor)) {
+                                System.out.println(request.viewDetails());
+                            }
+                        } else {
+                            System.out.println(ConsoleColors.RED_BRIGHT + "You have no outgoing requests!" + ConsoleColors.RESET);
+                            break;
+                        }
+
                         break;
                     case 7:
                         // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
@@ -221,33 +234,49 @@ public class SupervisorCLI {
                 scanner.nextLine();
 
                 projectFound: {
-                    for (Project project : supervisor.getProjects()) {
-                        if (project.getProjectID() == projectChoice) {
-                            System.out.println(project.viewDetails());
-                            int supervisorFound = -1;
-                            while (supervisorFound == -1) {
-                                System.out.println("Enter the supervisorID of your replacement: ");
-                                String replacementSupervisorID = scanner.nextLine();
-                                found: {
-                                    for (Supervisor replacementSupervisor : supervisors) {
-                                        if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
-                                            System.out.println("Requesting...");
-                                            supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests, projects);
-                                            supervisorFound = 1;
-                                            break found;
-                                        }
-                                    }
-                                    System.out.println(ConsoleColors.RED_BRIGHT + "There is no such supervisor! Please try again!" + ConsoleColors.RESET);
-                                    supervisorFound = -1;
-                                }
 
+                    try {
+                        for (Project project : supervisor.getProjects()) {
+                            if (project.getProjectID() == projectChoice) {
+                                System.out.println(project.viewDetails());
+                                int supervisorFound = -1;
+                                while (supervisorFound == -1) {
+                                    System.out.println("Enter the supervisorID of your replacement: ");
+                                    String replacementSupervisorID = scanner.nextLine();
+                                    found: {
+
+                                        try {
+                                            for (Supervisor replacementSupervisor : supervisors) {
+                                                if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
+                                                    System.out.println("Requesting...");
+                                                    supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests, projects);
+                                                    supervisorFound = 1;
+                                                    break found;
+                                                }
+                                            }
+
+                                            throw new InvalidInputException.InvalidSupervisorIDException();
+
+                                        } catch (InvalidInputException.InvalidSupervisorIDException e) {
+                                            supervisorFound = -1;
+                                            System.out.println(e.getMessage());
+                                        }
+
+                                    }
+
+                                }
+                                break projectFound;
                             }
-                            break projectFound;
+
                         }
 
+
+                        throw new InvalidInputException.InvalidProjectIDException();
+                    } catch (InvalidInputException.InvalidProjectIDException e) {
+                        projectChoice = -1;
+                        System.out.println(e.getMessage());
                     }
-                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid ProjectID! Please try again!\n" + ConsoleColors.RESET);
-                    projectChoice = -1;
+
 
                 }
 

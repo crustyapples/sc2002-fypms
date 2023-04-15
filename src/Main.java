@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         SupervisorDataHandler svData = new SupervisorDataHandler();
         FYP_CoordinatorDataHandler fypData = new FYP_CoordinatorDataHandler();
         StudentDataHandler stdData = new StudentDataHandler();
@@ -61,7 +61,7 @@ public class Main {
         IStudentController studentController = new StudentController();
 
         if (user instanceof Student) {
-            StudentCLI studentMenu = new StudentCLI(studentController, (Student) user);
+            StudentCLI studentMenu = new StudentCLI(studentController, (Student) user, login);
             studentMenu.handleStudentActions((Student) user, projects, requests, coordinators.get(0));
         }
 

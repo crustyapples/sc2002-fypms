@@ -2,6 +2,7 @@ package src.Controller;
 import src.Entity.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SupervisorController extends UserController{
@@ -46,19 +47,23 @@ public class SupervisorController extends UserController{
         }
     }
 
-    public void viewIncomingRequests(User user) {
+    public List<Request> getIncomingRequests(User user) {
+        List <Request> incomingRequests = new ArrayList<>();
         for (Request request : user.getRequests()) {
-            if (request.getRecipient() instanceof Supervisor) {
-                System.out.println(request.viewDetails());
+            if (request.getSender() instanceof Student) {
+                incomingRequests.add(request);
             }
         }
+        return incomingRequests;
     }
-    public void viewRequestHistory(User user) {
+    public List<Request> getRequestHistory(User user) {
+        List<Request> requestHistory = new ArrayList<>();
         for (Request request : user.getRequests()) {
             if (request.getSender() instanceof Supervisor) {
-                System.out.println(request.viewDetails());
+                requestHistory.add(request);
             }
         }
+        return requestHistory;
     }
 
     public boolean checkSupervisorAvailability(Supervisor supervisor, List<Project> projects) throws IOException {

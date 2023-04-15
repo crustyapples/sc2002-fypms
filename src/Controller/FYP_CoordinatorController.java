@@ -13,19 +13,27 @@ public class FYP_CoordinatorController extends SupervisorController {
         super(studentController,projectController,requestController);
     }
 
-    public void viewIncomingRequests(User user) {
+    public List<Request> getIncomingRequests(User user) {
+        List <Request> incomingRequests = new ArrayList<>();
         for (Request request : user.getRequests()) {
-            if (request.getRecipient() instanceof FYP_Coordinator) {
-                System.out.println(request.viewDetails());
+            if (request.getSender() instanceof Student | request.getSender() instanceof Supervisor) {
+                if (request.getRecipient() instanceof FYP_Coordinator) {
+                    incomingRequests.add(request);
+                }
+
             }
         }
+        return incomingRequests;
     }
-    public void viewRequestHistory(User user) {
+
+    public List<Request> getRequestHistory(User user) {
+        List<Request> requestHistory = new ArrayList<>();
         for (Request request : user.getRequests()) {
             if (request.getSender() instanceof FYP_Coordinator) {
-                System.out.println(request.viewDetails());
+                requestHistory.add(request);
             }
         }
+        return requestHistory;
     }
 
     public boolean registerStudentProject(Student student, Project project,List<Project> projects) throws IOException {

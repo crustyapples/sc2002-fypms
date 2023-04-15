@@ -11,17 +11,21 @@ import src.Controller.IStudentController;
 import src.Controller.StudentController;
 import src.Controller.UserController;
 import src.Controller.UserDataHandler;
+import src.CustomExceptions.ProjectsException;
+import src.CustomExceptions.ProjectsException.ProjectSelectionNotAllowedException;
 import src.Entity.*;
 
 
 public class StudentCLI {
     private Scanner scanner;
     private IStudentController studentController;
+    private LoginCLI loginCLI;
     private Student student;
 
-    public StudentCLI(IStudentController studentController, Student student) {
+    public StudentCLI(IStudentController studentController, Student student, LoginCLI loginCLI) {
         this.studentController = studentController;
         this.student = student;
+        this.loginCLI = loginCLI;
         scanner = new Scanner(System.in);
     }
 
@@ -54,24 +58,30 @@ public class StudentCLI {
                     String userID = student.getUserID();
                     studentController.changeUserPassword(userID, newPassword);
                     System.out.println("You will now be logged out. Please login again!");
-                    exit = true;
+                    loginCLI.authenticateUser();
                     break;
 
                     case 2:
 
-                        if (student.getRegistered()) {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "You are currently allocated to a FYP and do not have access to available project list!" + ConsoleColors.RESET);
-
-                        } else if (student.getDeRegistered()) {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "You are not allowed to make a selection again as you deregistered your FYP." + ConsoleColors.RESET);
-
-                        } else {
-                            List<Project> availableProjects = studentController.getAvailableProjects(projects);
-                            System.out.println("Available Projects: \n");
-                            for (Project availableProject : availableProjects) {
-                                System.out.println(availableProject.viewDetails());
+                        try {
+                            if (student.getRegistered()) {
+                                throw new ProjectsException.NoAccessToProjectListException();
+                            } else if (student.getDeRegistered()) {
+                                throw new ProjectsException.ProjectSelectionNotAllowedException();
+                            } else {
+                                List<Project> availableProjects = studentController.getAvailableProjects(projects);
+                                System.out.println("Available Projects: \n");
+                                for (Project availableProject : availableProjects) {
+                                    System.out.println(availableProject.viewDetails());
+                                }
                             }
                         }
+                        catch (ProjectsException.NoAccessToProjectListException e) {
+                            System.out.println(e.getMessage());
+                        } catch (ProjectSelectionNotAllowedException e) {
+                            System.out.println(e.getMessage());
+                        }
+
 
                         break;
                     case 3:
@@ -117,26 +127,62 @@ public class StudentCLI {
                         break;
                     case 4:
                         // Call studentController.isHashProject() and display the result
-                        if (!student.getRegistered()) {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "You have not registered a project!\n" + ConsoleColors.RESET);
-                        } else {
-                            System.out.println(student.getSelectedProject().viewDetails());
+                        try {
+                            if (!student.getRegistered()) {
+                                throw new ProjectsException.ProjectNotRegisteredException();
+                            } else {
+                                System.out.println(student.getSelectedProject().viewDetails());
+                            }
+                        } catch (ProjectsException.ProjectNotRegisteredException e) {
+                            System.out.println(e.getMessage());
                         }
+
                         break;
                     case 5:
                         // Call studentController.requestProjectTitleChange() with the new title
-                        System.out.println("Enter new project title:");
-                        String newTitle = scanner.nextLine();
-                        studentController.requestProjectTitleChange(student, newTitle, requests);
+
+                        try {
+                            if (student.getSelectedProject() != null) {
+                                System.out.println("Enter new project title:");
+                                String newTitle = scanner.nextLine();
+                                studentController.requestProjectTitleChange(student, newTitle, requests);
+                            } else {
+                                throw new ProjectsException.ProjectNotRegisteredException();
+                            }
+                        } catch (ProjectsException.ProjectNotRegisteredException e) {
+                            System.out.println(e.getMessage());
+                        }
+
 
                         break;
                     case 6:
                         // Call studentController.requestProjectDeregistration()
-                        studentController.requestProjectDeregistration(student, coordinator, requests);
+
+                        try {
+                            if (!student.getRegistered()) {
+                                throw new ProjectsException.ProjectNotRegisteredException();
+                            } else {
+                                studentController.requestProjectDeregistration(student, coordinator, requests);
+                            }
+                        } catch (ProjectsException.ProjectNotRegisteredException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+
                         break;
                     case 7:
                         // Call studentController.viewStudentRequestHistory() and display the result
-                        studentController.viewStudentRequestHistory(student);
+
+                        if (studentController.getRequestHistory(student).size() > 0) {
+                            System.out.println("Outgoing requests: \n");
+                            for (Request request : studentController.getRequestHistory(student)) {
+                                System.out.println(request.viewDetails());
+                            }
+                        } else {
+                            System.out.println(ConsoleColors.RED_BRIGHT + "You have no outgoing requests!" + ConsoleColors.RESET);
+                            break;
+                        }
+
                         break;
                     case 0:
                         exit = true;

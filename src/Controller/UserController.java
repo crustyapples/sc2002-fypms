@@ -1,16 +1,13 @@
 package src.Controller;
 
-import src.Entity.FYP_Coordinator;
-import src.Entity.Student;
-import src.Entity.Supervisor;
-import src.Entity.User;
+import src.Entity.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UserController {
+public class UserController implements IUserController{
     protected UserDataHandler userDataHandler;
 
 
@@ -43,6 +40,14 @@ public class UserController {
         System.out.println("User ID: " + user.getUserID());
         System.out.println("Name: " + user.getName());
         System.out.println("Email: " + user.getEmail());
+    }
+
+    public List<Request> getRequestHistory(User user) {
+        List<Request> requestHistory = new ArrayList<>();
+        for (Request request : user.getRequests()) {
+                requestHistory.add(request);
+        }
+        return requestHistory;
     }
 
     private User findUserByID(List<User> users, String userID) {

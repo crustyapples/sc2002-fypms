@@ -149,7 +149,17 @@ public class FYP_CoordinatorCLI {
                     fypCoordinatorController.viewSupervisorProjects(supervisor);
                     break;
                 case 5:
-                    fypCoordinatorController.viewIncomingRequests(supervisor);
+
+                    if (fypCoordinatorController.getIncomingRequests(supervisor).size() == 0) {
+                        System.out.println(ConsoleColors.RED_BRIGHT + "You have no incoming requests!" + ConsoleColors.RESET);
+                        break;
+                    } else {
+                        System.out.println("Incoming requests: \n");
+                        for (Request request : fypCoordinatorController.getIncomingRequests(supervisor)) {
+                            System.out.println(request.viewDetails());
+                        }
+                    }
+
                     System.out.println("Enter the Request ID of the request that you want to handle: ");
                     Integer requestChoice = scanner.nextInt();
                     scanner.nextLine();
@@ -159,7 +169,15 @@ public class FYP_CoordinatorCLI {
                     break;
                 case 6:
                     // Call fypCoordinatorController.viewSupervisorRequestHistory() and display the result
-                    fypCoordinatorController.viewRequestHistory(supervisor);
+                    if (fypCoordinatorController.getRequestHistory(supervisor).size() > 0) {
+                        System.out.println("Outgoing requests: \n");
+                        for (Request request : fypCoordinatorController.getRequestHistory(supervisor)) {
+                            System.out.println(request.viewDetails());
+                        }
+                    } else {
+                        System.out.println(ConsoleColors.RED_BRIGHT + "You have no outgoing requests!" + ConsoleColors.RESET);
+                        break;
+                    }
                     break;
                 case 7:
                     // Call fypCoordinatorController.requestStudentTransferToAnotherSupervisor() with the new supervisor

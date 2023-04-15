@@ -57,11 +57,6 @@ public class StudentController extends UserController implements IStudentControl
         coordinator.addRequest(newRequest);
     }
 
-    public void viewStudentRequestHistory(Student student) {
-        for (Request request : student.getRequests()) {
-            System.out.println(request.viewDetails());
-        }
-    }
 
     public void updateStudent(Student student, List<Student> students) throws IOException {
         studentDataHandler.saveStudentsToDatabase(students);

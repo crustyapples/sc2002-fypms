@@ -28,7 +28,7 @@ public class Request {
     }
 
     public String viewDetails() {
-        return "RequestID: " + requestID + "\nRequest Type: " + requestType + "\nStatus: " + requestStatus + "\nSender: " + sender.name + "\nRecipient: " + recipient.name + "\n";
+        return "RequestID: " + requestID + "\nRequest Type: " + requestType + "\nStatus: " +  requestStatus + "\nSender: " + sender.name + "\nRecipient: " + recipient.name + "\n";
     }
 
     public User getSender() {

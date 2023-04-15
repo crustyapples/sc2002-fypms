@@ -11,6 +11,5 @@ public interface IStudentController extends IUserController{
     Project viewStudentProject(Student student);
     void requestProjectTitleChange(Student student, String newTitle, List<Request> requests) throws IOException;
     void requestProjectDeregistration(Student student, FYP_Coordinator coordinator, List<Request> requests) throws IOException;
-    void viewStudentRequestHistory(Student student);
     void updateStudent(Student student, List<Student> students) throws IOException;
 }

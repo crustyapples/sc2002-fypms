@@ -1,3 +1,4 @@
+YCHERN	ASFLI	Register	Approved	null	1
+YCHERN	ASMADHUKUMAR	Change Title	Rejected	NEW TITLE REQUEST	1
+YCHERN	ASFLI	Deregister	Approved	null	1
 ASMADHUKUMAR	ASFLI	Transfer Student	Pending	BOAN	1
-ASMADHUKUMAR	ASFLI	Transfer Student	Pending	BOAN	1
-ASMADHUKUMAR	ASFLI	Transfer Student	Pending	BOAN	2
