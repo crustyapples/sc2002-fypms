@@ -170,24 +170,46 @@ public class SupervisorCLI {
                         // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
                         supervisorController.viewSupervisorProjects(supervisor);
 
-                        System.out.println("Enter the project ID of the project you wish to transfer: ");
-                        projectChoice = scanner.nextInt();
-                        scanner.nextLine();
+                        projectChoice = -1;
+                        while (projectChoice == -1) {
+                            try {
+                                System.out.println("Enter the project ID of the project you wish to transfer: ");
+                                projectChoice = scanner.nextInt();
+                                scanner.nextLine();
 
-                        for (Project project : projects) {
-                            if (project.getProjectID() == projectChoice) {
-                                System.out.println(project.viewDetails());
-                                System.out.println("Enter the supervisorID of your replacement: ");
-                                String replacementSupervisorID = scanner.nextLine();
+                                for (Project project : projects) {
+                                    if (project.getProjectID() == projectChoice) {
+                                        System.out.println(project.viewDetails());
+                                        int supervisorFound = -1;
+                                        while (supervisorFound == -1) {
+                                            System.out.println("Enter the supervisorID of your replacement: ");
+                                            String replacementSupervisorID = scanner.nextLine();
+                                            found: {
+                                                for (Supervisor replacementSupervisor : supervisors) {
+                                                    if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
+                                                        System.out.println("Requesting...");
+                                                        supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests);
+                                                        supervisorFound = 1;
+                                                        break found;
+                                                    }
+                                                }
+                                                System.out.println(ConsoleColors.RED_BRIGHT + "There is no such supervisor! Please try again!" + ConsoleColors.RESET);
+                                                supervisorFound = -1;
+                                            }
 
-                                for (Supervisor replacementSupervisor : supervisors) {
-                                    if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
-                                        System.out.println("Requesting...");
-                                        supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests);
+                                        }
+
                                     }
                                 }
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid ProjectID! Please try again!\n" + ConsoleColors.RESET);
+                                projectChoice = -1;
+                            } catch (InputMismatchException e) {
+                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n" + ConsoleColors.RESET);
+                                scanner.next(); //Clear the invalid input
+                                projectChoice = -1;
                             }
                         }
+
 
                         break;
                     case 0:
