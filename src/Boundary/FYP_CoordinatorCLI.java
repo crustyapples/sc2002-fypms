@@ -19,17 +19,18 @@ public class FYP_CoordinatorCLI {
     private FYP_Coordinator fypCoordinator;
 
     private int manageRequestCheck = -1;
-
-    public FYP_CoordinatorCLI(FYP_CoordinatorController fypCoordinatorController, FYP_Coordinator fypCoordinator) {
+    private LoginCLI loginCLI;
+    public FYP_CoordinatorCLI(FYP_CoordinatorController fypCoordinatorController, FYP_Coordinator fypCoordinator, LoginCLI loginCLI) {
         //super(fypCoordinatorController, fypCoordinator);
         this.fypCoordinatorController = fypCoordinatorController;
         this.fypCoordinator = fypCoordinator;
+        this.loginCLI = loginCLI;
         scanner = new Scanner(System.in);
     }
 
-    public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, List<Student> students, Integer requestChoice) throws IOException {
-        for (Request request : user.getRequests()) {
-            if (request.getRequestID() == requestChoice) {
+    public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, List<Student> students, String requestChoice) throws IOException {
+        for (Request request : fypCoordinatorController.getIncomingRequests(fypCoordinator)) {
+            if (Objects.equals(request.getSender().getUserID(), requestChoice)) {
                 manageRequestCheck = 1;
                 System.out.println(request.viewDetails());
                 System.out.println("Do you want to \n1. Approve OR\n2. Reject");
@@ -90,17 +91,33 @@ public class FYP_CoordinatorCLI {
                 return;
             }
         }
-        System.out.println(ConsoleColors.RED_BRIGHT + "There is no such request! Try again!\n" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.RED_BRIGHT + "There is no such request with the given UserID! Try again!\n" + ConsoleColors.RESET);
     }
 
 
-    public void displayFYP_CoordinatorMenu() {
+    public void displayMenu() {
 
         System.out.println("1. Change password");
         System.out.println("2. Create a new project");
         System.out.println("3. Update an existing project");
         System.out.println("4. View your projects");
-        System.out.println("5. Manage incoming requests");
+
+        int pendingRequests = 0;
+        if (fypCoordinatorController.getIncomingRequests(fypCoordinator).size() > 0) {
+            for (Request request : fypCoordinatorController.getIncomingRequests(fypCoordinator)) {
+                if (request.getStatus() == RequestStatus.PENDING) {
+                    pendingRequests++;
+                }
+            }
+        }
+
+        if (pendingRequests > 0) {
+            System.out.println("5. Manage incoming requests" + ConsoleColors.GREEN_BOLD + " New!" + ConsoleColors.RESET);
+        }
+        else {
+            System.out.println("5. Manage incoming requests");
+        }
+
         System.out.println("6. View outgoing request history");
         System.out.println("7. Request student transfer");
         //Additional functions
@@ -113,7 +130,7 @@ public class FYP_CoordinatorCLI {
     public void handleSupervisorActions(Supervisor supervisor,  FYP_Coordinator fypCoordinator,List<Supervisor> supervisors,List<Project> projects, List<Request> requests, List<Student> students) throws IOException {
         boolean exit = false;
         while (!exit) {
-            displayFYP_CoordinatorMenu();
+            displayMenu();
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character
@@ -127,7 +144,7 @@ public class FYP_CoordinatorCLI {
                     UserController userController = new UserController();
                     userController.changeUserPassword(userID, newPassword);
                     System.out.println("You will now be logged out. Please login again!");
-                    exit = true;
+                    loginCLI.authenticateUser();
                     break;
 
                 case 2:
@@ -191,19 +208,19 @@ public class FYP_CoordinatorCLI {
                         }
                     }
                     manageRequestCheck = -1;
-                    Integer requestChoice = -1;
-                    while (requestChoice == -1) {
+                    Integer userFound = -1;
+                    while (userFound == -1) {
                         try {
                             while (manageRequestCheck == -1) {
 
-                            System.out.println("Enter the Request ID of the request that you want to handle: ");
-                            requestChoice = scanner.nextInt();
-                            scanner.nextLine();
-                            manageRequestCLI(fypCoordinator, requests, projects, students, requestChoice);
+                                System.out.println("Enter the User ID of the request that you want to handle: ");
+                                String requestChoice = scanner.nextLine();
+                                manageRequestCLI(fypCoordinator, requests, projects, students, requestChoice);
+                                userFound = 1;
                             }
 
                         } catch (InputMismatchException e) {
-                            requestChoice = -1;
+                            userFound = -1;
                             System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n" + ConsoleColors.RESET);
                             scanner.next(); //Clear the invalid input
                         }

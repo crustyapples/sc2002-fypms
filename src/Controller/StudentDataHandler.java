@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDataHandler {
+public class StudentDataHandler implements IStudentDataHandler{
     private static final String STUDENT_FILE = "database/Students_List.txt";
 
     public List<Student> loadStudentsFromDatabase() throws IOException {

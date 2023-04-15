@@ -56,9 +56,9 @@ public class Main {
 
         User user = login.authenticateUser();
 
-        IProjectController projectController = new ProjectController();
-        IRequestController requestController = new RequestController();
-        IStudentController studentController = new StudentController();
+        IProjectController projectController = new ProjectController(projectDataHandler);
+        IRequestController requestController = new RequestController(requestDataHandler);
+        IStudentController studentController = new StudentController(stdData,projectController, requestController);
 
         if (user instanceof Student) {
             StudentCLI studentMenu = new StudentCLI(studentController, (Student) user, login);
@@ -67,14 +67,14 @@ public class Main {
 
         else if (user instanceof FYP_Coordinator) {
             FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController(studentController, projectController, requestController);
-            FYP_CoordinatorCLI fypCoordinatorMenu = new FYP_CoordinatorCLI(fypCoordinatorController, (FYP_Coordinator) user);
+            FYP_CoordinatorCLI fypCoordinatorMenu = new FYP_CoordinatorCLI(fypCoordinatorController, (FYP_Coordinator) user,login);
             fypCoordinatorMenu.handleSupervisorActions((FYP_Coordinator) user,(FYP_Coordinator) user, supervisors, projects, requests, students);
         }
 
         else if (user instanceof Supervisor) {
             SupervisorController supervisorController = new SupervisorController(studentController, projectController, requestController);
-            SupervisorCLI supervisorMenu = new SupervisorCLI(supervisorController, (Supervisor) user);
-            supervisorMenu.handleSupervisorActions((Supervisor) user, coordinators.get(0), supervisors, projects, requests);
+            SupervisorCLI supervisorMenu = new SupervisorCLI(supervisorController, (Supervisor) user, login);
+            supervisorMenu.handleSupervisorActions(coordinators.get(0), supervisors, projects, requests);
         }
 
     }

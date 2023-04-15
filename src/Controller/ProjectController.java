@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class ProjectController implements IProjectController{
-    private final ProjectDataHandler dataHandler;
+    private IProjectDataHandler dataHandler;
 
-    public ProjectController() throws IOException {
-        this.dataHandler = new ProjectDataHandler();
+    public ProjectController(IProjectDataHandler projectDataHandler) throws IOException {
+        this.dataHandler = projectDataHandler;
     }
 
     public Project createProject(String title,List<Project> projects, Supervisor supervisor) throws IOException {

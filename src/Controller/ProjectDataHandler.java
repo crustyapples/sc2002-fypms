@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDataHandler {
+public class ProjectDataHandler implements IProjectDataHandler{
     private static final String PROJECT_FILE = "database/Projects_List.txt";
 
     public List<Project> loadProjectsFromDatabase(List<User> users) throws IOException {

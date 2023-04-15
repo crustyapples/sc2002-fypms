@@ -85,17 +85,7 @@ public class StudentCLI {
 
                         break;
                     case 3:
-                        // Call studentController.selectProjectForStudent() with the selected project
- /*                       System.out.println("Enter the ProjectID:");
-                        int projectChoice = scanner.nextInt();
-                        List<Project> availableProjects = studentController.getAvailableProjects(projects);
 
-                        for (Project availableProject : availableProjects) {
-                            if (availableProject.getProjectID() == projectChoice) {
-                                System.out.println("Sending Request...");
-                                studentController.selectProjectForStudent(student, availableProject, coordinator, requests, projects);
-                            }
-                        }*/
                         int projectChoice = -1;
                         while (projectChoice == -1) {
                             try {

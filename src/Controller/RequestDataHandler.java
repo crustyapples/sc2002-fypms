@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestDataHandler {
+public class RequestDataHandler implements IRequestDataHandler{
     private static final String REQUEST_FILE = "database/Requests_List.txt";
 
     public List<Request> loadRequestsFromDatabase(List<User> users, List<Project> projects) throws IOException {

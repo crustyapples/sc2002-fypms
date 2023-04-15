@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class RequestController implements IRequestController{
-    private RequestDataHandler requestDataHandler;
+    private IRequestDataHandler requestDataHandler;
 
-    public RequestController() throws IOException {
-        requestDataHandler = new RequestDataHandler();
+    public RequestController(IRequestDataHandler requestDataHandler) throws IOException {
+        this.requestDataHandler = requestDataHandler;
     }
 
     public Request createRequest(User sender, User recipient, RequestType requestType, Project project, String body, List<Request> requests) throws IOException {

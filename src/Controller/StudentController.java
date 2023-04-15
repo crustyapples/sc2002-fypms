@@ -8,14 +8,14 @@ import java.util.List;
 
 public class StudentController extends UserController implements IStudentController{
 
-    private RequestController requestController;
-    private ProjectController projectController;
-    private StudentDataHandler studentDataHandler;
+    private IRequestController requestController;
+    private IProjectController projectController;
+    private IStudentDataHandler studentDataHandler;
 
-    public StudentController() throws IOException {
-        requestController = new RequestController();
-        projectController = new ProjectController();
-        this.studentDataHandler = new StudentDataHandler();
+    public StudentController(IStudentDataHandler studentDataHandler, IProjectController projectController, IRequestController requestController) throws IOException {
+        this.projectController = projectController;
+        this.studentDataHandler = studentDataHandler;
+        this.requestController = requestController;
     }
     public List<Project> getAvailableProjects(List<Project> projects) {
         List<Project> availableProjects = new ArrayList<>();
