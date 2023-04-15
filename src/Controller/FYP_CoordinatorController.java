@@ -9,7 +9,8 @@ import java.util.Objects;
 
 public class FYP_CoordinatorController extends SupervisorController {
     private IFYP_CoordinatorDataHandler dataHandler;
-    public FYP_CoordinatorController() throws IOException {
+    public FYP_CoordinatorController(IStudentController studentController, IProjectController projectController, IRequestController requestController) throws IOException {
+        super(studentController,projectController,requestController);
     }
 
     public void viewIncomingRequests(User user) {

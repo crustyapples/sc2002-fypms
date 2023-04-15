@@ -58,7 +58,7 @@ public class Main {
         }
 
         else if (user instanceof FYP_Coordinator) {
-            FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController();
+            FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController(studentController, projectController, requestController);
             FYP_CoordinatorCLI fypCoordinatorMenu = new FYP_CoordinatorCLI(fypCoordinatorController, (FYP_Coordinator) user);
             fypCoordinatorMenu.handleSupervisorActions((FYP_Coordinator) user,(FYP_Coordinator) user, supervisors, projects, requests, students);
         }
