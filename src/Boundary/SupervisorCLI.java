@@ -29,16 +29,20 @@ public class SupervisorCLI {
     public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, Integer requestChoice, SupervisorController supervisorController) throws IOException {
         for (Request request : user.getRequests()) {
             if (request.getRequestID() == requestChoice) {
+                manageRequestCheck = 1;
                 System.out.println(request.viewDetails());
                 System.out.println("Do you want to \n1. Approve OR\n2. Reject");
                 Integer manageChoice = scanner.nextInt();
                 if (manageChoice == 1) {
-                    manageRequestCheck = 1;
                     supervisorController.approveRequest(request,requests);
                     supervisorController.updateTitle(request.getProject(),request.getBody(),projects);
-                    return;
+                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Project approved!\n" + ConsoleColors.RESET);
+                } else if (manageChoice == 2) {
+                    System.out.println(ConsoleColors.RED_BRIGHT + "Project rejected!\n" + ConsoleColors.RESET);
                 }
+                return;
             }
+
         }
         System.out.println(ConsoleColors.RED_BRIGHT + "There is no such project! Try again!\n" + ConsoleColors.RESET);
     }
@@ -134,6 +138,7 @@ public class SupervisorCLI {
                         break;
                     case 5:
                         supervisorController.viewIncomingRequests(supervisor);
+                        manageRequestCheck = -1;
                         Integer manageChoice = -1;
                         while (manageChoice == -1) {
                             try {
