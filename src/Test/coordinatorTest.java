@@ -1,6 +1,7 @@
-package src;
+package src.Test;
 
-import src.Boundary.*;
+import src.Boundary.FYP_CoordinatorCLI;
+import src.Boundary.SupervisorCLI;
 import src.Controller.*;
 import src.Entity.*;
 
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupervisorTest {
+public class coordinatorTest {
     public static void main (String[] args) throws IOException {
 
         SupervisorDataHandler supervisorDataHandler = new SupervisorDataHandler();
@@ -33,15 +34,15 @@ public class SupervisorTest {
 
 
         ProjectDataHandler projectDataHandler = new ProjectDataHandler();
-        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors,students);
+        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(users);
 
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users,projects);
 
-        Supervisor testSupervisor = supervisors.get(0);
-        SupervisorController supervisorController = new SupervisorController();
-        SupervisorCLI supervisorCLI = new SupervisorCLI(supervisorController, testSupervisor);
+        FYP_Coordinator testCoordinator = fypCoordinators.get(0);
+        FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController();
+        FYP_CoordinatorCLI fypCoordinatorCLI = new FYP_CoordinatorCLI(fypCoordinatorController, testCoordinator);
 
-        supervisorCLI.handleSupervisorActions(testSupervisor,fypCoordinators.get(0),supervisors,projects,requests);
+        fypCoordinatorCLI.handleSupervisorActions(testCoordinator,fypCoordinators.get(0),supervisors,projects,requests, students);
     }
 }

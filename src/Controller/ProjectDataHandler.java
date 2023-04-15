@@ -9,7 +9,7 @@ import java.util.List;
 public class ProjectDataHandler {
     private static final String PROJECT_FILE = "database/Projects_List.txt";
 
-    public List<Project> loadProjectsFromDatabase(List<Supervisor> supervisors, List<Student> students) throws IOException {
+    public List<Project> loadProjectsFromDatabase(List<User> users) throws IOException {
         List<Project> projects = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(PROJECT_FILE))) {
             String line;
@@ -18,18 +18,18 @@ public class ProjectDataHandler {
                 String[] data = line.split("\t");
 
                 String supervisorName = data[0];
-                Supervisor supervisor = findSupervisorByName(supervisors, supervisorName);
+                Supervisor supervisor = findSupervisorByName(users, supervisorName);
 
                 String title = data[1];
                 String status = data[2];
 
                 String studentID = data[3];
                 studentID = (studentID.equals("NA")) ? null : studentID;
-                Student student = findStudentByID(students,studentID);
+                Student student = (Student) findStudentByID(users,studentID);
 
                 String replacementSupervisorName = data[4];
                 replacementSupervisorName = (replacementSupervisorName.equals("NA")) ? null : replacementSupervisorName;
-                Supervisor replacementSupervisor = findSupervisorByName(supervisors, replacementSupervisorName);
+                Supervisor replacementSupervisor = findSupervisorByName(users, replacementSupervisorName);
 
                 ProjectStatus projectStatus = getProjectStatusEnum(status);
 
@@ -79,20 +79,26 @@ public class ProjectDataHandler {
     }
 
 
-    private Supervisor findSupervisorByName(List<Supervisor> supervisors, String name) {
-        for (Supervisor supervisor : supervisors) {
-            if (supervisor.getName().equals(name)) {
-                return supervisor;
+    private Supervisor findSupervisorByName(List<User> users, String name) {
+        for (User user : users) {
+            if (user instanceof Supervisor) {
+                if (user.getName().equals(name)) {
+                    return (Supervisor) user;
+                }
             }
+
         }
         return null;
     }
 
-    private Student findStudentByID(List<Student> students, String userID) {
-        for (Student student : students) {
-            if (student.getUserID().equals(userID)) {
-                return student;
+    private Student findStudentByID(List<User> users, String userID) {
+        for (User user : users) {
+            if (user instanceof Student) {
+                if (user.getUserID().equals(userID)) {
+                    return (Student) user;
+                }
             }
+
         }
         return null;
     }

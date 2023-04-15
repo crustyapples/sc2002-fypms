@@ -10,6 +10,7 @@ import src.Entity.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -17,34 +18,33 @@ public class Main {
         FYP_CoordinatorDataHandler fypData = new FYP_CoordinatorDataHandler();
         StudentDataHandler stdData = new StudentDataHandler();
 
-        List<User> users = new ArrayList<>();
-
         List<Supervisor> supervisors = svData.loadFacultyFromDatabase();
-
-        for (Supervisor supervisor : supervisors) {
-            users.add((User) supervisor);
-        }
-
-        // Cast and add coordinators to users
         List<FYP_Coordinator> coordinators = fypData.loadCoordinatorsFromDatabase();
-        for (FYP_Coordinator coordinator : coordinators) {
-            users.add((User) coordinator);
-        }
-
-        // Cast and add students to users
         List<Student> students = stdData.loadStudentsFromDatabase();
-        for (Student student : students) {
-            users.add((User) student);
+
+        List<Supervisor> supervisorsToRemove = new ArrayList<>();
+        for (Supervisor supervisor : supervisors) {
+            for (FYP_Coordinator coordinator : coordinators) {
+                if (supervisor.getUserID().equals(coordinator.getUserID())) {
+                    supervisorsToRemove.add(supervisor);
+                }
+            }
         }
+        supervisors.removeAll(supervisorsToRemove);
+
+        List<User> users = new ArrayList<>();
+        users.addAll(supervisors);
+        users.addAll(coordinators);
+        users.addAll(students);
 
         ProjectDataHandler projectDataHandler = new ProjectDataHandler();
-        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors,students);
+        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(users);
 
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users, projects);
 
         UserController userController = new UserController();
-        LoginCLI login = new LoginCLI(userController);
+        LoginCLI login = new LoginCLI(userController, users);
 
         User user = login.authenticateUser();
 

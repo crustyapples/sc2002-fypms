@@ -140,7 +140,7 @@ public class SupervisorCLI {
                             for (Supervisor replacementSupervisor : supervisors) {
                                 if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
                                     System.out.println("Requesting...");
-                                    supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests);
+                                    supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests, projects);
                                 }
                             }
                         }

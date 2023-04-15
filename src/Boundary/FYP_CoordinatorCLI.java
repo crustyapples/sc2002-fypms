@@ -60,7 +60,7 @@ public class FYP_CoordinatorCLI {
                         if (manageChoice == 1) {
                             fypCoordinatorController.approveRequest(request, requests);
                             System.out.println("Transferring...");
-                            fypCoordinatorController.transferStudentToSupervisor(request.getProject(), request.getProject().getReplacementSupervisor(), projects);
+                            fypCoordinatorController.transferStudentToSupervisor(request.getProject(), projects);
                         } else {
                             fypCoordinatorController.rejectRequest(request, requests);
                         }
@@ -109,15 +109,12 @@ public class FYP_CoordinatorCLI {
 
             switch (choice) {
                 case 1:
-                    //System.out.println("Change Password: ");
+
                     System.out.println("Enter new password: ");
                     String newPassword = scanner.nextLine();
-                    supervisor.changePassword(newPassword);
-
                     String userID = supervisor.getUserID();
                     UserController userController = new UserController();
-                    //How to get the userPasswords?
-                    //userController.changeUserPassword(userPasswords, userID, newPassword);
+                    userController.changeUserPassword(userID, newPassword);
                     System.out.println("You will now be logged out. Please login again!");
                     exit = true;
                     break;

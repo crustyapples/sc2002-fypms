@@ -12,16 +12,26 @@ import java.util.List;
 import java.util.Map;
 
 public class UserDataHandler {
-    private static final String USER_PASSWORDS_FILE = "database/User_Password.txt";
-
+    private static final String USER_PASSWORDS_FILE = "database/User_Passwords.txt";
 
     public Map<String, String> loadUserPasswordFromDatabase(List<User> users) throws IOException {
         Map<String, String> userPasswords = new HashMap<>();
-        for (User user : users) {
-            userPasswords.put(user.getUserID(), "password");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(USER_PASSWORDS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                String[] data = line.split("\t");
+                String userID = data[0];
+                String password = data[1];
+                userPasswords.put(userID,password);
+            }
         }
+
         return userPasswords;
     }
+
+
     public void saveUserPasswordsToDatabase(Map<String, String> userPasswords) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_PASSWORDS_FILE))) {
             for (Map.Entry<String, String> entry : userPasswords.entrySet()) {
@@ -30,13 +40,20 @@ public class UserDataHandler {
             }
         }
     }
-    public Map<String, String> loadUserNameFromDatabase(List<User> users) throws IOException {
-        Map<String, String> userName = new HashMap<>();
-        for (User user : users) {
-            userName.get(user.getUserID());
+
+    public void updateUserPassword(String userID, String newPassword) throws IOException {
+        Map<String, String> userPasswords = loadUserPasswordFromDatabase(null); // Load existing user passwords
+
+        // Update password in the map
+        if (userPasswords.containsKey(userID)) {
+            userPasswords.put(userID, newPassword);
+        } else {
+            throw new IllegalArgumentException("User ID not found: " + userID);
         }
-        return userName;
+
+        saveUserPasswordsToDatabase(userPasswords); // Save updated user passwords to the database
     }
+
     public List<User> getListOfUsers () {
         List<User> users = new ArrayList<>();
         try {

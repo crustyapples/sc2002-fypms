@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentController {
+public class StudentController extends UserController{
 
     private RequestController requestController;
     private ProjectController projectController;
@@ -33,7 +33,7 @@ public class StudentController {
 
     public void selectProjectForStudent(Student student, Project project, FYP_Coordinator coordinator, List<Request> requests, List<Project> projects) throws IOException {
         project.setProjectStatus(ProjectStatus.RESERVED);
-        projectController.updateProject(project, project.getTitle(), ProjectStatus.RESERVED, student, project.getSupervisor(), projects);
+        projectController.updateProject(projects);
 
         Request newRequest = requestController.createRequest(student, coordinator, RequestType.REGISTER, project, null, requests);
         student.addRequest(newRequest);

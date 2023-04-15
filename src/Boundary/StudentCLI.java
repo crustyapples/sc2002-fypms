@@ -47,12 +47,8 @@ public class StudentCLI {
                     System.out.println("Change Password: ");
                     System.out.println("Enter new password: ");
                     String newPassword = scanner.nextLine();
-                    student.changePassword(newPassword);
-
                     String userID = student.getUserID();
-                    UserController userController = new UserController();
-                    //How to get the userPasswords?
-                    //userController.changeUserPassword(userPasswords, userID, newPassword);
+                    studentController.changeUserPassword(userID, newPassword);
                     System.out.println("You will now be logged out. Please login again!");
                     exit = true;
                     break;

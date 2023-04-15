@@ -10,9 +10,9 @@ public class SupervisorController extends UserController{
     protected StudentController studentController;
 
     public SupervisorController() throws IOException {
-        studentController = new StudentController();
         projectController = new ProjectController();
         requestController = new RequestController();
+        studentController = new StudentController();
     }
 
     public Project createProject(Supervisor supervisor, String title, List<Project> projects) throws IOException {
@@ -24,7 +24,8 @@ public class SupervisorController extends UserController{
 
             for (Project supervisorProject : project.getSupervisor().getProjects()) {
                 if (supervisorProject.getProjectStatus() != ProjectStatus.ALLOCATED) {
-                    projectController.updateProject(supervisorProject, supervisorProject.getTitle(), ProjectStatus.UNAVAILABLE, null, supervisorProject.getSupervisor(), projects);
+                    project.setProjectStatus(ProjectStatus.UNAVAILABLE);
+                    projectController.updateProject(projects);
                 }
             }
         }
@@ -33,7 +34,8 @@ public class SupervisorController extends UserController{
     }
 
     public Project updateTitle(Project project, String newTitle, List<Project> projects) throws IOException {
-        projectController.updateProject(project,newTitle,project.getProjectStatus(), project.getStudent(),project.getSupervisor(),projects);
+        project.setTitle(newTitle);
+        projectController.updateProject(projects);
         return project;
     }
 
@@ -77,8 +79,10 @@ public class SupervisorController extends UserController{
         requestController.rejectRequest(request, requests);
     }
 
-    public void requestStudentTransferToAnotherSupervisor(Supervisor supervisor, Project project, Supervisor newSupervisor, FYP_Coordinator coordinator,List<Request> requests) throws IOException {
+    public void requestStudentTransferToAnotherSupervisor(Supervisor supervisor, Project project, Supervisor newSupervisor, FYP_Coordinator coordinator,List<Request> requests, List<Project> projects) throws IOException {
         project.setReplacementSupervisor(newSupervisor);
+        projectController.updateProject(projects);
+
         Request newRequest = requestController.createRequest(supervisor, coordinator, RequestType.TRANSFER_STUDENT, project,newSupervisor.getUserID(),requests);
         supervisor.addRequest(newRequest);
         coordinator.addRequest(newRequest);

@@ -1,4 +1,4 @@
-package src;
+package src.Test;
 
 import src.Boundary.*;
 import src.Controller.*;
@@ -32,7 +32,7 @@ public class StudentTest {
 
 
         ProjectDataHandler projectDataHandler = new ProjectDataHandler();
-        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors,students);
+        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(users);
 
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users,projects);

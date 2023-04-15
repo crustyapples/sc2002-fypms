@@ -1,4 +1,4 @@
-package src;
+package src.Test;
 import src.Boundary.*;
 import src.Controller.*;
 import src.Entity.*;
@@ -20,8 +20,7 @@ public class RequestsTest {
         StudentDataHandler studentDataHandler = new StudentDataHandler();
         List<Student> students = studentDataHandler.loadStudentsFromDatabase();
 
-        ProjectDataHandler projectDataHandler = new ProjectDataHandler();
-        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(supervisors,students);
+
 
         List<Supervisor> supervisorsToRemove = new ArrayList<>();
 
@@ -49,7 +48,8 @@ public class RequestsTest {
         // Add all the students to the users list
         users.addAll(students);
 
-
+        ProjectDataHandler projectDataHandler = new ProjectDataHandler();
+        List<Project> projects = projectDataHandler.loadProjectsFromDatabase(users);
 
         RequestDataHandler requestDataHandler = new RequestDataHandler();
         List<Request> requests = requestDataHandler.loadRequestsFromDatabase(users, projects);

@@ -34,19 +34,12 @@ public class FYP_CoordinatorController extends SupervisorController {
 
             project.setStudent(student);
             project.setProjectStatus(ProjectStatus.ALLOCATED);
-            project.getSupervisor().setNumProjectSupervised(project.getSupervisor().getNumProjectsSupervised()+1);
-            projectController.updateProject(project,project.getTitle(),project.getProjectStatus(),project.getStudent(),project.getSupervisor(),projects);
+            projectController.updateProject(projects);
+
+            project.getSupervisor().setNumProjectSupervised(project.getSupervisor().getNumProjectsSupervised() + 1);
+            closeSupervisorProjectAvailability(project.getSupervisor(),projects);
+
             System.out.println("Projects supervised  = " + project.getSupervisor().getNumProjectsSupervised());
-
-            if (project.getSupervisor().getNumProjectsSupervised() == 2) {
-
-                for (Project supervisorProject : project.getSupervisor().getProjects()) {
-                    if (supervisorProject.getProjectStatus() != ProjectStatus.ALLOCATED) {
-                        projectController.updateProject(supervisorProject, supervisorProject.getTitle(), ProjectStatus.UNAVAILABLE, null, supervisorProject.getSupervisor(), projects);
-                    }
-                }
-            }
-
             return true;
         }
 
@@ -62,24 +55,18 @@ public class FYP_CoordinatorController extends SupervisorController {
         student.setDeRegistered(true);
         studentController.updateStudent(student,students);
 
+        project.getSupervisor().setNumProjectSupervised(project.getSupervisor().getNumProjectsSupervised() - 1);
+        releaseSupervisorProjectAvailability(project.getSupervisor(), projects);
+
         project.setStudent(null);
         project.setProjectStatus(ProjectStatus.AVAILABLE);
-        project.getSupervisor().setNumProjectSupervised(project.getSupervisor().getNumProjectsSupervised()-1);
-
-        if (project.getSupervisor().getNumProjectsSupervised() < 2) {
-
-            for (Project supervisorProject : project.getSupervisor().getProjects()) {
-                if (supervisorProject.getProjectStatus() != ProjectStatus.ALLOCATED) {
-                    projectController.updateProject(supervisorProject, supervisorProject.getTitle(), ProjectStatus.AVAILABLE,null, supervisorProject.getSupervisor(), projects);
-                }
-            }
-        }
-
-        projectController.updateProject(project,project.getTitle(),project.getProjectStatus(),null,project.getSupervisor(),projects);
+        projectController.updateProject(projects);
     }
 
     public void unreserveProject(Project project, List<Project> projects) throws IOException {
-        projectController.updateProject(project, project.getTitle(), ProjectStatus.AVAILABLE, null,  project.getSupervisor(), projects);
+        project.setStudent(null);
+        project.setProjectStatus(ProjectStatus.AVAILABLE);
+        projectController.updateProject(projects);
     }
 
     public List<Project> viewProjectsByFilter(List<Project> projects, int filter) {
@@ -92,8 +79,41 @@ public class FYP_CoordinatorController extends SupervisorController {
         // Implement report generation logic based on the projects data
     }
 
-    public void transferStudentToSupervisor(Project project, Supervisor newSupervisor,List<Project> projects) throws IOException {
-        projectController.updateProject(project, project.getTitle(), project.getProjectStatus(), project.getStudent(),newSupervisor, projects);
+    public void transferStudentToSupervisor(Project project, List<Project> projects) throws IOException {
+
+        project.getSupervisor().setNumProjectSupervised(project.getSupervisor().getNumProjectsSupervised() - 1);
+        releaseSupervisorProjectAvailability(project.getSupervisor(), projects);
+
+        project.getReplacementSupervisor().setNumProjectSupervised(project.getReplacementSupervisor().getNumProjectsSupervised()+1);
+        closeSupervisorProjectAvailability(project.getReplacementSupervisor(),projects);
+
+        project.setSupervisor(project.getReplacementSupervisor());
+        projectController.updateProject(projects);
+    }
+
+    private void releaseSupervisorProjectAvailability(Supervisor supervisor, List<Project> projects) throws IOException {
+
+        if (supervisor.getNumProjectsSupervised() < 2) {
+
+            for (Project supervisorProject : supervisor.getProjects()) {
+                if (supervisorProject.getProjectStatus() != ProjectStatus.ALLOCATED) {
+                    supervisorProject.setProjectStatus(ProjectStatus.AVAILABLE);
+                    projectController.updateProject(projects);
+                }
+            }
+        }
+    }
+
+    private void closeSupervisorProjectAvailability(Supervisor supervisor, List<Project> projects) throws IOException {
+
+        if (supervisor.getNumProjectsSupervised() == 2) {
+            for (Project supervisorProject : supervisor.getProjects()) {
+                if (supervisorProject.getProjectStatus() != ProjectStatus.ALLOCATED) {
+                    supervisorProject.setProjectStatus(ProjectStatus.UNAVAILABLE);
+                    projectController.updateProject(projects);
+                }
+            }
+        }
     }
 }
 
