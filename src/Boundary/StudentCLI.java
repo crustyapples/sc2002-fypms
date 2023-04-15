@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import src.Controller.IStudentController;
 import src.Controller.StudentController;
 import src.Controller.UserController;
 import src.Controller.UserDataHandler;
@@ -13,10 +14,10 @@ import src.Entity.*;
 
 public class StudentCLI {
     private Scanner scanner;
-    private StudentController studentController;
+    private IStudentController studentController;
     private Student student;
 
-    public StudentCLI(StudentController studentController, Student student) {
+    public StudentCLI(IStudentController studentController, Student student) {
         this.studentController = studentController;
         this.student = student;
         scanner = new Scanner(System.in);

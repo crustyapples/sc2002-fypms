@@ -5,7 +5,7 @@ import src.Entity.*;
 import java.io.IOException;
 import java.util.List;
 
-public class RequestController {
+public class RequestController implements IRequestController{
     private RequestDataHandler requestDataHandler;
 
     public RequestController() throws IOException {

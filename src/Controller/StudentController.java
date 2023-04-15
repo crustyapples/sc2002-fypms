@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentController extends UserController{
+public class StudentController extends UserController implements IStudentController{
 
     private RequestController requestController;
     private ProjectController projectController;

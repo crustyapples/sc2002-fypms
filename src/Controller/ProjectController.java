@@ -8,7 +8,7 @@ import src.Entity.Supervisor;
 import java.io.IOException;
 import java.util.List;
 
-public class ProjectController {
+public class ProjectController implements IProjectController{
     private final ProjectDataHandler dataHandler;
 
     public ProjectController() throws IOException {

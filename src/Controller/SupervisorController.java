@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class SupervisorController extends UserController{
-    protected ProjectController projectController;
-    protected RequestController requestController;
-    protected StudentController studentController;
+    protected IProjectController projectController;
+    protected IRequestController requestController;
+    protected IStudentController studentController;
 
-    public SupervisorController() throws IOException {
-        projectController = new ProjectController();
-        requestController = new RequestController();
-        studentController = new StudentController();
+    public SupervisorController(IStudentController studentController, IProjectController projectController, IRequestController requestController) throws IOException {
+        this.projectController = projectController;
+        this.studentController = studentController;
+        this.requestController = requestController;
+
     }
 
     public Project createProject(Supervisor supervisor, String title, List<Project> projects) throws IOException {

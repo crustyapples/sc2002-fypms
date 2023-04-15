@@ -48,8 +48,11 @@ public class Main {
 
         User user = login.authenticateUser();
 
+        IProjectController projectController = new ProjectController();
+        IRequestController requestController = new RequestController();
+        IStudentController studentController = new StudentController();
+
         if (user instanceof Student) {
-            StudentController studentController = new StudentController();
             StudentCLI studentMenu = new StudentCLI(studentController, (Student) user);
             studentMenu.handleStudentActions((Student) user, projects, requests, coordinators.get(0));
         }
@@ -61,7 +64,7 @@ public class Main {
         }
 
         else if (user instanceof Supervisor) {
-            SupervisorController supervisorController = new SupervisorController();
+            SupervisorController supervisorController = new SupervisorController(studentController, projectController, requestController);
             SupervisorCLI supervisorMenu = new SupervisorCLI(supervisorController, (Supervisor) user);
             supervisorMenu.handleSupervisorActions((Supervisor) user, coordinators.get(0), supervisors, projects, requests);
         }

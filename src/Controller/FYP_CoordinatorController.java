@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FYP_CoordinatorController extends SupervisorController {
+    private IFYP_CoordinatorDataHandler dataHandler;
     public FYP_CoordinatorController() throws IOException {
     }
 
