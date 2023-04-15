@@ -8,6 +8,7 @@ import java.util.*;
 import src.ConsoleColors;
 import src.Controller.UserController;
 import src.Controller.*;
+import src.CustomExceptions.InvalidInputException;
 import src.Entity.User;
 
 public class LoginCLI {
@@ -32,33 +33,55 @@ public class LoginCLI {
         boolean exit = false;
         while(!exit) {
             loginMenu();
-            System.out.print("Enter your choice: ");
-            int loginChoice = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                System.out.print("Enter your choice: ");
+                int loginChoice = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (loginChoice) {
-                case 1:
-                    System.out.println("User ID: ");
-                    String userID = scanner.nextLine();
-                    System.out.print("Enter your password: ");
-                    String password = scanner.nextLine();
-                    User user = userController.loginUser(users,userID,password);
-                    if (user != null) {
-                        System.out.println(ConsoleColors.GREEN_BRIGHT + "Login successful!" + ConsoleColors.RESET);
-                        System.out.println(ConsoleColors.BLUE_UNDERLINED + "Welcome, " + user.getName() + "!" + ConsoleColors.RESET);
-                        return user;
-                    } else {
-                        System.out.println(ConsoleColors.RED_BRIGHT + "Invalid user ID or password. Please try again!\n" + ConsoleColors.RESET);
+                switch (loginChoice) {
+                    case 1:
+                        int userCheck = -1;
+                        while (userCheck == -1) {
+                            System.out.println("User ID: ");
+                            String userID = scanner.nextLine();
+                            System.out.print("Enter your password: ");
+                            String password = scanner.nextLine();
+                            User user = userController.loginUser(users,userID,password);
+
+
+                            try {
+                                if (user != null) {
+                                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Login successful!" + ConsoleColors.RESET);
+                                    System.out.println(ConsoleColors.BLUE_UNDERLINED + "Welcome, " + user.getName() + "!" + ConsoleColors.RESET);
+                                    return user;
+                                } else {
+                                    throw new InvalidInputException.InvalidUserIDPasswordException();
+                                }
+
+                            } catch(InvalidInputException.InvalidUserIDPasswordException e) {
+                                userCheck = -1;
+                                System.out.println(e.getMessage());
+                            }
+
+                        }
+                    case 2:
+                        System.out.println("Goodbye!");
+                        exit = true;
                         break;
-                    }
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println(ConsoleColors.RED_BRIGHT +"Invalid choice! Please try again!\n" + ConsoleColors.RESET);
-                    break;
 
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println(ConsoleColors.RED_BRIGHT +"Invalid choice! Please try again!\n" + ConsoleColors.RESET);
+                        break;
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n"+ ConsoleColors.RESET);
+                scanner.next(); //Clear the invalid input
             }
+
 
         }
 

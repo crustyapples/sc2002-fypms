@@ -22,5 +22,11 @@ public class InvalidInputException {
         }
     }
 
+    public static class InvalidUserIDPasswordException extends Exception {
+        public InvalidUserIDPasswordException() {
+            super(ConsoleColors.RED_BRIGHT + "Invalid user ID or password. Please try again!\n" + ConsoleColors.RESET);
+        }
+    }
+
 
 }
