@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import src.ConsoleColors;
 import src.Controller.SupervisorController;
-import src.Controller.UserController;
 import src.Entity.FYP_Coordinator;
 import src.Entity.Project;
 import src.Entity.Request;
@@ -19,6 +18,7 @@ public class SupervisorCLI {
     public Scanner scanner;
     private SupervisorController supervisorController;
     private Supervisor supervisor;
+    private int manageRequestCheck = -1;
 
     public SupervisorCLI(SupervisorController supervisorController, Supervisor supervisor) {
         this.supervisorController = supervisorController;
@@ -33,6 +33,7 @@ public class SupervisorCLI {
                 System.out.println("Do you want to \n1. Approve OR\n2. Reject");
                 Integer manageChoice = scanner.nextInt();
                 if (manageChoice == 1) {
+                    manageRequestCheck = 1;
                     supervisorController.approveRequest(request,requests);
                     supervisorController.updateTitle(request.getProject(),request.getBody(),projects);
                     return;
@@ -145,11 +146,13 @@ public class SupervisorCLI {
                                     Integer requestChoice = -1;
                                     while (requestChoice == -1) {
                                         try {
+                                            while (manageRequestCheck == -1) {
+                                                System.out.println("Enter the Request ID of the request that you want to handle: ");
+                                                requestChoice = scanner.nextInt();
+                                                scanner.nextLine();
+                                                manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
+                                            }
 
-                                            System.out.println("Enter the Request ID of the request that you want to handle: ");
-                                            requestChoice = scanner.nextInt();
-                                            scanner.nextLine();
-                                            manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
                                         } catch (InputMismatchException e) {
                                             requestChoice = -1;
                                             System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n" + ConsoleColors.RESET);
