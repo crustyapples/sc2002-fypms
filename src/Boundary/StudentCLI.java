@@ -11,6 +11,7 @@ import src.Controller.IStudentController;
 import src.Controller.StudentController;
 import src.Controller.UserController;
 import src.Controller.UserDataHandler;
+import src.CustomExceptions.InvalidInputException;
 import src.CustomExceptions.ProjectsException;
 import src.CustomExceptions.ProjectsException.ProjectSelectionNotAllowedException;
 import src.Entity.*;
@@ -85,32 +86,57 @@ public class StudentCLI {
 
                         break;
                     case 3:
-
                         int projectChoice = -1;
-                        while (projectChoice == -1) {
                             try {
-                                System.out.println("Enter the ProjectID:");
-                                projectChoice = scanner.nextInt();
-                                List<Project> availableProjects = studentController.getAvailableProjects(projects);
-                                found: {
-                                    for (Project availableProject : availableProjects) {
-                                        if (availableProject.getProjectID() == projectChoice) {
-                                            System.out.println("Sending Request...");
-                                            studentController.selectProjectForStudent(student, availableProject, coordinator, requests, projects);
-                                            break found;
+                                try {
+                                    if (student.getRegistered()) {
+                                        throw new ProjectsException.NoAccessToProjectListException();
+                                    } else if (student.getDeRegistered()) {
+                                        throw new ProjectsException.ProjectSelectionNotAllowedException();
+                                    } else {
+                                        while (projectChoice == -1) {
+                                            System.out.println("Enter 0 to go back to view available projects");
+                                            System.out.println("Enter the ProjectID:");
+                                        projectChoice = scanner.nextInt();
+                                        if (projectChoice == 0) {
+                                            break;
+                                        } else {
+                                            List<Project> availableProjects = studentController.getAvailableProjects(projects);
+                                            try {
+                                                found:
+                                                {
+                                                    for (Project availableProject : availableProjects) {
+                                                        if (availableProject.getProjectID() == projectChoice) {
+                                                            System.out.println("Sending Request...");
+                                                            studentController.selectProjectForStudent(student, availableProject, coordinator, requests, projects);
+                                                            break found;
+                                                        }
+                                                    }
+
+                                                    throw new InvalidInputException.InvalidProjectIDException();
+                                                }
+
+                                            } catch (InvalidInputException.InvalidProjectIDException e) {
+                                                projectChoice = -1;
+                                                System.out.println(e.getMessage());
+                                            }
+                                        }
                                         }
                                     }
 
-                                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid ProjectID! Please try again!\n" + ConsoleColors.RESET);
+                                } catch (InputMismatchException e) {
+                                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n"+ ConsoleColors.RESET);
+                                    scanner.next(); //Clear the invalid input
                                     projectChoice = -1;
                                 }
 
-                            } catch (InputMismatchException e) {
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n"+ ConsoleColors.RESET);
-                                scanner.next(); //Clear the invalid input
-                                projectChoice = -1;
+                            } catch (ProjectsException.NoAccessToProjectListException e) {
+                                System.out.println(e.getMessage());
+                            } catch (ProjectSelectionNotAllowedException e) {
+                                System.out.println(e.getMessage());
                             }
-                        }
+
+
 
 
 
