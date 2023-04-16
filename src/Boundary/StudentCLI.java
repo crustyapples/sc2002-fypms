@@ -198,6 +198,8 @@ public class StudentCLI {
 
                         break;
                     case 0:
+                        MainMenuUI menuUI = new MainMenuUI();
+                        menuUI.enterMenu();
                         exit = true;
                         break;
                     default:

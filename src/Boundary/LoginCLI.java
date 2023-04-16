@@ -9,7 +9,7 @@ import src.ConsoleColors;
 import src.Controller.UserController;
 import src.Controller.*;
 import src.CustomExceptions.InvalidInputException;
-import src.Entity.User;
+import src.Entity.*;
 
 public class LoginCLI {
     private UserController userController;
@@ -25,8 +25,7 @@ public class LoginCLI {
     public void loginMenu() {
 
         System.out.println("1. Login");
-        System.out.println("2. Logout and Shutdown");
-        System.out.println("0. Exit");
+        System.out.println("0. Logout and Shutdown");
     }
 
     public User authenticateUser() throws IOException {
@@ -87,4 +86,6 @@ public class LoginCLI {
 
         return null;
     }
+
+
 }
