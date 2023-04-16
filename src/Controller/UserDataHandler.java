@@ -11,9 +11,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type User data handler.
+ */
 public class UserDataHandler {
     private static final String USER_PASSWORDS_FILE = "database/User_Passwords.txt";
 
+    /**
+     * Load user password from database map.
+     *
+     * @param users the users
+     * @return the map
+     * @throws IOException the io exception
+     */
     public Map<String, String> loadUserPasswordFromDatabase(List<User> users) throws IOException {
         Map<String, String> userPasswords = new HashMap<>();
 
@@ -32,6 +42,12 @@ public class UserDataHandler {
     }
 
 
+    /**
+     * Save user passwords to database.
+     *
+     * @param userPasswords the user passwords
+     * @throws IOException the io exception
+     */
     public void saveUserPasswordsToDatabase(Map<String, String> userPasswords) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_PASSWORDS_FILE))) {
             for (Map.Entry<String, String> entry : userPasswords.entrySet()) {
@@ -41,6 +57,13 @@ public class UserDataHandler {
         }
     }
 
+    /**
+     * Update user password.
+     *
+     * @param userID      the user id
+     * @param newPassword the new password
+     * @throws IOException the io exception
+     */
     public void updateUserPassword(String userID, String newPassword) throws IOException {
         Map<String, String> userPasswords = loadUserPasswordFromDatabase(null); // Load existing user passwords
 

@@ -6,12 +6,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Student controller.
+ */
 public class StudentController extends UserController implements IStudentController{
 
     private IRequestController requestController;
     private IProjectController projectController;
     private IStudentDataHandler studentDataHandler;
 
+    /**
+     * Instantiates a new Student controller.
+     *
+     * @param studentDataHandler the student data handler
+     * @param projectController  the project controller
+     * @param requestController  the request controller
+     * @throws IOException the io exception
+     */
     public StudentController(IStudentDataHandler studentDataHandler, IProjectController projectController, IRequestController requestController) throws IOException {
         this.projectController = projectController;
         this.studentDataHandler = studentDataHandler;

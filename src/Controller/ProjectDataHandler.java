@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Project data handler.
+ */
 public class ProjectDataHandler implements IProjectDataHandler{
     private static final String PROJECT_FILE = "database/Projects_List.txt";
 

@@ -5,6 +5,9 @@ import src.Entity.Student;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The interface Student data handler.
+ */
 public interface IStudentDataHandler {
 
     /**

@@ -1,9 +1,24 @@
 package src.Entity;
 
+/**
+ * The enum Project status.
+ */
 public enum ProjectStatus implements EnumInterface {
+    /**
+     * Available project status.
+     */
     AVAILABLE("Available"),
+    /**
+     * Reserved project status.
+     */
     RESERVED("Reserved"),
+    /**
+     * Unavailable project status.
+     */
     UNAVAILABLE("Unavailable"),
+    /**
+     * Allocated project status.
+     */
     ALLOCATED("Allocated");
 
     private final String label;

@@ -8,9 +8,18 @@ import src.Entity.Supervisor;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Project controller.
+ */
 public class ProjectController implements IProjectController{
     private IProjectDataHandler dataHandler;
 
+    /**
+     * Instantiates a new Project controller.
+     *
+     * @param projectDataHandler the project data handler
+     * @throws IOException the io exception
+     */
     public ProjectController(IProjectDataHandler projectDataHandler) throws IOException {
         this.dataHandler = projectDataHandler;
     }

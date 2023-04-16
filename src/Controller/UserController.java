@@ -7,10 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type User controller.
+ */
 public class UserController implements IUserController{
+    /**
+     * The User data handler.
+     */
     protected UserDataHandler userDataHandler;
 
 
+    /**
+     * Instantiates a new User controller.
+     */
     public UserController() {
         userDataHandler = new UserDataHandler();
     }

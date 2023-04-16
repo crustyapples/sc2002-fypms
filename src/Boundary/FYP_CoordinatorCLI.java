@@ -11,7 +11,13 @@ import src.Controller.FYP_CoordinatorController;
 import src.CustomExceptions.InvalidInputException;
 import src.Entity.*;
 
+/**
+ * The type Fyp coordinator cli.
+ */
 public class FYP_CoordinatorCLI extends SupervisorCLI{
+    /**
+     * The Scanner.
+     */
     public Scanner scanner;
     private FYP_CoordinatorController fypCoordinatorController;
     private FYP_Coordinator fypCoordinator;
@@ -20,6 +26,16 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
     private LoginCLI loginCLI;
     private PasswordChangerCLI passwordChangerCLI;
     private ProjectUpdaterCLI projectUpdaterCLI;
+
+    /**
+     * Instantiates a new Fyp coordinator cli.
+     *
+     * @param fypCoordinatorController the fyp coordinator controller
+     * @param fypCoordinator           the fyp coordinator
+     * @param loginCLI                 the login cli
+     * @param passwordChangerCLI       the password changer cli
+     * @param projectUpdaterCLI        the project updater cli
+     */
     public FYP_CoordinatorCLI(FYP_CoordinatorController fypCoordinatorController, FYP_Coordinator fypCoordinator, LoginCLI loginCLI,PasswordChangerCLI passwordChangerCLI, ProjectUpdaterCLI projectUpdaterCLI) {
         super(fypCoordinatorController, fypCoordinator, loginCLI, passwordChangerCLI, projectUpdaterCLI);
         this.fypCoordinatorController = fypCoordinatorController;
@@ -66,6 +82,17 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
     }
 
 
+    /**
+     * Handle supervisor actions.
+     *
+     * @param supervisor     the supervisor
+     * @param fypCoordinator the fyp coordinator
+     * @param supervisors    the supervisors
+     * @param projects       the projects
+     * @param requests       the requests
+     * @param students       the students
+     * @throws IOException the io exception
+     */
     public void handleSupervisorActions(Supervisor supervisor,  FYP_Coordinator fypCoordinator,List<Supervisor> supervisors,List<Project> projects, List<Request> requests, List<Student> students) throws IOException {
         boolean exit = false;
         while (!exit) {

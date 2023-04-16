@@ -1,8 +1,20 @@
 package src.Entity;
 
+/**
+ * The enum Request status.
+ */
 public enum RequestStatus implements EnumInterface {
+    /**
+     * Pending request status.
+     */
     PENDING("Pending"),
+    /**
+     * Approved request status.
+     */
     APPROVED("Approved"),
+    /**
+     * Rejected request status.
+     */
     REJECTED("Rejected");
     private final String label;
 

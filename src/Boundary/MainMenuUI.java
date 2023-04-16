@@ -8,11 +8,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Main menu ui.
+ */
 public class MainMenuUI {
+    /**
+     * Instantiates a new Main menu ui.
+     */
     public MainMenuUI(){
 
     }
 
+    /**
+     * Enter menu.
+     *
+     * @throws IOException the io exception
+     */
     public void enterMenu() throws IOException {
         SupervisorDataHandler svData = new SupervisorDataHandler();
         FYP_CoordinatorDataHandler fypData = new FYP_CoordinatorDataHandler();

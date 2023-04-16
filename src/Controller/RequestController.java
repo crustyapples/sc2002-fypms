@@ -5,9 +5,18 @@ import src.Entity.*;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Request controller.
+ */
 public class RequestController implements IRequestController{
     private IRequestDataHandler requestDataHandler;
 
+    /**
+     * Instantiates a new Request controller.
+     *
+     * @param requestDataHandler the request data handler
+     * @throws IOException the io exception
+     */
     public RequestController(IRequestDataHandler requestDataHandler) throws IOException {
         this.requestDataHandler = requestDataHandler;
     }

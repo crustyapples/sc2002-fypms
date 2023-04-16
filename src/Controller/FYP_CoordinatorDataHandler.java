@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Fyp coordinator data handler.
+ */
 public class FYP_CoordinatorDataHandler implements IFYP_CoordinatorDataHandler{
     private static final String COORDINATOR_FILE = "database/FYP_Coordinators_List.txt";
 

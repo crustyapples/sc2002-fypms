@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Request data handler.
+ */
 public class RequestDataHandler implements IRequestDataHandler{
     private static final String REQUEST_FILE = "database/Requests_List.txt";
 

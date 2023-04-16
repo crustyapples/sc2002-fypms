@@ -11,23 +11,42 @@ import src.Controller.*;
 import src.CustomExceptions.InvalidInputException;
 import src.Entity.*;
 
+/**
+ * The type Login cli.
+ */
 public class LoginCLI {
     private UserController userController;
     private List<User> users;
     private Map<String, String> userPasswords;
     private Scanner scanner;
+
+    /**
+     * Instantiates a new Login cli.
+     *
+     * @param userController the user controller
+     * @param users          the users
+     */
     public LoginCLI(UserController userController, List<User> users) {
         this.userController = userController;
         this.users = users;
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Login menu.
+     */
     public void loginMenu() {
 
         System.out.println("1. Login");
         System.out.println("0. Logout and Shutdown");
     }
 
+    /**
+     * Authenticate user user.
+     *
+     * @return the user
+     * @throws IOException the io exception
+     */
     public User authenticateUser() throws IOException {
         boolean exit = false;
         while(!exit) {

@@ -11,7 +11,13 @@ import src.Controller.SupervisorController;
 import src.CustomExceptions.InvalidInputException;
 import src.Entity.*;
 
+/**
+ * The type Supervisor cli.
+ */
 public class SupervisorCLI {
+    /**
+     * The Scanner.
+     */
     public Scanner scanner;
     private SupervisorController supervisorController;
     private Supervisor supervisor;
@@ -20,6 +26,15 @@ public class SupervisorCLI {
     private ProjectUpdaterCLI projectUpdaterCLI;
     private int manageRequestCheck = -1;
 
+    /**
+     * Instantiates a new Supervisor cli.
+     *
+     * @param supervisorController the supervisor controller
+     * @param supervisor           the supervisor
+     * @param loginCLI             the login cli
+     * @param passwordChangerCLI   the password changer cli
+     * @param projectUpdaterCLI    the project updater cli
+     */
     public SupervisorCLI(SupervisorController supervisorController, Supervisor supervisor, LoginCLI loginCLI, PasswordChangerCLI passwordChangerCLI, ProjectUpdaterCLI projectUpdaterCLI) {
         this.supervisorController = supervisorController;
         this.supervisor = supervisor;
@@ -29,6 +44,9 @@ public class SupervisorCLI {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Display menu.
+     */
     public void displayMenu() {
         System.out.println("1. Change password");
         System.out.println("2. Create a new project");
@@ -56,6 +74,15 @@ public class SupervisorCLI {
         System.out.println("0. Exit");
     }
 
+    /**
+     * Handle supervisor actions.
+     *
+     * @param coordinator the coordinator
+     * @param supervisors the supervisors
+     * @param projects    the projects
+     * @param requests    the requests
+     * @throws IOException the io exception
+     */
     public void handleSupervisorActions(FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests) throws IOException {
         boolean exit = false;
         while (!exit) {
@@ -288,6 +315,19 @@ public class SupervisorCLI {
         supervisorController.createProject(supervisor, title, projects);
     }
 
+    /**
+     * Transfer student cli.
+     *
+     * @param supervisor           the supervisor
+     * @param coordinator          the coordinator
+     * @param supervisors          the supervisors
+     * @param projects             the projects
+     * @param requests             the requests
+     * @param projectChoice        the project choice
+     * @param scanner              the scanner
+     * @param supervisorController the supervisor controller
+     * @throws IOException the io exception
+     */
     static void transferStudentCLI(Supervisor supervisor, FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests, Integer projectChoice, Scanner scanner, SupervisorController supervisorController) throws IOException {
         while (projectChoice == -1) {
             try {

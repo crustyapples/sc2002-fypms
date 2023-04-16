@@ -11,17 +11,32 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The type Project updater cli.
+ */
 public class ProjectUpdaterCLI {
     private Supervisor supervisor;
     private SupervisorController supervisorController;
     private Scanner scanner;
 
+    /**
+     * Instantiates a new Project updater cli.
+     *
+     * @param supervisor           the supervisor
+     * @param supervisorController the supervisor controller
+     */
     public ProjectUpdaterCLI(Supervisor supervisor, SupervisorController supervisorController) {
         this.supervisor = supervisor;
         this.supervisorController = supervisorController;
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Update projects.
+     *
+     * @param projects the projects
+     * @throws IOException the io exception
+     */
     public void updateProjects(List<Project> projects) throws IOException {
         supervisorController.viewSupervisorProjects(supervisor);
 

@@ -7,8 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type Fyp coordinator controller.
+ */
 public class FYP_CoordinatorController extends SupervisorController {
     private IFYP_CoordinatorDataHandler dataHandler;
+
+    /**
+     * Instantiates a new Fyp coordinator controller.
+     *
+     * @param studentController the student controller
+     * @param projectController the project controller
+     * @param requestController the request controller
+     * @throws IOException the io exception
+     */
     public FYP_CoordinatorController(IStudentController studentController, IProjectController projectController, IRequestController requestController) throws IOException {
         super(studentController,projectController,requestController);
     }
@@ -36,6 +48,15 @@ public class FYP_CoordinatorController extends SupervisorController {
         return requestHistory;
     }
 
+    /**
+     * Register student project boolean.
+     *
+     * @param student  the student
+     * @param project  the project
+     * @param projects the projects
+     * @return the boolean
+     * @throws IOException the io exception
+     */
     public boolean registerStudentProject(Student student, Project project,List<Project> projects) throws IOException {
 
         if (checkSupervisorAvailability(project.getSupervisor(),projects)) {
@@ -58,6 +79,15 @@ public class FYP_CoordinatorController extends SupervisorController {
         return false;
     }
 
+    /**
+     * Deregister student project.
+     *
+     * @param student  the student
+     * @param project  the project
+     * @param projects the projects
+     * @param students the students
+     * @throws IOException the io exception
+     */
     public void deregisterStudentProject(Student student, Project project,List<Project> projects, List<Student> students) throws IOException {
 
         student.setSelectedProject(null);
@@ -73,12 +103,26 @@ public class FYP_CoordinatorController extends SupervisorController {
         projectController.updateProject(projects);
     }
 
+    /**
+     * Unreserve project.
+     *
+     * @param project  the project
+     * @param projects the projects
+     * @throws IOException the io exception
+     */
     public void unreserveProject(Project project, List<Project> projects) throws IOException {
         project.setStudent(null);
         project.setProjectStatus(ProjectStatus.AVAILABLE);
         projectController.updateProject(projects);
     }
 
+    /**
+     * Generate project report list.
+     *
+     * @param projects the projects
+     * @param filter   the filter
+     * @return the list
+     */
     public List<Project> generateProjectReport(List<Project> projects, String filter) {
 
         List<Project> filteredProjects = new ArrayList<>();
@@ -113,6 +157,13 @@ public class FYP_CoordinatorController extends SupervisorController {
 
     }
 
+    /**
+     * Transfer student to supervisor.
+     *
+     * @param project  the project
+     * @param projects the projects
+     * @throws IOException the io exception
+     */
     public void transferStudentToSupervisor(Project project, List<Project> projects) throws IOException {
 
         project.getSupervisor().setNumProjectSupervised(project.getSupervisor().getNumProjectsSupervised() - 1);

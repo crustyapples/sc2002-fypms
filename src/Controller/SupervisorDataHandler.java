@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Supervisor data handler.
+ */
 public class SupervisorDataHandler implements ISupervisorDataHandler {
     private static final String FACULTY_FILE = "database/Faculty_List.txt";
 

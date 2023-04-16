@@ -17,6 +17,9 @@ import src.CustomExceptions.ProjectsException.ProjectSelectionNotAllowedExceptio
 import src.Entity.*;
 
 
+/**
+ * The type Student cli.
+ */
 public class StudentCLI {
     private Scanner scanner;
     private IStudentController studentController;
@@ -24,6 +27,14 @@ public class StudentCLI {
     private PasswordChangerCLI passwordChangerCLI;
     private Student student;
 
+    /**
+     * Instantiates a new Student cli.
+     *
+     * @param studentController  the student controller
+     * @param student            the student
+     * @param loginCLI           the login cli
+     * @param passwordChangerCLI the password changer cli
+     */
     public StudentCLI(IStudentController studentController, Student student, LoginCLI loginCLI, PasswordChangerCLI passwordChangerCLI) {
         this.studentController = studentController;
         this.student = student;
@@ -32,6 +43,9 @@ public class StudentCLI {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Display student menu.
+     */
     public void displayStudentMenu() {
 
         System.out.println("1. Change password");
@@ -44,6 +58,15 @@ public class StudentCLI {
         System.out.println("0. Exit");
     }
 
+    /**
+     * Handle student actions.
+     *
+     * @param student     the student
+     * @param projects    the projects
+     * @param requests    the requests
+     * @param coordinator the coordinator
+     * @throws IOException the io exception
+     */
     public void handleStudentActions(Student student, List<Project> projects, List<Request> requests, FYP_Coordinator coordinator) throws IOException {
         boolean exit = false;
         while (!exit) {

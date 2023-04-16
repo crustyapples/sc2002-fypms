@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Student data handler.
+ */
 public class StudentDataHandler implements IStudentDataHandler{
     private static final String STUDENT_FILE = "database/Students_List.txt";
 
