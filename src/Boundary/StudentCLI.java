@@ -18,22 +18,37 @@ import src.Entity.*;
 
 
 /**
- * The type Student cli.
+ * This class represents a command-line interface (CLI) for a student in the FYP management system.
  */
 public class StudentCLI {
+    /**
+     * Scanner object used for user input.
+     */
     private Scanner scanner;
+    /**
+     * Controller object for managing student data.
+     */
     private IStudentController studentController;
+    /**
+     * Command-line interface for handling student login.
+     */
     private LoginCLI loginCLI;
+    /**
+     * Command-line interface for changing student password.
+     */
     private PasswordChangerCLI passwordChangerCLI;
+    /**
+     * Object representing the currently logged-in student.
+     */
     private Student student;
 
     /**
-     * Instantiates a new Student cli.
+     * Constructs a new StudentCLI object.
      *
-     * @param studentController  the student controller
-     * @param student            the student
-     * @param loginCLI           the login cli
-     * @param passwordChangerCLI the password changer cli
+     * @param studentController the student controller used to interact with student data
+     * @param student the student associated with the CLI
+     * @param loginCLI the login CLI used to handle student login
+     * @param passwordChangerCLI the password changer CLI used to handle changing the student's password
      */
     public StudentCLI(IStudentController studentController, Student student, LoginCLI loginCLI, PasswordChangerCLI passwordChangerCLI) {
         this.studentController = studentController;
@@ -44,7 +59,7 @@ public class StudentCLI {
     }
 
     /**
-     * Display student menu.
+     * This method displays a menu of options for the student to choose from
      */
     public void displayStudentMenu() {
 
@@ -59,14 +74,16 @@ public class StudentCLI {
     }
 
     /**
-     * Handle student actions.
      *
-     * @param student     the student
-     * @param projects    the projects
-     * @param requests    the requests
-     * @param coordinator the coordinator
-     * @throws IOException the io exception
+     * Handles the actions of the student.
+     *
+     * @param student the student
+     * @param projects the list of available projects
+     * @param requests the list of requests made by the student
+     * @param coordinator the faculty coordinator
+     * @throws IOException if there is an error with input or output
      */
+
     public void handleStudentActions(Student student, List<Project> projects, List<Request> requests, FYP_Coordinator coordinator) throws IOException {
         boolean exit = false;
         while (!exit) {

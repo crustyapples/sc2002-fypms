@@ -12,28 +12,46 @@ import src.CustomExceptions.InvalidInputException;
 import src.Entity.*;
 
 /**
- * The type Supervisor cli.
+ * The SupervisorCLI class represents the command-line interface for a supervisor.
  */
 public class SupervisorCLI {
     /**
-     * The Scanner.
+     * The Scanner object used for input.
      */
     public Scanner scanner;
+    /**
+     * The SupervisorController object used for controlling supervisor functionality.
+     */
     private SupervisorController supervisorController;
+    /**
+     * The Supervisor object representing the logged in supervisor.
+     */
     private Supervisor supervisor;
+    /**
+     * The LoginCLI object representing the login interface for a supervisor.
+     */
     private LoginCLI loginCLI;
+    /**
+     * The PasswordChangerCLI object representing the password change interface for a supervisor.
+     */
     private PasswordChangerCLI passwordChangerCLI;
+    /**
+     * The ProjectUpdaterCLI object representing the project update interface for a supervisor.
+     */
     private ProjectUpdaterCLI projectUpdaterCLI;
+    /**
+     * An integer for checking of a manage request.
+     */
     private int manageRequestCheck = -1;
 
     /**
-     * Instantiates a new Supervisor cli.
+     * Constructs a new SupervisorCLI object
      *
      * @param supervisorController the supervisor controller
-     * @param supervisor           the supervisor
-     * @param loginCLI             the login cli
-     * @param passwordChangerCLI   the password changer cli
-     * @param projectUpdaterCLI    the project updater cli
+     * @param supervisor the supervisor
+     * @param loginCLI the login interface
+     * @param passwordChangerCLI the password change interface
+     * @param projectUpdaterCLI the project update interface
      */
     public SupervisorCLI(SupervisorController supervisorController, Supervisor supervisor, LoginCLI loginCLI, PasswordChangerCLI passwordChangerCLI, ProjectUpdaterCLI projectUpdaterCLI) {
         this.supervisorController = supervisorController;
@@ -45,7 +63,7 @@ public class SupervisorCLI {
     }
 
     /**
-     * Display menu.
+     * Displays the supervisor menu
      */
     public void displayMenu() {
         System.out.println("1. Change password");
@@ -75,14 +93,15 @@ public class SupervisorCLI {
     }
 
     /**
-     * Handle supervisor actions.
-     *
-     * @param coordinator the coordinator
-     * @param supervisors the supervisors
-     * @param projects    the projects
-     * @param requests    the requests
-     * @throws IOException the io exception
-     */
+     * This method is responsible for handling supervisor actions.
+
+     * @param coordinator The coordinator object.
+     * @param supervisors The list of supervisor objects.
+     * @param projects The list of project objects.
+     * @param requests The list of request objects.
+     * @throws IOException If an input or output exception occurs.
+     * */
+
     public void handleSupervisorActions(FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests) throws IOException {
         boolean exit = false;
         while (!exit) {
@@ -142,6 +161,16 @@ public class SupervisorCLI {
         }
     }
 
+    /**
+     * Allows the supervisor to manage incoming student requests by approving or rejecting them.
+     * @param user the supervisor making the request
+     * @param requests the list of all requests
+     * @param projects the list of all projects
+     * @param requestChoice the student ID of the request to be managed
+     * @param supervisorController the SupervisorController object used to perform supervisor-related operations
+     * @throws IOException if an I/O error occurs while reading input
+     */
+
     private void manageRequestCLI(User user, List<Request> requests, List<Project> projects, String requestChoice, SupervisorController supervisorController) throws IOException {
         for (Request request : supervisorController.getIncomingRequests(user)) {
             if (Objects.equals(request.getSender().getUserID(), requestChoice) && request.getStatus() == RequestStatus.PENDING) {
@@ -166,6 +195,11 @@ public class SupervisorCLI {
         System.out.println(ConsoleColors.RED_BRIGHT + "There is no request with the given StudentID! Try again!\n" + ConsoleColors.RESET);
     }
 
+    /**
+     * Displays all incoming requests for the supervisor.
+     * If there are no incoming requests, prints a message to inform the user.
+     */
+
     private void displayIncomingRequests() {
         if (supervisorController.getIncomingRequests(supervisor).size() > 0) {
             System.out.println("Incoming requests: \n");
@@ -177,6 +211,16 @@ public class SupervisorCLI {
             System.out.println(ConsoleColors.RED_BRIGHT + "You have no incoming requests!" + ConsoleColors.RESET);
         }
     }
+
+    /**
+     * Requests for a student transfer from another supervisor's project to one of the supervisor's own projects.
+     *
+     * @param coordinator The FYP coordinator overseeing the project.
+     * @param supervisors The list of all supervisors in the system.
+     * @param projects The list of all projects in the system.
+     * @param requests The list of all project requests in the system.
+     * @throws IOException If an I/O error occurs.
+     */
 
     private void requestStudentTransfer(FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests) throws IOException {
         Integer projectChoice;
@@ -191,6 +235,10 @@ public class SupervisorCLI {
         transferStudentCLI(supervisor, coordinator, supervisors, projects, requests, projectChoice, scanner, supervisorController);
     }
 
+    /**
+     * Displays a list of the supervisor's outgoing project requests.
+     */
+
     private void displayOutgoingRequests() {
         if (supervisorController.getRequestHistory(supervisor).size() > 0) {
             System.out.println("Outgoing requests: \n");
@@ -202,6 +250,16 @@ public class SupervisorCLI {
             return;
         }
     }
+
+    /**
+     * Allows the supervisor to manage incoming project requests. Displays pending requests and prompts the user to manage them or not.
+     *
+     * @param projects the list of projects to check for requests
+     *
+     * @param requests the list of requests to manage
+     *
+     * @throws IOException if there is an error reading input from the console
+     */
 
     private void manageIncomingRequests(List<Project> projects, List<Request> requests) throws IOException {
         int pendingRequests = 0;
@@ -269,6 +327,13 @@ public class SupervisorCLI {
         }
     }
 
+    /**
+     * Allows the user to update a project's title by choosing the project using its ID and providing a new title.
+     *
+     * @param projects the list of projects to search for the project to update and add the new project to
+     * @throws IOException if there is an error reading input from the console
+     */
+
     private void updateProjects(List<Project> projects) throws IOException {
         supervisorController.viewSupervisorProjects(supervisor);
 
@@ -308,6 +373,11 @@ public class SupervisorCLI {
             }
         }
     }
+    /**
+     *      Creates a new project with the given title and adds it to the list of projects.
+     *      @param projects the list of projects to add the new project to
+     *      @throws IOException if there is an error reading input from the console
+     */
 
     private void createProject(List<Project> projects) throws IOException {
         System.out.println("Enter the Project Title: ");
@@ -316,18 +386,18 @@ public class SupervisorCLI {
     }
 
     /**
-     * Transfer student cli.
-     *
-     * @param supervisor           the supervisor
-     * @param coordinator          the coordinator
-     * @param supervisors          the supervisors
-     * @param projects             the projects
-     * @param requests             the requests
-     * @param projectChoice        the project choice
-     * @param scanner              the scanner
-     * @param supervisorController the supervisor controller
-     * @throws IOException the io exception
-     */
+
+     This method allows a supervisor to transfer a student to another supervisor.
+
+     @param supervisor the supervisor who wants to transfer the student
+     @param coordinator the FYP coordinator
+     @param supervisors a list of all the supervisors in the system
+     @param projects a list of all the available projects
+     @param requests a list of all the transfer requests
+     @param projectChoice the project ID of the project to be transferred
+     @param scanner a Scanner object to read input from the user
+     @param supervisorController the controller object to handle supervisor actions
+    */
     static void transferStudentCLI(Supervisor supervisor, FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests, Integer projectChoice, Scanner scanner, SupervisorController supervisorController) throws IOException {
         while (projectChoice == -1) {
             try {

@@ -12,29 +12,47 @@ import src.CustomExceptions.InvalidInputException;
 import src.Entity.*;
 
 /**
- * The type Fyp coordinator cli.
+ * The FYP_CoordinatorCLI class represents the command-line interface for a FYP Coordinator.
+ * It extends from the SupervisorCLI class.
  */
 public class FYP_CoordinatorCLI extends SupervisorCLI{
     /**
-     * The Scanner.
+     * The Scanner object used to read user input from the command line.
      */
     public Scanner scanner;
+    /**
+     * The FYP_CoordinatorController object responsible for coordinating FYP related tasks.
+     */
     private FYP_CoordinatorController fypCoordinatorController;
+    /**
+     * The FYP_Coordinator object representing the FYP Coordinator who is using this CLI.
+     */
     private FYP_Coordinator fypCoordinator;
-
+    /**
+     * An integer variable to check the status of incoming requests.
+     */
     private int manageRequestCheck = -1;
+    /**
+     * The LoginCLI object responsible for handling user login.
+     */
     private LoginCLI loginCLI;
+    /**
+     * The PasswordChangerCLI object responsible for handling password change requests.
+     */
     private PasswordChangerCLI passwordChangerCLI;
+    /**
+     * The ProjectUpdaterCLI object responsible for handling project update requests.
+     */
     private ProjectUpdaterCLI projectUpdaterCLI;
 
     /**
      * Instantiates a new Fyp coordinator cli.
      *
-     * @param fypCoordinatorController the fyp coordinator controller
-     * @param fypCoordinator           the fyp coordinator
-     * @param loginCLI                 the login cli
-     * @param passwordChangerCLI       the password changer cli
-     * @param projectUpdaterCLI        the project updater cli
+     * @param fypCoordinatorController the FYP_CoordinatorController object responsible for coordinating FYP related tasks.
+     * @param fypCoordinator           the FYP_Coordinator object representing the FYP Coordinator who is using this CLI.
+     * @param loginCLI                 the LoginCLI object responsible for handling user login.
+     * @param passwordChangerCLI       the PasswordChangerCLI object responsible for handling password change requests.
+     * @param projectUpdaterCLI        the ProjectUpdaterCLI object responsible for handling project update requests.
      */
     public FYP_CoordinatorCLI(FYP_CoordinatorController fypCoordinatorController, FYP_Coordinator fypCoordinator, LoginCLI loginCLI,PasswordChangerCLI passwordChangerCLI, ProjectUpdaterCLI projectUpdaterCLI) {
         super(fypCoordinatorController, fypCoordinator, loginCLI, passwordChangerCLI, projectUpdaterCLI);
@@ -47,8 +65,9 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
     }
 
 
-
-
+    /**
+     * Displays the menu options available to the FYP Coordinator
+     */
     public void displayMenu() {
 
         System.out.println("1. Change password");
@@ -83,7 +102,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
 
 
     /**
-     * Handle supervisor actions.
+     * This method handles the various actions that supervisors can perform.
      *
      * @param supervisor     the supervisor
      * @param fypCoordinator the fyp coordinator
@@ -283,6 +302,9 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
         }
     }
 
+    /**
+     * This method displays the history of the requests
+     */
     private void displayRequestHistory(List<Request> fypCoordinatorController, String x, List<Request> fypCoordinatorController1, String x1) {
         if (fypCoordinatorController.size() > 0) {
             System.out.println(x);
@@ -295,6 +317,9 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
         }
     }
 
+    /**
+     * method is used to manage incoming requests
+     */
     private void manageIncomingRequests(Supervisor supervisor, FYP_Coordinator fypCoordinator, List<Project> projects, List<Request> requests, List<Student> students) throws IOException {
         int pendingRequests = 0;
 
@@ -339,6 +364,9 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
         }
     }
 
+    /**
+     * method is used to handle the incoming requests
+     */
     private void manageRequestCLI(User user, List<Request> requests, List<Project> projects, List<Student> students, String requestChoice) throws IOException {
         for (Request request : fypCoordinatorController.getIncomingRequests(fypCoordinator)) {
             if (Objects.equals(request.getSender().getUserID(), requestChoice) && request.getStatus() == RequestStatus.PENDING) {
@@ -368,6 +396,11 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
         System.out.println(ConsoleColors.RED_BRIGHT + "There is no such request with the given UserID! Try again!\n" + ConsoleColors.RESET);
     }
 
+    /**
+     * This method is used to handle requests to change the title of a project.
+     * If the request is approved, the project title is updated.
+     * If the request is rejected, the project title remains unchanged.
+     */
     private void handleChangeTitle(List<Request> requests, List<Project> projects, Request request) throws IOException {
         Integer manageChoice;
         System.out.println("Do you want to \n1. Approve OR\n2. Reject");
@@ -383,6 +416,14 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
         }
     }
 
+    /**
+     * This method is used to handle requests to transfer a student to a new supervisor.
+     * If the replacement supervisor has available capacity, the transfer is approved and the student
+     * is transferred to the new supervisor. If the replacement supervisor does not have available capacity,
+     * the FYP coordinator is asked if they want to allocate the project to the student anyway. If the FYP
+     * coordinator approves, the project is allocated to the student, and if they reject, the request is
+     * rejected.
+     */
     private void handleStudentTransfer(List<Request> requests, List<Project> projects, Request request) throws IOException {
         Integer manageChoice;
         if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getReplacementSupervisor(), projects)) {
@@ -418,6 +459,9 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
         }
     }
 
+    /**
+     * This method is called if there is a deregistration request.
+     */
     private void handleStudentDeRegistration(List<Request> requests, List<Project> projects, List<Student> students, Request request) throws IOException {
         Integer manageChoice;
         System.out.println("Do you want to \n1. Approve OR\n2. Reject");
@@ -432,7 +476,9 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
             fypCoordinatorController.rejectRequest(request, requests);
         }
     }
-
+    /**
+     * This method is called if the request is a registration request.
+     */
     private void handleStudentRegistration(List<Request> requests, List<Project> projects, Request request) throws IOException {
         Integer manageChoice;
         System.out.println("Do you want to \n1. Approve OR\n2. Reject");

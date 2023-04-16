@@ -12,19 +12,31 @@ import src.CustomExceptions.InvalidInputException;
 import src.Entity.*;
 
 /**
- * The type Login cli.
+ * The LoginCLI class represents the command-line interface for the user login functionality.
  */
 public class LoginCLI {
+    /**
+     * The UserController instance used to handle user operations
+     */
     private UserController userController;
+    /**
+     * The list of User objects in the database
+     */
     private List<User> users;
+    /**
+     * map of user IDs to passwords
+     */
     private Map<String, String> userPasswords;
+    /**
+     * The Scanner instance used to read user input
+     */
     private Scanner scanner;
 
     /**
-     * Instantiates a new Login cli.
+     * Constructs a new LoginCLI object with the specified UserController and list of User objects.
      *
-     * @param userController the user controller
-     * @param users          the users
+     * @param userController The UserController instance used to handle user operations.
+     * @param users The list of User objects in the system.
      */
     public LoginCLI(UserController userController, List<User> users) {
         this.userController = userController;
@@ -33,7 +45,7 @@ public class LoginCLI {
     }
 
     /**
-     * Login menu.
+     * Displays the login menu options.
      */
     public void loginMenu() {
 
@@ -42,10 +54,10 @@ public class LoginCLI {
     }
 
     /**
-     * Authenticate user user.
+     * Authenticates a user by prompting for their user ID and password.
      *
-     * @return the user
-     * @throws IOException the io exception
+     * @return The User object associated with the authenticated user, or null if no user was authenticated.
+     * @throws IOException If an error occurs while reading user input.
      */
     public User authenticateUser() throws IOException {
         boolean exit = false;
