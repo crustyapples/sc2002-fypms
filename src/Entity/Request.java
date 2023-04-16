@@ -1,19 +1,41 @@
 package src.Entity;
 
 /**
- * The type Request.
+ * The Request class represents a request made by a user for a project,
+ * which can be approved or rejected by another user.
  */
 public class Request {
+    /**
+     * The unique identifier of the request.
+     */
     private Integer requestID;
+    /**
+     * The user who sent the request.
+     */
     private User sender;
+    /**
+     * The user who received the request.
+     */
     private User recipient;
+    /**
+     * The type of the request.
+     */
     private RequestType requestType;
+    /**
+     * The status of the request.
+     */
     private RequestStatus requestStatus;
+    /**
+     * The project associated with the request.
+     */
     private Project project;
+    /**
+     * The message body of the request.
+     */
     private String body;
 
     /**
-     * Instantiates a new Request.
+     * Instantiates a new Request object with the specified parameters.
      *
      * @param requestID     the request id
      * @param sender        the sender
@@ -34,86 +56,86 @@ public class Request {
     }
 
     /**
-     * Approve.
+     * This method approves the request by setting its status to APPROVED.
      */
     public void approve() {
         this.requestStatus = RequestStatus.APPROVED;
     }
 
     /**
-     * Reject.
+     * Rejects the request by setting its status to REJECTED.
      */
     public void reject() {
         this.requestStatus = RequestStatus.REJECTED;
     }
 
     /**
-     * View details string.
+     * Returns a string representation of the request details.
      *
-     * @return the string
+     * @return a string representation of the request details
      */
     public String viewDetails() {
         return "RequestID: " + requestID + "\nRequest Type: " + requestType + "\nStatus: " +  requestStatus + "\nSender: " + sender.getUserID() + "\nRecipient: " + recipient.getUserID() + "\n";
     }
 
     /**
-     * Gets sender.
+     * Returns the user who sent the request.
      *
-     * @return the sender
+     * @return the user who sent the request
      */
     public User getSender() {
         return this.sender;
     }
 
     /**
-     * Gets recipient.
+     * Returns the user who received the request.
      *
-     * @return the recipient
+     * @return the user who received the request
      */
     public User getRecipient() {
         return this.recipient;
     }
 
     /**
-     * Gets type.
+     * Returns the type of the request.
      *
-     * @return the type
+     * @return the type of the request
      */
     public RequestType getType() {
         return this.requestType;
     }
 
     /**
-     * Gets status.
+     * Returns the status of the request.
      *
-     * @return the status
+     * @return the status of the request
      */
     public RequestStatus getStatus() {
         return this.requestStatus;
     }
 
     /**
-     * Gets project.
+     * Returns the project associated with the request.
      *
-     * @return the project
+     * @return the project associated with the request
      */
     public Project getProject() {
         return this.project;
     }
 
     /**
-     * Gets body.
+     * Returns the message body of the request.
      *
-     * @return the body
+     * @return the message body of the request
      */
     public String getBody() {
         return this.body;
     }
 
     /**
-     * Gets request id.
+     * Returns the unique identifier of the request.
      *
-     * @return the request id
+     * @return the unique identifier of the request
      */
     public Integer getRequestID() {
         return this.requestID;

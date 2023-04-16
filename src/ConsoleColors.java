@@ -1,7 +1,9 @@
 package src;
 
 /**
- * The type Console colors.
+ * Defines constants for various console colors using escape sequences in ANSI format.
+ * The escape sequences are used to manipulate the console output to display colored
+ * text or background.
  */
 public class ConsoleColors {
     /**

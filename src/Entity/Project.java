@@ -1,18 +1,36 @@
 package src.Entity;
 
 /**
- * The type Project.
+ * This class represents a project that can be supervised by a supervisor and assigned to a student.
  */
 public class Project {
+    /**
+     * The ID of the project.
+     */
     private Integer projectID;
+    /**
+     * The supervisor of the project.
+     */
     private Supervisor supervisor;
+    /**
+     * The replacement supervisor of the project.
+     */
     private Supervisor replacementSupervisor;
+    /**
+     * The student assigned to the project.
+     */
     private Student student;
+    /**
+     * The title of the project.
+     */
     private String title;
+    /**
+     * The status of the project.
+     */
     private ProjectStatus projectStatus;
 
     /**
-     * Instantiates a new Project.
+     * Instantiates a new Project, with the given attributes.
      *
      * @param projectID             the project id
      * @param supervisor            the supervisor
@@ -31,7 +49,7 @@ public class Project {
     }
 
     /**
-     * Sets project status.
+     * This method sets the project status.
      *
      * @param newProjectStatus the new project status
      */
@@ -40,7 +58,7 @@ public class Project {
     }
 
     /**
-     * Gets student.
+     * This method returns the student allocated to the project.
      *
      * @return the student
      */
@@ -49,7 +67,7 @@ public class Project {
     }
 
     /**
-     * Sets student.
+     * This method sets the new student to the project.
      *
      * @param newStudent the new student
      */
@@ -58,25 +76,25 @@ public class Project {
     }
 
     /**
-     * View details string.
+     * This method returns a string containing the details of the project.
      *
-     * @return the string
+     * @return the string containing the details of the project
      */
     public String viewDetails() {
         return "ProjectID: " + projectID + "\nTitle: " + title + "\nStatus: " + projectStatus + "\nSupervisor: " + supervisor.name + "\nStudent: " + (student != null ? student.name + "\n" : "Not assigned" + "\n");
     }
 
     /**
-     * Gets supervisor.
+     * This method gets the supervisor of the project.
      *
-     * @return the supervisor
+     * @return the supervisor of the project
      */
     public Supervisor getSupervisor() {
         return this.supervisor;
     }
 
     /**
-     * Gets replacement supervisor.
+     * This method gets the replacement supervisor.
      *
      * @return the replacement supervisor
      */
@@ -85,7 +103,7 @@ public class Project {
     }
 
     /**
-     * Gets title.
+     * This method gets title.
      *
      * @return the title
      */
@@ -94,7 +112,7 @@ public class Project {
     }
 
     /**
-     * Gets project status.
+     * This method gets project status.
      *
      * @return the project status
      */
@@ -103,7 +121,7 @@ public class Project {
     }
 
     /**
-     * Get project id int.
+     * This method get project id int.
      *
      * @return the int
      */
@@ -112,7 +130,7 @@ public class Project {
     }
 
     /**
-     * Sets title.
+     * This method returns the new project title.
      *
      * @param newTitle the new title
      */
@@ -121,7 +139,7 @@ public class Project {
     }
 
     /**
-     * Sets supervisor.
+     * This method returns the new supervisor.
      *
      * @param newSupervisor the new supervisor
      */
@@ -130,7 +148,7 @@ public class Project {
     }
 
     /**
-     * Sets replacement supervisor.
+     * This method returns the new replacement supervisor.
      *
      * @param newReplacementSupervisor the new replacement supervisor
      */
