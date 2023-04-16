@@ -29,30 +29,6 @@ public class SupervisorCLI {
         scanner = new Scanner(System.in);
     }
 
-    public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, String requestChoice, SupervisorController supervisorController) throws IOException {
-        for (Request request : supervisorController.getIncomingRequests(user)) {
-            if (Objects.equals(request.getSender().getUserID(), requestChoice) && request.getStatus() == RequestStatus.PENDING) {
-                manageRequestCheck = 1;
-                System.out.println(request.viewDetails());
-                System.out.println("Do you want to \n1. Approve OR\n2. Reject");
-                Integer manageChoice = scanner.nextInt();
-                if (manageChoice == 1) {
-                    supervisorController.approveRequest(request,requests);
-                    supervisorController.updateTitle(request.getProject(),request.getBody(),projects);
-                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Request approved!\n" + ConsoleColors.RESET);
-                    return;
-                } else if (manageChoice == 2) {
-                    supervisorController.rejectRequest(request,requests);
-                    System.out.println(ConsoleColors.RED_BRIGHT + "Request rejected!\n" + ConsoleColors.RESET);
-                    return;
-                }
-                return;
-            }
-
-        }
-        System.out.println(ConsoleColors.RED_BRIGHT + "There is no request with the given StudentID! Try again!\n" + ConsoleColors.RESET);
-    }
-
     public void displayMenu() {
         System.out.println("1. Change password");
         System.out.println("2. Create a new project");
@@ -74,8 +50,9 @@ public class SupervisorCLI {
             System.out.println("5. Manage incoming requests");
         }
 
-        System.out.println("6. View outgoing request history");
-        System.out.println("7. Request student transfer");
+        System.out.println("6. View incoming request history");
+        System.out.println("7. View outgoing request history");
+        System.out.println("8. Request student transfer");
         System.out.println("0. Exit");
     }
 
@@ -110,16 +87,21 @@ public class SupervisorCLI {
                     case 5:
                         manageIncomingRequests(projects, requests);
                         break;
-
-
                     case 6:
-                        viewRequestHistory();
+
+                        displayIncomingRequests();
                         break;
+
                     case 7:
+                        displayOutgoingRequests();
+                        break;
+                    case 8:
                         requestStudentTransfer(coordinator, supervisors, projects, requests);
 
                         break;
                     case 0:
+                        MainMenuUI menuUI = new MainMenuUI();
+                        menuUI.enterMenu();
                         exit = true;
                         break;
                     default:
@@ -130,6 +112,42 @@ public class SupervisorCLI {
                 System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n" + ConsoleColors.RESET);
                 scanner.nextLine(); // Consume the invalid input
             }
+        }
+    }
+
+    private void manageRequestCLI(User user, List<Request> requests, List<Project> projects, String requestChoice, SupervisorController supervisorController) throws IOException {
+        for (Request request : supervisorController.getIncomingRequests(user)) {
+            if (Objects.equals(request.getSender().getUserID(), requestChoice) && request.getStatus() == RequestStatus.PENDING) {
+                manageRequestCheck = 1;
+                System.out.println(request.viewDetails());
+                System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+                Integer manageChoice = scanner.nextInt();
+                if (manageChoice == 1) {
+                    supervisorController.approveRequest(request,requests);
+                    supervisorController.updateTitle(request.getProject(),request.getBody(),projects);
+                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Request approved!\n" + ConsoleColors.RESET);
+                    return;
+                } else if (manageChoice == 2) {
+                    supervisorController.rejectRequest(request,requests);
+                    System.out.println(ConsoleColors.RED_BRIGHT + "Request rejected!\n" + ConsoleColors.RESET);
+                    return;
+                }
+                return;
+            }
+
+        }
+        System.out.println(ConsoleColors.RED_BRIGHT + "There is no request with the given StudentID! Try again!\n" + ConsoleColors.RESET);
+    }
+
+    private void displayIncomingRequests() {
+        if (supervisorController.getIncomingRequests(supervisor).size() > 0) {
+            System.out.println("Incoming requests: \n");
+            for (Request request : supervisorController.getIncomingRequests(supervisor)) {
+                System.out.println(request.viewDetails());
+
+            }
+        } else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "You have no incoming requests!" + ConsoleColors.RESET);
         }
     }
 
@@ -146,7 +164,7 @@ public class SupervisorCLI {
         transferStudentCLI(supervisor, coordinator, supervisors, projects, requests, projectChoice, scanner, supervisorController);
     }
 
-    private void viewRequestHistory() {
+    private void displayOutgoingRequests() {
         if (supervisorController.getRequestHistory(supervisor).size() > 0) {
             System.out.println("Outgoing requests: \n");
             for (Request request : supervisorController.getRequestHistory(supervisor)) {
@@ -291,7 +309,7 @@ public class SupervisorCLI {
 
                                         try {
                                             for (Supervisor replacementSupervisor : supervisors) {
-                                                if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID)) {
+                                                if (Objects.equals(replacementSupervisor.getUserID(), replacementSupervisorID) && !Objects.equals(project.getSupervisor().getUserID(), replacementSupervisorID)) {
                                                     System.out.println("Requesting...");
                                                     supervisorController.requestStudentTransferToAnotherSupervisor(supervisor, project, replacementSupervisor, coordinator, requests, projects);
                                                     supervisorFound = 1;

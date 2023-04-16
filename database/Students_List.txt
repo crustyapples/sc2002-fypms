@@ -1,6 +1,6 @@
 CHERN 	YCHERN@e.ntu.edu.sg;	FALSE
 KOH 	KOH1@e.ntu.edu.sg;	FALSE
-BRANDON 	BR015@e.ntu.edu.sg;	FALSE
+BRANDON 	BR015@e.ntu.edu.sg;	TRUE
 CALVIN 	CT113@e.ntu.edu.sg;	FALSE
 CHAN	YCN019@e.ntu.edu.sg;	FALSE
 DENISE	DL007@e.ntu.edu.sg;	FALSE
@@ -8,4 +8,4 @@ DONG	DON84@e.ntu.edu.sg;	FALSE
 ERNEST	ELI34@e.ntu.edu.sg;	FALSE
 LEE 	LE51@e.ntu.edu.sg;	FALSE
 LIU 	SL22@e.ntu.edu.sg;	FALSE
-RAWAL	AKY013@e.ntu.edu.sg;	FALSE
+RAWAL	AKY013@e.ntu.edu.sg;	TRUE

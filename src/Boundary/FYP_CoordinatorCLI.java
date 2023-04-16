@@ -30,121 +30,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
         scanner = new Scanner(System.in);
     }
 
-    public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, List<Student> students, String requestChoice) throws IOException {
-        for (Request request : fypCoordinatorController.getIncomingRequests(fypCoordinator)) {
-            if (Objects.equals(request.getSender().getUserID(), requestChoice) && request.getStatus() == RequestStatus.PENDING) {
-                manageRequestCheck = 1;
-                System.out.println(request.viewDetails());
-                Integer manageChoice;
 
-                switch (request.getType()) {
-                    case REGISTER:
-                        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
-                        manageChoice = scanner.nextInt();
-                        scanner.nextLine();
-                        if (manageChoice == 1) {
-
-                            if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getSupervisor(),projects)) {
-                                fypCoordinatorController.approveRequest(request, requests);
-                                System.out.println("Registering...");
-                                fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
-                            } else {
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Supervisor cap is reached!"+ ConsoleColors.RESET);
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Do you still want to allocate the project? 1. Yes, 2. No"+ ConsoleColors.RESET);
-
-                                int allocateDecision = scanner.nextInt();
-                                scanner.nextLine();
-
-                                if (allocateDecision == 1) {
-                                    fypCoordinatorController.approveRequest(request, requests);
-                                    System.out.println("Registering...");
-                                    fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
-                                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
-                                } else {
-                                    System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. Project will now be available.\n"+ ConsoleColors.RESET);
-                                    fypCoordinatorController.rejectRequest(request, requests);
-                                    fypCoordinatorController.unreserveProject(request.getProject(), projects);
-                                }
-                            }
-                        } else {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. Project will now be available.\n"+ ConsoleColors.RESET);
-                            fypCoordinatorController.rejectRequest(request, requests);
-                            fypCoordinatorController.unreserveProject(request.getProject(), projects);
-                        }
-                        break;
-                    case DEREGISTER:
-                        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
-                        manageChoice = scanner.nextInt();
-                        scanner.nextLine();
-                        if (manageChoice == 1) {
-                            fypCoordinatorController.approveRequest(request, requests);
-                            System.out.println("Deregistering...");
-                            fypCoordinatorController.deregisterStudentProject((Student) request.getSender(), request.getProject(), projects, students);
-                            System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Deregistered!\n"+ ConsoleColors.RESET);
-                        } else {
-                            fypCoordinatorController.rejectRequest(request, requests);
-                        }
-                        break;
-                    case TRANSFER_STUDENT:
-
-
-                        if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getReplacementSupervisor(),projects)) {
-                            System.out.println("Do you want to \n1. Approve OR\n2. Reject");
-                            manageChoice = scanner.nextInt();
-                            scanner.nextLine();
-                            if (manageChoice == 1) {
-                                fypCoordinatorController.approveRequest(request, requests);
-                                System.out.println("Transferring...\n");
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Transfer successful!\n"+ ConsoleColors.RESET);
-                                fypCoordinatorController.transferStudentToSupervisor(request.getProject(), projects);
-                            } else {
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Request to transfer has been rejected.\n"+ ConsoleColors.RESET);
-                                fypCoordinatorController.rejectRequest(request, requests);
-                            }
-                        } else {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "Replacement Supervisor cap is reached!"+ ConsoleColors.RESET);
-                            System.out.println(ConsoleColors.RED_BRIGHT + "Do you still want to allocate the project? 1. Yes, 2. No"+ ConsoleColors.RESET);
-
-                            System.out.println("Do you want to \n1. Approve OR\n2. Reject");
-                            manageChoice = scanner.nextInt();
-                            scanner.nextLine();
-
-                            if (manageChoice == 1) {
-                                fypCoordinatorController.approveRequest(request, requests);
-                                System.out.println("Registering...");
-                                fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
-                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
-                            } else {
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. \n"+ ConsoleColors.RESET);
-                                fypCoordinatorController.rejectRequest(request, requests);
-                                fypCoordinatorController.unreserveProject(request.getProject(), projects);
-                            }
-                        }
-
-
-                        break;
-
-                    case CHANGE_TITLE:
-                        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
-                        manageChoice = scanner.nextInt();
-                        scanner.nextLine();
-                        if (manageChoice == 1) {
-                            fypCoordinatorController.approveRequest(request, requests);
-                            fypCoordinatorController.updateTitle(request.getProject(),request.getBody(),projects);
-                            System.out.println(ConsoleColors.GREEN_BRIGHT + "Project title has been updated!"+ ConsoleColors.RESET);
-                        } else {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "Request to change project title has been rejected"+ ConsoleColors.RESET);
-                            fypCoordinatorController.rejectRequest(request, requests);
-                        }
-                    default:
-                        fypCoordinatorController.rejectRequest(request, requests);
-                }
-                return;
-            }
-        }
-        System.out.println(ConsoleColors.RED_BRIGHT + "There is no such request with the given UserID! Try again!\n" + ConsoleColors.RESET);
-    }
 
 
     public void displayMenu() {
@@ -170,11 +56,12 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
             System.out.println("5. Manage incoming requests");
         }
 
-        System.out.println("6. View outgoing request history");
-        System.out.println("7. Request student transfer");
+        System.out.println("6. View incoming request history");
+        System.out.println("7. View outgoing request history");
+        System.out.println("8. Request student transfer");
         //Additional functions
-        System.out.println("8. Generate project report");
-        System.out.println("9. View all requests");
+        System.out.println("9. Generate project report");
+        System.out.println("10. View all requests");
         System.out.println("0. Exit");
     }
 
@@ -206,66 +93,26 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
                     break;
                 case 4:
                     // Call fypCoordinatorController.viewSupervisorProjects() and display the result
+                    if (fypCoordinator.getProjects().size()==0) {
+                        System.out.println(ConsoleColors.RED_BRIGHT + "You have no Projects!" + ConsoleColors.RESET);
+                    }
                     fypCoordinatorController.viewSupervisorProjects(supervisor);
                     break;
                 case 5:
 
-                    int pendingRequests = 0;
-
-                    if (fypCoordinatorController.getIncomingRequests(supervisor).size() > 0) {
-                        for (Request request : fypCoordinatorController.getIncomingRequests(supervisor)) {
-                            if (request.getStatus() == RequestStatus.PENDING) {
-                                pendingRequests++;
-                            }
-                        }
-                    }
-
-                    if (pendingRequests > 0) {
-                        System.out.println("Pending requests: \n");
-                        for (Request request : fypCoordinatorController.getIncomingRequests(supervisor)) {
-                            if (request.getStatus() == RequestStatus.PENDING) {
-                                System.out.println(request.viewDetails());
-                            }
-                        }
-                    }
-                    else {
-                        System.out.println(ConsoleColors.RED_BRIGHT + "You have no pending requests!" + ConsoleColors.RESET);
-                        break;
-                    }
-
-                    manageRequestCheck = -1;
-                    Integer userFound = -1;
-                    while (userFound == -1) {
-                        try {
-                            while (manageRequestCheck == -1) {
-
-                                System.out.println("Enter the User ID of the request that you want to handle: ");
-                                String requestChoice = scanner.nextLine();
-                                manageRequestCLI(fypCoordinator, requests, projects, students, requestChoice);
-                                userFound = 1;
-                            }
-
-                        } catch (InputMismatchException e) {
-                            userFound = -1;
-                            System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n" + ConsoleColors.RESET);
-                            scanner.next(); //Clear the invalid input
-                        }
-                    }
+                    manageIncomingRequests(supervisor, fypCoordinator, projects, requests, students);
 
                     break;
+
                 case 6:
-                    // Call fypCoordinatorController.viewSupervisorRequestHistory() and display the result
-                    if (fypCoordinatorController.getRequestHistory(supervisor).size() > 0) {
-                        System.out.println("Outgoing requests: \n");
-                        for (Request request : fypCoordinatorController.getRequestHistory(supervisor)) {
-                            System.out.println(request.viewDetails());
-                        }
-                    } else {
-                        System.out.println(ConsoleColors.RED_BRIGHT + "You have no outgoing requests!" + ConsoleColors.RESET);
-                        break;
-                    }
+                    displayRequestHistory(fypCoordinatorController.getIncomingRequests(supervisor), "Incoming requests: \n", fypCoordinatorController.getIncomingRequests(supervisor), "You have no incoming requests!");
                     break;
+
                 case 7:
+                    // Call fypCoordinatorController.viewSupervisorRequestHistory() and display the result
+                    displayRequestHistory(fypCoordinatorController.getRequestHistory(supervisor), "Outgoing requests: \n", fypCoordinatorController.getRequestHistory(supervisor), "You have no outgoing requests!");
+                    break;
+                case 8:
                     // Call fypCoordinatorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
                     fypCoordinatorController.viewSupervisorProjects(supervisor);
 
@@ -277,7 +124,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
                     SupervisorCLI.transferStudentCLI(supervisor, fypCoordinator, supervisors, projects, requests, projectChoice, scanner, fypCoordinatorController);
 
                     break;
-                case 8:
+                case 9:
                     // Call fypCoordinatorController.viewProjectsByFilter() with the filter and display the result
                     try {
                         System.out.println("Enter filter choice: ");
@@ -320,33 +167,43 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
                         }
 
                         if (filter == 1) {
+                            int supervisorFound = 0;
                             for (Supervisor correctSupervisor : supervisors) {
                                 if (correctSupervisor.getUserID().equals(filterChoice)) {
+                                    supervisorFound = 1;
                                     List<Project> filteredProjects = fypCoordinatorController.generateProjectReport(projects, filterChoice);
                                     System.out.println("Filtered Projects: \n");
                                     for (Project project : filteredProjects) {
-
                                         System.out.println(project.viewDetails());
                                     }
-                                } else {
-                                    System.out.println(ConsoleColors.RED_BRIGHT + "No such supervisor!" + ConsoleColors.RESET);
                                     break;
                                 }
                             }
+                            if (supervisorFound == 0) {
+                                System.out.println(ConsoleColors.RED_BRIGHT + "No such supervisor!" + ConsoleColors.RESET);
+                                break;
+                            }
+
+                            break;
                         } else if (filter == 2) {
+                            int studentFound = 0;
                             for (Student correctStudent : students) {
                                 if (correctStudent.getUserID().equals(filterChoice)) {
+                                    studentFound = 1;
                                     List<Project> filteredProjects = fypCoordinatorController.generateProjectReport(projects, filterChoice);
                                     System.out.println("Filtered Projects: \n");
                                     for (Project project : filteredProjects) {
-
                                         System.out.println(project.viewDetails());
                                     }
-                                } else {
-                                    System.out.println(ConsoleColors.RED_BRIGHT + "No such student!" + ConsoleColors.RESET);
                                     break;
                                 }
                             }
+                            if (studentFound == 0) {
+                                System.out.println(ConsoleColors.RED_BRIGHT + "No such student!" + ConsoleColors.RESET);
+                                break;
+                            }
+
+                            break;
                         } else if (filter == 3) {
                             int statusChoice = scanner.nextInt();
                             scanner.nextLine();
@@ -380,7 +237,7 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
                         scanner.next(); //Clear the invalid input
                     }
                     break;
-                case 9:
+                case 10:
 
                     System.out.println("All Requests: \n");
                     for (Request request:requests) {
@@ -388,12 +245,201 @@ public class FYP_CoordinatorCLI extends SupervisorCLI{
                     }
                     break;
                 case 0:
+                    MainMenuUI menuUI = new MainMenuUI();
+                    menuUI.enterMenu();
                     exit = true;
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
                     break;
             }
+        }
+    }
+
+    private void displayRequestHistory(List<Request> fypCoordinatorController, String x, List<Request> fypCoordinatorController1, String x1) {
+        if (fypCoordinatorController.size() > 0) {
+            System.out.println(x);
+            for (Request request : fypCoordinatorController1) {
+                System.out.println(request.viewDetails());
+            }
+        } else {
+            System.out.println(ConsoleColors.RED_BRIGHT + x1 + ConsoleColors.RESET);
+            return;
+        }
+    }
+
+    private void manageIncomingRequests(Supervisor supervisor, FYP_Coordinator fypCoordinator, List<Project> projects, List<Request> requests, List<Student> students) throws IOException {
+        int pendingRequests = 0;
+
+        if (fypCoordinatorController.getIncomingRequests(supervisor).size() > 0) {
+            for (Request request : fypCoordinatorController.getIncomingRequests(supervisor)) {
+                if (request.getStatus() == RequestStatus.PENDING) {
+                    pendingRequests++;
+                }
+            }
+        }
+
+        if (pendingRequests > 0) {
+            System.out.println("Pending requests: \n");
+            for (Request request : fypCoordinatorController.getIncomingRequests(supervisor)) {
+                if (request.getStatus() == RequestStatus.PENDING) {
+                    System.out.println(request.viewDetails());
+                }
+            }
+        }
+        else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "You have no pending requests!" + ConsoleColors.RESET);
+            return;
+        }
+
+        manageRequestCheck = -1;
+        Integer userFound = -1;
+        while (userFound == -1) {
+            try {
+                while (manageRequestCheck == -1) {
+
+                    System.out.println("Enter the User ID of the request that you want to handle: ");
+                    String requestChoice = scanner.nextLine();
+                    manageRequestCLI(fypCoordinator, requests, projects, students, requestChoice);
+                    userFound = 1;
+                }
+
+            } catch (InputMismatchException e) {
+                userFound = -1;
+                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n" + ConsoleColors.RESET);
+                scanner.next(); //Clear the invalid input
+            }
+        }
+    }
+
+    private void manageRequestCLI(User user, List<Request> requests, List<Project> projects, List<Student> students, String requestChoice) throws IOException {
+        for (Request request : fypCoordinatorController.getIncomingRequests(fypCoordinator)) {
+            if (Objects.equals(request.getSender().getUserID(), requestChoice) && request.getStatus() == RequestStatus.PENDING) {
+                manageRequestCheck = 1;
+                System.out.println(request.viewDetails());
+                Integer manageChoice;
+
+                switch (request.getType()) {
+                    case REGISTER:
+                        handleStudentRegistration(requests, projects, request);
+                        break;
+                    case DEREGISTER:
+                        handleStudentDeRegistration(requests, projects, students, request);
+                        break;
+                    case TRANSFER_STUDENT:
+                        handleStudentTransfer(requests, projects, request);
+                        break;
+
+                    case CHANGE_TITLE:
+                        handleChangeTitle(requests, projects, request);
+                    default:
+                        fypCoordinatorController.rejectRequest(request, requests);
+                }
+                return;
+            }
+        }
+        System.out.println(ConsoleColors.RED_BRIGHT + "There is no such request with the given UserID! Try again!\n" + ConsoleColors.RESET);
+    }
+
+    private void handleChangeTitle(List<Request> requests, List<Project> projects, Request request) throws IOException {
+        Integer manageChoice;
+        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+        manageChoice = scanner.nextInt();
+        scanner.nextLine();
+        if (manageChoice == 1) {
+            fypCoordinatorController.approveRequest(request, requests);
+            fypCoordinatorController.updateTitle(request.getProject(), request.getBody(), projects);
+            System.out.println(ConsoleColors.GREEN_BRIGHT + "Project title has been updated!"+ ConsoleColors.RESET);
+        } else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "Request to change project title has been rejected"+ ConsoleColors.RESET);
+            fypCoordinatorController.rejectRequest(request, requests);
+        }
+    }
+
+    private void handleStudentTransfer(List<Request> requests, List<Project> projects, Request request) throws IOException {
+        Integer manageChoice;
+        if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getReplacementSupervisor(), projects)) {
+            System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+            manageChoice = scanner.nextInt();
+            scanner.nextLine();
+            if (manageChoice == 1) {
+                fypCoordinatorController.approveRequest(request, requests);
+                System.out.println("Transferring...\n");
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "Transfer successful!\n"+ ConsoleColors.RESET);
+                fypCoordinatorController.transferStudentToSupervisor(request.getProject(), projects);
+            } else {
+                System.out.println(ConsoleColors.RED_BRIGHT + "Request to transfer has been rejected.\n"+ ConsoleColors.RESET);
+                fypCoordinatorController.rejectRequest(request, requests);
+            }
+        } else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "Replacement Supervisor cap is reached!"+ ConsoleColors.RESET);
+            System.out.println(ConsoleColors.RED_BRIGHT + "Do you still want to allocate the project? \n1. Approve, 2. \nReject"+ ConsoleColors.RESET);
+
+            manageChoice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (manageChoice == 1) {
+                fypCoordinatorController.approveRequest(request, requests);
+                System.out.println("Registering...");
+                fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
+            } else {
+                System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. \n"+ ConsoleColors.RESET);
+                fypCoordinatorController.rejectRequest(request, requests);
+                fypCoordinatorController.unreserveProject(request.getProject(), projects);
+            }
+        }
+    }
+
+    private void handleStudentDeRegistration(List<Request> requests, List<Project> projects, List<Student> students, Request request) throws IOException {
+        Integer manageChoice;
+        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+        manageChoice = scanner.nextInt();
+        scanner.nextLine();
+        if (manageChoice == 1) {
+            fypCoordinatorController.approveRequest(request, requests);
+            System.out.println("Deregistering...");
+            fypCoordinatorController.deregisterStudentProject((Student) request.getSender(), request.getProject(), projects, students);
+            System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Deregistered!\n"+ ConsoleColors.RESET);
+        } else {
+            fypCoordinatorController.rejectRequest(request, requests);
+        }
+    }
+
+    private void handleStudentRegistration(List<Request> requests, List<Project> projects, Request request) throws IOException {
+        Integer manageChoice;
+        System.out.println("Do you want to \n1. Approve OR\n2. Reject");
+        manageChoice = scanner.nextInt();
+        scanner.nextLine();
+        if (manageChoice == 1) {
+
+            if (fypCoordinatorController.checkSupervisorAvailability(request.getProject().getSupervisor(), projects)) {
+                fypCoordinatorController.approveRequest(request, requests);
+                System.out.println("Registering...");
+                fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
+            } else {
+                System.out.println(ConsoleColors.RED_BRIGHT + "Supervisor cap is reached!"+ ConsoleColors.RESET);
+                System.out.println(ConsoleColors.RED_BRIGHT + "Do you still want to allocate the project? 1. Yes, 2. No"+ ConsoleColors.RESET);
+
+                int allocateDecision = scanner.nextInt();
+                scanner.nextLine();
+
+                if (allocateDecision == 1) {
+                    fypCoordinatorController.approveRequest(request, requests);
+                    System.out.println("Registering...");
+                    fypCoordinatorController.registerStudentProject((Student) request.getSender(), request.getProject(), projects);
+                    System.out.println(ConsoleColors.GREEN_BRIGHT + "Successfully Registered!" + ConsoleColors.RESET);
+                } else {
+                    System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. Project will now be available.\n"+ ConsoleColors.RESET);
+                    fypCoordinatorController.rejectRequest(request, requests);
+                    fypCoordinatorController.unreserveProject(request.getProject(), projects);
+                }
+            }
+        } else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "Request has been rejected. Project will now be available.\n"+ ConsoleColors.RESET);
+            fypCoordinatorController.rejectRequest(request, requests);
+            fypCoordinatorController.unreserveProject(request.getProject(), projects);
         }
     }
 }
