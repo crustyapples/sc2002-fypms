@@ -92,7 +92,7 @@ public class StudentCLI {
                                         throw new ProjectsException.ProjectSelectionNotAllowedException();
                                     } else {
                                         while (projectChoice == -1) {
-                                            System.out.println("Enter 0 to go back to view available projects");
+                                            System.out.println("\nEnter 0 to go back to view available projects");
                                             System.out.println("Enter the ProjectID:");
                                         projectChoice = scanner.nextInt();
                                         if (projectChoice == 0) {
