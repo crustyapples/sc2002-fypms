@@ -32,6 +32,5 @@ public class Main {
 
         MainMenuUI menu = new MainMenuUI();
         menu.enterMenu();
-
     }
 }

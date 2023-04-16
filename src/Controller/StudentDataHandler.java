@@ -11,7 +11,11 @@ import java.util.List;
  */
 public class StudentDataHandler implements IStudentDataHandler{
     private static final String STUDENT_FILE = "database/Students_List.txt";
-
+    /**
+     * Load students from database.
+     * @return students the students
+     * @throws IOException the io exception
+     */
     public List<Student> loadStudentsFromDatabase() throws IOException {
         List<Student> students = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(STUDENT_FILE))) {
@@ -34,7 +38,12 @@ public class StudentDataHandler implements IStudentDataHandler{
         }
         return students;
     }
-
+    /**
+     * Save students to database
+     *
+     * @param students the students
+     * @throws IOException the io exception
+     */
     public void saveStudentsToDatabase(List<Student> students) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(STUDENT_FILE))) {
 

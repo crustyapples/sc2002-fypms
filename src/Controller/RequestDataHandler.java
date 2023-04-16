@@ -11,7 +11,14 @@ import java.util.List;
  */
 public class RequestDataHandler implements IRequestDataHandler{
     private static final String REQUEST_FILE = "database/Requests_List.txt";
-
+    /**
+     * Load requests from database.
+     *
+     * @param users the users
+     * @param projects the projects
+     * @return requests the requests
+     * @throws IOException the io exception
+     */
     public List<Request> loadRequestsFromDatabase(List<User> users, List<Project> projects) throws IOException {
         List<Request> requests = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(REQUEST_FILE))) {

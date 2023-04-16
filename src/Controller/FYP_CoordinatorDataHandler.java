@@ -9,9 +9,17 @@ import java.util.List;
 /**
  * The type Fyp coordinator data handler.
  */
+
+
 public class FYP_CoordinatorDataHandler implements IFYP_CoordinatorDataHandler{
     private static final String COORDINATOR_FILE = "database/FYP_Coordinators_List.txt";
 
+    /**
+     * Load coordinators from database list.
+     *
+     * @return the list
+     * @throws IOException the io exception
+     */
     public List<FYP_Coordinator> loadCoordinatorsFromDatabase() throws IOException {
         List<FYP_Coordinator> coordinators = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(COORDINATOR_FILE))) {
@@ -29,7 +37,11 @@ public class FYP_CoordinatorDataHandler implements IFYP_CoordinatorDataHandler{
         }
         return coordinators;
     }
-
+    /**
+     * Save coordinators to database list.
+     * @param coordinators the coordinator
+     * @throws IOException the io exception
+     */
     public void saveCoordinatorsToDatabase(List<FYP_Coordinator> coordinators) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(COORDINATOR_FILE))) {
             for (FYP_Coordinator coordinator : coordinators) {

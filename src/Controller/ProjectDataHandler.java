@@ -12,6 +12,13 @@ import java.util.List;
 public class ProjectDataHandler implements IProjectDataHandler{
     private static final String PROJECT_FILE = "database/Projects_List.txt";
 
+    /**
+     * Load projects from database.
+     *
+     * @param users the user
+     * @return projects the projects
+     * @throws IOException the io exception
+     */
     public List<Project> loadProjectsFromDatabase(List<User> users) throws IOException {
         List<Project> projects = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(PROJECT_FILE))) {
@@ -57,6 +64,12 @@ public class ProjectDataHandler implements IProjectDataHandler{
         return projects;
     }
 
+    /**
+     * Save projects to database.
+     *
+     * @param projects the projects
+     * @throws IOException the io exception
+     */
     public void saveProjectsToDatabase(List<Project> projects) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PROJECT_FILE))) {
             for (Project project : projects) {
@@ -64,13 +77,24 @@ public class ProjectDataHandler implements IProjectDataHandler{
             }
         }
     }
-
+    /**
+     * Load projects from database.
+     *
+     * @param project the project
+     * @throws IOException the io exception
+     */
     public void saveProjectToDatabase(Project project) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PROJECT_FILE, true))) {
             writeProjectDetails(project, writer);
         }
     }
-
+    /**
+     * Write project details.
+     *
+     * @param project the project
+     * @param writer to write the project
+     * @throws IOException the io exception
+     */
     private void writeProjectDetails(Project project, BufferedWriter writer) throws IOException {
         String supervisorName = project.getSupervisor().getName();
         String title = project.getTitle();
@@ -81,7 +105,13 @@ public class ProjectDataHandler implements IProjectDataHandler{
         writer.newLine();
     }
 
-
+    /**
+     * Find supervisor by name.
+     *
+     * @param users the user
+     * @param name name of user
+     * @return user the user
+     */
     private Supervisor findSupervisorByName(List<User> users, String name) {
         for (User user : users) {
             if (user instanceof Supervisor) {
@@ -94,6 +124,13 @@ public class ProjectDataHandler implements IProjectDataHandler{
         return null;
     }
 
+    /**
+     * Find student by ID.
+     *
+     * @param users the user
+     * @param userID userID of student
+     * @return user the user
+     */
     private Student findStudentByID(List<User> users, String userID) {
         for (User user : users) {
             if (user instanceof Student) {
@@ -105,7 +142,12 @@ public class ProjectDataHandler implements IProjectDataHandler{
         }
         return null;
     }
-
+    /**
+     * Get project status enumerator.
+     *
+     * @param text the status
+     * @return project status
+     */
     private static ProjectStatus getProjectStatusEnum(String text) {
 
         switch (text) {
