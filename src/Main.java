@@ -1,10 +1,7 @@
 package src;
 
-import src.Boundary.FYP_CoordinatorCLI;
-import src.Boundary.StudentCLI;
-import src.Boundary.SupervisorCLI;
+import src.Boundary.*;
 import src.Controller.*;
-import src.Boundary.LoginCLI;
 import src.Entity.*;
 
 import java.io.IOException;
@@ -53,27 +50,29 @@ public class Main {
 
         UserController userController = new UserController();
         LoginCLI login = new LoginCLI(userController, users);
-
         User user = login.authenticateUser();
+        PasswordChangerCLI passwordChangerCLI = new PasswordChangerCLI(user,userController);
 
         IProjectController projectController = new ProjectController(projectDataHandler);
         IRequestController requestController = new RequestController(requestDataHandler);
         IStudentController studentController = new StudentController(stdData,projectController, requestController);
 
         if (user instanceof Student) {
-            StudentCLI studentMenu = new StudentCLI(studentController, (Student) user, login);
+            StudentCLI studentMenu = new StudentCLI(studentController, (Student) user, login,passwordChangerCLI);
             studentMenu.handleStudentActions((Student) user, projects, requests, coordinators.get(0));
         }
 
         else if (user instanceof FYP_Coordinator) {
             FYP_CoordinatorController fypCoordinatorController = new FYP_CoordinatorController(studentController, projectController, requestController);
-            FYP_CoordinatorCLI fypCoordinatorMenu = new FYP_CoordinatorCLI(fypCoordinatorController, (FYP_Coordinator) user,login);
+            ProjectUpdaterCLI projectUpdaterCLI = new ProjectUpdaterCLI((Supervisor) user, fypCoordinatorController);
+            FYP_CoordinatorCLI fypCoordinatorMenu = new FYP_CoordinatorCLI(fypCoordinatorController, (FYP_Coordinator) user,login,passwordChangerCLI,projectUpdaterCLI);
             fypCoordinatorMenu.handleSupervisorActions((FYP_Coordinator) user,(FYP_Coordinator) user, supervisors, projects, requests, students);
         }
 
         else if (user instanceof Supervisor) {
             SupervisorController supervisorController = new SupervisorController(studentController, projectController, requestController);
-            SupervisorCLI supervisorMenu = new SupervisorCLI(supervisorController, (Supervisor) user, login);
+            ProjectUpdaterCLI projectUpdaterCLI = new ProjectUpdaterCLI((Supervisor) user, supervisorController);
+            SupervisorCLI supervisorMenu = new SupervisorCLI(supervisorController, (Supervisor) user, login, passwordChangerCLI,projectUpdaterCLI);
             supervisorMenu.handleSupervisorActions(coordinators.get(0), supervisors, projects, requests);
         }
 

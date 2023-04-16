@@ -3,3 +3,7 @@ YCHERN	ASMADHUKUMAR	Change Title	Approved	Bananas!	1
 KOH1	ASFLI	Register	Approved	null	2
 BR015	ASFLI	Register	Approved	null	5
 BOAN	ASFLI	Transfer Student	Rejected	ASMADHUKUMAR	5
+ASMADHUKUMAR	ASFLI	Transfer Student	Approved	DNIYATO	2
+DL007	ASFLI	Register	Approved	null	18
+AKY013	ASFLI	Register	Approved	null	5
+AKY013	BOAN	Change Title	Approved	New Title	5

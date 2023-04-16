@@ -21,12 +21,14 @@ public class StudentCLI {
     private Scanner scanner;
     private IStudentController studentController;
     private LoginCLI loginCLI;
+    private PasswordChangerCLI passwordChangerCLI;
     private Student student;
 
-    public StudentCLI(IStudentController studentController, Student student, LoginCLI loginCLI) {
+    public StudentCLI(IStudentController studentController, Student student, LoginCLI loginCLI, PasswordChangerCLI passwordChangerCLI) {
         this.studentController = studentController;
         this.student = student;
         this.loginCLI = loginCLI;
+        this.passwordChangerCLI = passwordChangerCLI;
         scanner = new Scanner(System.in);
     }
 
@@ -53,12 +55,7 @@ public class StudentCLI {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Change Password: ");
-                    System.out.println("Enter new password: ");
-                    String newPassword = scanner.nextLine();
-                    String userID = student.getUserID();
-                    studentController.changeUserPassword(userID, newPassword);
-                    System.out.println("You will now be logged out. Please login again!");
+                    passwordChangerCLI.changePassword();
                     loginCLI.authenticateUser();
                     break;
 

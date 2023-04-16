@@ -16,18 +16,22 @@ public class SupervisorCLI {
     private SupervisorController supervisorController;
     private Supervisor supervisor;
     private LoginCLI loginCLI;
+    private PasswordChangerCLI passwordChangerCLI;
+    private ProjectUpdaterCLI projectUpdaterCLI;
     private int manageRequestCheck = -1;
 
-    public SupervisorCLI(SupervisorController supervisorController, Supervisor supervisor, LoginCLI loginCLI) {
+    public SupervisorCLI(SupervisorController supervisorController, Supervisor supervisor, LoginCLI loginCLI, PasswordChangerCLI passwordChangerCLI, ProjectUpdaterCLI projectUpdaterCLI) {
         this.supervisorController = supervisorController;
         this.supervisor = supervisor;
         this.loginCLI = loginCLI;
+        this.passwordChangerCLI = passwordChangerCLI;
+        this.projectUpdaterCLI = projectUpdaterCLI;
         scanner = new Scanner(System.in);
     }
 
     public void manageRequestCLI(User user, List<Request> requests, List<Project> projects, String requestChoice, SupervisorController supervisorController) throws IOException {
         for (Request request : supervisorController.getIncomingRequests(user)) {
-            if (Objects.equals(request.getSender().getUserID(), requestChoice)) {
+            if (Objects.equals(request.getSender().getUserID(), requestChoice) && request.getStatus() == RequestStatus.PENDING) {
                 manageRequestCheck = 1;
                 System.out.println(request.viewDetails());
                 System.out.println("Do you want to \n1. Approve OR\n2. Reject");
@@ -61,7 +65,6 @@ public class SupervisorCLI {
                     pendingRequests++;
                 }
             }
-
         }
 
         if (pendingRequests > 0) {
@@ -88,59 +91,16 @@ public class SupervisorCLI {
                 switch (choice) {
                     case 1:
                         //System.out.println("Change Password: ");
-                        System.out.println("Enter new password: ");
-                        String newPassword = scanner.nextLine();
-                        String userID = supervisor.getUserID();
-                        supervisorController.changeUserPassword(userID, newPassword);
-                        System.out.println("You will now be logged out. Please login again!");
+                        passwordChangerCLI.changePassword();
                         loginCLI.authenticateUser();
                         break;
                     case 2:
                         // Call supervisorController.createNewProject() with the project title
-                        System.out.println("Enter the Project Title: ");
-                        String title = scanner.nextLine();
-                        supervisorController.createProject(supervisor, title, projects);
+                        createProject(projects);
                         break;
                     case 3:
                         // Call supervisorController.updateExistingProject() with the new title
-
-                        supervisorController.viewSupervisorProjects(supervisor);
-
-                        Integer projectChoice = -1;
-                        while(projectChoice == -1) {
-                            try {
-                                System.out.println("Enter the project ID of the project you wish to update: ");
-                                projectChoice = scanner.nextInt();
-                                scanner.nextLine();
-
-                                found: {
-                                    try {
-                                        for (Project project : supervisor.getProjects()) {
-                                            if (project.getProjectID() == projectChoice) {
-                                                System.out.println("Enter the new project Title: ");
-                                                String newTitle = scanner.nextLine();
-                                                supervisorController.updateTitle(project, newTitle, projects);
-                                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Title changed" + ConsoleColors.RESET);
-                                                break found;
-                                            }
-                                        }
-
-                                        throw new InvalidInputException.InvalidProjectIDException();
-
-                                    } catch (InvalidInputException.InvalidProjectIDException e) {
-                                        projectChoice = -1;
-                                        System.out.println(e.getMessage());
-                                    }
-
-                                }
-
-
-                            } catch (InputMismatchException e) {
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n" + ConsoleColors.RESET);
-                                scanner.next(); //Clear the invalid input
-                                projectChoice = -1;
-                            }
-                        }
+                        projectUpdaterCLI.updateProjects(projects);
                         break;
                     case 4:
                         // Call supervisorController.viewSupervisorProjects() and display the result
@@ -148,84 +108,15 @@ public class SupervisorCLI {
                         supervisorController.viewSupervisorProjects(supervisor);
                         break;
                     case 5:
-
-                        if (supervisorController.getIncomingRequests(supervisor).size() == 0) {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "You have no incoming requests!" + ConsoleColors.RESET);
-                            break;
-                        } else {
-                            System.out.println("Incoming requests: \n");
-                            for (Request request : supervisorController.getIncomingRequests(supervisor)) {
-                                System.out.println(request.viewDetails());
-                            }
-                        }
-
-                        Integer manageChoice = -1;
-                        while (manageChoice == -1) {
-                            try {
-                                System.out.println("Do you want to manage the requests? 1. Yes 2. No");
-                                manageChoice = scanner.nextInt();
-                                scanner.nextLine();
-
-                                if (manageChoice == 1) {
-
-                                    Integer studentFound = -1;
-                                    while (studentFound == -1) {
-                                        try {
-                                            while (manageRequestCheck == -1) {
-                                                System.out.println("Enter the StudentID of the request that you want to handle: ");
-                                                String requestChoice = scanner.nextLine();
-                                                manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
-                                                studentFound = 1;
-                                            }
-
-                                        } catch (InputMismatchException e) {
-                                            studentFound = -1;
-                                            System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n" + ConsoleColors.RESET);
-                                            scanner.next(); //Clear the invalid input
-                                        }
-                                    }
-                                } else if (manageChoice == 2) {
-                                    break;
-                                } else {
-                                    manageChoice = -1;
-                                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid choice! Please key in either 1 or 2.\n" + ConsoleColors.RESET);
-                                }
-
-                            } catch (InputMismatchException e) {
-                                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n"+ ConsoleColors.RESET);
-                                scanner.next(); //Clear the invalid input
-
-                            }
-
-                        }
-
+                        manageIncomingRequests(projects, requests);
                         break;
 
 
                     case 6:
-                        // Call supervisorController.viewSupervisorRequestHistory() and display the result
-                        if (supervisorController.getRequestHistory(supervisor).size() > 0) {
-                            System.out.println("Outgoing requests: \n");
-                            for (Request request : supervisorController.getRequestHistory(supervisor)) {
-                                System.out.println(request.viewDetails());
-                            }
-                        } else {
-                            System.out.println(ConsoleColors.RED_BRIGHT + "You have no outgoing requests!" + ConsoleColors.RESET);
-                            break;
-                        }
-
+                        viewRequestHistory();
                         break;
                     case 7:
-                        // Call supervisorController.requestStudentTransferToAnotherSupervisor() with the new supervisor
-                        supervisorController.viewSupervisorProjects(supervisor);
-
-                        if (supervisor.getProjects().size() == 0) {
-                            System.out.println("You have no projects!");
-                            break;
-                        }
-
-                        projectChoice = -1;
-                        transferStudentCLI(supervisor, coordinator, supervisors, projects, requests, projectChoice, scanner, supervisorController);
+                        requestStudentTransfer(coordinator, supervisors, projects, requests);
 
                         break;
                     case 0:
@@ -240,6 +131,143 @@ public class SupervisorCLI {
                 scanner.nextLine(); // Consume the invalid input
             }
         }
+    }
+
+    private void requestStudentTransfer(FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests) throws IOException {
+        Integer projectChoice;
+        supervisorController.viewSupervisorProjects(supervisor);
+
+        if (supervisor.getProjects().size() == 0) {
+            System.out.println("You have no projects!");
+            return;
+        }
+
+        projectChoice = -1;
+        transferStudentCLI(supervisor, coordinator, supervisors, projects, requests, projectChoice, scanner, supervisorController);
+    }
+
+    private void viewRequestHistory() {
+        if (supervisorController.getRequestHistory(supervisor).size() > 0) {
+            System.out.println("Outgoing requests: \n");
+            for (Request request : supervisorController.getRequestHistory(supervisor)) {
+                System.out.println(request.viewDetails());
+            }
+        } else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "You have no outgoing requests!" + ConsoleColors.RESET);
+            return;
+        }
+    }
+
+    private void manageIncomingRequests(List<Project> projects, List<Request> requests) throws IOException {
+        int pendingRequests = 0;
+
+        if (supervisorController.getIncomingRequests(supervisor).size() > 0) {
+            for (Request request : supervisorController.getIncomingRequests(supervisor)) {
+                if (request.getStatus() == RequestStatus.PENDING) {
+                    pendingRequests++;
+                }
+            }
+        }
+
+        if (pendingRequests > 0) {
+            System.out.println("Pending requests: \n");
+            for (Request request : supervisorController.getIncomingRequests(supervisor)) {
+                if (request.getStatus() == RequestStatus.PENDING) {
+                    System.out.println(request.viewDetails());
+                }
+            }
+        }
+        else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "You have no pending requests!" + ConsoleColors.RESET);
+            return;
+        }
+
+
+        Integer manageChoice = -1;
+        while (manageChoice == -1) {
+            try {
+                System.out.println("Do you want to manage the requests? 1. Yes 2. No");
+                manageChoice = scanner.nextInt();
+                scanner.nextLine();
+
+                if (manageChoice == 1) {
+
+                    Integer studentFound = -1;
+                    while (studentFound == -1) {
+                        try {
+                            while (manageRequestCheck == -1) {
+                                System.out.println("Enter the StudentID of the request that you want to handle: ");
+                                String requestChoice = scanner.nextLine();
+                                manageRequestCLI(supervisor, requests, projects, requestChoice, supervisorController);
+                                studentFound = 1;
+                            }
+
+                        } catch (InputMismatchException e) {
+                            studentFound = -1;
+                            System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n" + ConsoleColors.RESET);
+                            scanner.next(); //Clear the invalid input
+                        }
+                    }
+                } else if (manageChoice == 2) {
+                    break;
+                } else {
+                    manageChoice = -1;
+                    System.out.println(ConsoleColors.RED_BRIGHT + "Invalid choice! Please key in either 1 or 2.\n" + ConsoleColors.RESET);
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please input an integer!\n"+ ConsoleColors.RESET);
+                scanner.next(); //Clear the invalid input
+
+            }
+
+        }
+    }
+
+    private void updateProjects(List<Project> projects) throws IOException {
+        supervisorController.viewSupervisorProjects(supervisor);
+
+        Integer projectChoice = -1;
+        while(projectChoice == -1) {
+            try {
+                System.out.println("Enter the project ID of the project you wish to update: ");
+                projectChoice = scanner.nextInt();
+                scanner.nextLine();
+
+                found: {
+                    try {
+                        for (Project project : supervisor.getProjects()) {
+                            if (project.getProjectID() == projectChoice) {
+                                System.out.println("Enter the new project Title: ");
+                                String newTitle = scanner.nextLine();
+                                supervisorController.updateTitle(project, newTitle, projects);
+                                System.out.println(ConsoleColors.GREEN_BRIGHT + "Title changed" + ConsoleColors.RESET);
+                                break found;
+                            }
+                        }
+
+                        throw new InvalidInputException.InvalidProjectIDException();
+
+                    } catch (InvalidInputException.InvalidProjectIDException e) {
+                        projectChoice = -1;
+                        System.out.println(e.getMessage());
+                    }
+
+                }
+
+
+            } catch (InputMismatchException e) {
+                System.out.println(ConsoleColors.RED_BRIGHT + "Invalid input! Please enter a valid integer!\n" + ConsoleColors.RESET);
+                scanner.next(); //Clear the invalid input
+                projectChoice = -1;
+            }
+        }
+    }
+
+    private void createProject(List<Project> projects) throws IOException {
+        System.out.println("Enter the Project Title: ");
+        String title = scanner.nextLine();
+        supervisorController.createProject(supervisor, title, projects);
     }
 
     static void transferStudentCLI(Supervisor supervisor, FYP_Coordinator coordinator, List<Supervisor> supervisors, List<Project> projects, List<Request> requests, Integer projectChoice, Scanner scanner, SupervisorController supervisorController) throws IOException {
