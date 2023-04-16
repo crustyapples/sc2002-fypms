@@ -24,6 +24,14 @@ public class UserController implements IUserController{
         userDataHandler = new UserDataHandler();
     }
 
+    /**
+     * Login user.
+     * @param users the users
+     * @param userID the userID
+     * @param password password
+     * @return user the user
+     * @throws IOException the io exception
+     */
     public User loginUser(List<User> users, String userID, String password) throws IOException {
         Map<String, String> userPasswords = userDataHandler.loadUserPasswordFromDatabase(users);
         String storedPassword = userPasswords.get(userID);
@@ -37,6 +45,11 @@ public class UserController implements IUserController{
         return null;
     }
 
+    /**
+     * Change user password.
+     * @param userID the userID
+     * @param newPassword new password
+     */
     public void changeUserPassword(String userID, String newPassword) {
         try {
             userDataHandler.updateUserPassword(userID, newPassword);
@@ -44,13 +57,21 @@ public class UserController implements IUserController{
             System.out.println("Error saving user passwords: " + e.getMessage());
         }
     }
-
+    /**
+     * View user details.
+     * @param user the user
+     */
     public void viewUserDetails(User user) {
         System.out.println("User ID: " + user.getUserID());
         System.out.println("Name: " + user.getName());
         System.out.println("Email: " + user.getEmail());
     }
 
+    /**
+     * Get request history.
+     * @param user the user
+     * @return requestHistory the request history
+     */
     public List<Request> getRequestHistory(User user) {
         List<Request> requestHistory = new ArrayList<>();
         for (Request request : user.getRequests()) {
@@ -59,6 +80,12 @@ public class UserController implements IUserController{
         return requestHistory;
     }
 
+    /**
+     * Find user by ID.
+     * @param users the users
+     * @param userID the userID
+     * @return user the user
+     */
     private User findUserByID(List<User> users, String userID) {
         for (User user : users) {
             if (user.getUserID().equals(userID)) {
