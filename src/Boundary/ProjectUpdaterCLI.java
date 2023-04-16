@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * The type Project updater cli.
+ * The ProjectUpdaterCLI class provides a command-line interface for a supervisor to update projects.
  */
 public class ProjectUpdaterCLI {
     private Supervisor supervisor;
@@ -20,10 +20,10 @@ public class ProjectUpdaterCLI {
     private Scanner scanner;
 
     /**
-     * Instantiates a new Project updater cli.
+     * Constructs a new ProjectUpdaterCLI object with the given supervisor and supervisor controller.
      *
-     * @param supervisor           the supervisor
-     * @param supervisorController the supervisor controller
+     * @param supervisor the supervisor to be used
+     * @param supervisorController the supervisor controller to be used
      */
     public ProjectUpdaterCLI(Supervisor supervisor, SupervisorController supervisorController) {
         this.supervisor = supervisor;
@@ -32,10 +32,11 @@ public class ProjectUpdaterCLI {
     }
 
     /**
-     * Update projects.
+     * Prompts the user to select a project to update, then prompts them to enter a new project title.
+     * The title of the selected project is updated to the new title.
      *
-     * @param projects the projects
-     * @throws IOException the io exception
+     * @param projects the list of projects to be used
+     * @throws IOException if there is an error updating the project title
      */
     public void updateProjects(List<Project> projects) throws IOException {
         supervisorController.viewSupervisorProjects(supervisor);

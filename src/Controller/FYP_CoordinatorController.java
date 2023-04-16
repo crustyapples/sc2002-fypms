@@ -25,6 +25,12 @@ public class FYP_CoordinatorController extends SupervisorController {
         super(studentController,projectController,requestController);
     }
 
+    /**
+     * Get incoming requests
+     * @param user the user
+     * @return incoming requests for user
+     */
+
     public List<Request> getIncomingRequests(User user) {
         List <Request> incomingRequests = new ArrayList<>();
         for (Request request : user.getRequests()) {
@@ -38,6 +44,11 @@ public class FYP_CoordinatorController extends SupervisorController {
         return incomingRequests;
     }
 
+    /**
+     * Get request history
+     * @param user the user
+     * @return request history
+     */
     public List<Request> getRequestHistory(User user) {
         List<Request> requestHistory = new ArrayList<>();
         for (Request request : user.getRequests()) {
@@ -175,6 +186,13 @@ public class FYP_CoordinatorController extends SupervisorController {
         project.setSupervisor(project.getReplacementSupervisor());
         projectController.updateProject(projects);
     }
+    /**
+     * Release supervisor project availability
+     *
+     * @param supervisor  the supervisor
+     * @param projects the projects
+     * @throws IOException the io exception
+     */
 
     private void releaseSupervisorProjectAvailability(Supervisor supervisor, List<Project> projects) throws IOException {
 
@@ -188,7 +206,13 @@ public class FYP_CoordinatorController extends SupervisorController {
             }
         }
     }
-
+    /**
+     * Close supervisor project availability
+     *
+     * @param supervisor  the supervisor
+     * @param projects the projects
+     * @throws IOException the io exception
+     */
     private void closeSupervisorProjectAvailability(Supervisor supervisor, List<Project> projects) throws IOException {
 
         if (supervisor.getNumProjectsSupervised() == 2) {

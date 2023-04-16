@@ -7,11 +7,20 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * The type Password changer cli.
+ * Constructs a new PasswordChangerCLI object.
  */
 public class PasswordChangerCLI {
+    /**
+     * The user whose password will be changed
+     */
     private User user;
+    /**
+     * The controller for user-related functionality
+     */
     private IUserController userController;
+    /**
+     * The scanner object used to read input from the user
+     */
     private Scanner scanner;
 
     /**
@@ -27,9 +36,9 @@ public class PasswordChangerCLI {
     }
 
     /**
-     * Change password.
+     * Prompts the user to enter a new password, changes the user's password, and logs them out.
      *
-     * @throws IOException the io exception
+     * @throws IOException if there is an error changing the user's password
      */
     public void changePassword() throws IOException {
         System.out.println("Enter new password: ");

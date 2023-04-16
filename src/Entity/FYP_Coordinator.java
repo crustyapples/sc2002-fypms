@@ -1,7 +1,7 @@
 package src.Entity;
 
 /**
- * The type Fyp coordinator.
+ * This class contains all the information of a Fyp coordinator.
  */
 public class FYP_Coordinator extends Supervisor {
     /**

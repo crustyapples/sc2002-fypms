@@ -1,0 +1,12 @@
+BR015	ASFLI	Register	Approved	null	5
+CT113	ASFLI	Register	Rejected	null	6
+CT113	ASFLI	Register	Approved	null	7
+BOAN	ASFLI	Transfer Student	Approved	GAOCONG	7
+CT113	GAOCONG	Change Title	Approved	Calvin's Project	7
+BR015	BOAN	Change Title	Rejected	Brandon's Project	5
+BR015	ASFLI	Deregister	Approved	null	5
+DL007	ASFLI	Register	Approved	null	17
+AKY013	ASFLI	Register	Approved	null	6
+ELI34	ASFLI	Register	Approved	null	1
+ASMADHUKUMAR	ASFLI	Transfer Student	Rejected	BOAN	1
+AKY013	ASFLI	Deregister	Approved	null	6

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The type Main.
+ * This class is the main class of the application.
  */
 public class Main {
     /**
@@ -32,6 +32,5 @@ public class Main {
 
         MainMenuUI menu = new MainMenuUI();
         menu.enterMenu();
-
     }
 }

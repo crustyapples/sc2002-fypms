@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Main menu ui.
+ * The MainMenuUI class represents the main menu interface of the FYP management system.
+ * It allows users to login, change their passwords, and perform actions depending on their role.
+ * It loads data from various data handlers and passes it to corresponding controllers.
  */
 public class MainMenuUI {
     /**
-     * Instantiates a new Main menu ui.
+     * Instantiates a new MainMenuUI.
      */
     public MainMenuUI(){
 

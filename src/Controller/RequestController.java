@@ -21,6 +21,18 @@ public class RequestController implements IRequestController{
         this.requestDataHandler = requestDataHandler;
     }
 
+    /**
+     * Create request.
+     *
+     * @param sender the sender
+     * @param recipient the recipient
+     * @param requestType request type
+     * @param project the project
+     * @param body body text
+     * @param requests list of requests
+     * @return request the request
+     * @throws IOException the io exception
+     */
     public Request createRequest(User sender, User recipient, RequestType requestType, Project project, String body, List<Request> requests) throws IOException {
         Integer requestID = requests.size() + 1;
         Request request = new Request(requestID, sender, recipient, requestType, project, RequestStatus.PENDING, body);
@@ -29,12 +41,25 @@ public class RequestController implements IRequestController{
 
         return request;
     }
-
+    /**
+     * Approve request.
+     *
+     * @param request the request
+     * @param requests the list of requests
+     * @throws IOException the io exception
+     */
     public void approveRequest(Request request, List<Request> requests) throws IOException {
         request.approve();
         requestDataHandler.saveRequestsToDatabase(requests);
     }
 
+    /**
+     * Reject request.
+     *
+     * @param request the request
+     * @param requests the list of requests
+     * @throws IOException the io exception
+     */
     public void rejectRequest(Request request, List<Request> requests) throws IOException {
         request.reject();
         requestDataHandler.saveRequestsToDatabase(requests);

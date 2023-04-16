@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The type User.
+ * The User class represents a user of FYPMS.
  */
 public class User {
     /**
@@ -13,30 +13,30 @@ public class User {
      */
     protected String userID;
     /**
-     * The Password.
+     * The user's password.
      */
     protected String password;
     /**
-     * The Name.
+     * The user's name.
      */
     protected String name;
     /**
-     * The Email.
+     * The user's email.
      */
     protected String email;
     /**
-     * The Requests.
+     * The list of requests made by the user.
      */
     protected List<Request> requests;
 
 
     /**
-     * Instantiates a new User.
+     * Constructs a new User object with the given user ID, password, name, and email.
      *
-     * @param userID   the user id
-     * @param password the password
-     * @param name     the name
-     * @param email    the email
+     * @param userID   the user's ID
+     * @param password the user's password
+     * @param name     the user's name
+     * @param email    the user's email
      */
     public User(String userID, String password, String name, String email) {
         this.userID = userID;
@@ -47,7 +47,7 @@ public class User {
     }
 
     /**
-     * Change password.
+     * Changes the user's password to the given password.
      *
      * @param newPassword the new password
      */
@@ -56,54 +56,54 @@ public class User {
     }
 
     /**
-     * View details string.
+     * Returns a string representation of the user's details.
      *
-     * @return the string
+     * @return a string containing the user's ID, name, and email
      */
     public String viewDetails() {
         return "UserID: " + userID + "\nName: " + name + "\nEmail: " + email;
     }
 
     /**
-     * Gets email.
+     * Returns the user's email.
      *
-     * @return the email
+     * @return the user's email
      */
     public String getEmail() {
         return this.email;
     }
 
     /**
-     * Gets name.
+     * Returns the user's name.
      *
-     * @return the name
+     * @return the user's name
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Gets user id.
+     * Returns the user's ID.
      *
-     * @return the user id
+     * @return the user's ID
      */
     public String getUserID() {
         return this.userID;
     }
 
     /**
-     * Gets requests.
+     * Returns the list of requests made by the user.
      *
-     * @return the requests
+     * @return the list of requests
      */
     public List<Request> getRequests() {
         return this.requests;
     }
 
     /**
-     * Add request.
+     * Adds a request to the user's list of requests.
      *
-     * @param request the request
+     * @param request the request to add
      */
     public void addRequest(Request request) {
         this.requests.add(request);

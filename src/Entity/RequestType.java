@@ -1,23 +1,24 @@
 package src.Entity;
 
 /**
- * The enum Request type.
+ * The RequestType enum represents the type of request.
+ * It implements the EnumInterface interface.
  */
 public enum RequestType implements EnumInterface {
     /**
-     * Register request type.
+     * A request to register a course.
      */
     REGISTER("Register"),
     /**
-     * The Change title.
+     * A request to change the title of a course.
      */
     CHANGE_TITLE("Change Title"),
     /**
-     * Deregister request type.
+     * A request to transfer a student to another course.
      */
     DEREGISTER("Deregister"),
     /**
-     * The Transfer student.
+     * The label of the request type.
      */
     TRANSFER_STUDENT("Transfer Student");
 
