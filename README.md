@@ -13,7 +13,8 @@ The application is a Console-based application (non-Graphical UI) made on the Ja
 - [Wilsen Chandra Putra](https://github.com/wilsencp)
 - [Wong Wen Jie Scott](https://github.com/scottw84)
 
-
+## Class Diagram:
+![ClassDiagram](https://github.com/crustyapples/sc2002-fypms/assets/24990448/8e378e2b-5228-41cb-b571-9f08aa0b6b4f)
 
 
 
